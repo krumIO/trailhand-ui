@@ -1,15 +1,41 @@
 {
-  "name": "theme-toggle-project",
+  "name": "@krumio/trailhand-ui",
   "version": "1.0.0",
   "type": "module",
-  "description": "Theme toggle component",
-  "main": "index.js",
+  "description": "Reusable web components built with Lit Element",
+  "main": "./Components/toggle-switch.js",
+  "module": "./Components/toggle-switch.js",
+  "exports": {
+    ".": "./Components/toggle-switch.js",
+    "./toggle-switch": "./Components/toggle-switch.js",
+    "./Components/toggle-switch.js": "./Components/toggle-switch.js"
+  },
+  "files": [
+    "Components",
+    "README.md"
+  ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "scripts": {
     "start": "vite",
     "build": "vite build",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/krumIO/trailhand-ui.git"
+  },
+  "keywords": [
+    "web-components",
+    "lit-element",
+    "toggle",
+    "switch",
+    "ui-components"
+  ],
+  "author": "",
+  "license": "MIT",
   "dependencies": {
     "lit": "^3.3.1"
   },
