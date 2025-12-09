@@ -42,6 +42,124 @@ Any changes you make to the trailhand-ui code will immediately be available in y
 
 ---
 
+## GitHub Packages Setup (LATER)
+
+When you're ready to publish to GitHub Packages:
+
+### 1. Create a GitHub Personal Access Token
+
+1. Go to https://github.com/settings/tokens
+2. Click **"Generate new token (classic)"**
+3. Give it a name like "npm-packages"
+4. Select these scopes:
+   - ✅ `write:packages` - Upload packages
+   - ✅ `read:packages` - Download packages
+   - ✅ `delete:packages` - Delete packages (optional)
+5. Click **"Generate token"**
+6. **Copy the token** (you won't see it again!)
+
+### 2. Authenticate with GitHub Packages
+
+Add your token to your home directory's `.npmrc`:
+
+```bash
+# Add this line to ~/.npmrc (create if doesn't exist)
+echo "//npm.pkg.github.com/:_authToken=YOUR_TOKEN_HERE" >> ~/.npmrc
+```
+
+Or set it as an environment variable:
+
+```bash
+export GITHUB_TOKEN=your_token_here
+```
+
+### 3. Publish to GitHub Packages
+
+From the trailhand-ui directory:
+
+```bash
+npm publish
+```
+
+That's it! The package is now on GitHub Packages.
+
+### 4. Install package to another application (Production)
+
+**Create `.npmrc` in your app:**
+
+```bash
+# In your app root
+cat > .npmrc << 'EOF'
+@krumio:registry=https://npm.pkg.github.com
+EOF
+```
+
+**Add to your home `.npmrc` for authentication:**
+
+```bash
+echo "//npm.pkg.github.com/:_authToken=YOUR_TOKEN_HERE" >> ~/.npmrc
+```
+
+**Install the package:**
+
+```bash
+npm install @krumio/trailhand-ui
+```
+
+**Add to package.json:**
+
+```json
+{
+  "dependencies": {
+    "@krumio/trailhand-ui": "^1.0.0"
+  }
+}
+```
+
+### 5. CI/CD Setup
+
+For GitHub Actions, add the token as a secret:
+
+```yaml
+# .github/workflows/your-workflow.yml
+- name: Install dependencies
+  run: npm install
+  env:
+    NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
+
+**Or create `.npmrc` in your app with:**
+
+```
+@krumio:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}
+```
+
+---
+
+## Version Updates
+
+### Publishing New Version
+
+1. Update version in package.json:
+   ```bash
+   npm version patch  # 1.0.0 -> 1.0.1
+   npm version minor  # 1.0.0 -> 1.1.0
+   npm version major  # 1.0.0 -> 2.0.0
+   ```
+
+2. Publish:
+   ```bash
+   npm publish
+   ```
+
+3. In app:
+   ```bash
+   npm update @krumio/trailhand-ui
+   ```
+
+---
+
 ## Troubleshooting
 
 ### npm link not working

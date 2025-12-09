@@ -8,7 +8,8 @@
   "exports": {
     ".": "./Components/toggle-switch.js",
     "./toggle-switch": "./Components/toggle-switch.js",
-    "./Components/toggle-switch.js": "./Components/toggle-switch.js"
+    "./Components/toggle-switch.js": "./Components/toggle-switch.js",
+    "./Components/button.js": "./Components/button.js"
   },
   "files": [
     "Components",
