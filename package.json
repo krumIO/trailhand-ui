@@ -1,0 +1,52 @@
+{
+  "name": "@krumio/trailhand-ui",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Reusable web components built with Lit Element",
+  "main": "./Components/toggle-switch.js",
+  "module": "./Components/toggle-switch.js",
+  "exports": {
+    ".": "./Components/toggle-switch.js",
+    "./toggle-switch": "./Components/toggle-switch.js",
+    "./Components/toggle-switch.js": "./Components/toggle-switch.js",
+    "./Components/button.js": "./Components/button.js"
+  },
+  "files": [
+    "Components",
+    "README.md"
+  ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "scripts": {
+    "start": "vite",
+    "build": "vite build",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/krumIO/trailhand-ui.git"
+  },
+  "keywords": [
+    "web-components",
+    "lit-element",
+    "toggle",
+    "switch",
+    "ui-components"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "lit": "^3.3.1"
+  },
+  "devDependencies": {
+    "@storybook/addon-a11y": "^8.6.14",
+    "@storybook/addon-docs": "^8.6.14",
+    "@storybook/addon-essentials": "^8.6.14",
+    "@storybook/test": "^8.6.14",
+    "@storybook/web-components-vite": "^8.6.14",
+    "storybook": "^8.6.14",
+    "vite": "^6.4.1"
+  }
+}
