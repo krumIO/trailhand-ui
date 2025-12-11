@@ -221,6 +221,15 @@ export class DataTable extends LitElement {
       color: var(--body-text, #333);
     }
 
+    .data-table__td a {
+      color: var(--link, #007bff);
+      text-decoration: none;
+    }
+
+    .data-table__td a:hover {
+      text-decoration: underline;
+    }
+
     .data-table__td--empty {
       text-align: center;
       padding: 2rem;
