@@ -352,6 +352,49 @@ export class DataTable extends LitElement {
   }
 
   /**
+   * Get link URL for a cell if column has link property
+   * @param {Object} row - The row data
+   * @param {Object} column - The column definition
+   * @returns {string|null} The link URL or null
+   * @private
+   */
+  _getLinkUrl(row, column) {
+    if (!column.link) {
+      return null;
+    }
+
+    if (typeof column.link === 'string') {
+      // Link is a field name in the row data
+      return this._getNestedValue(row, column.link);
+    } else if (typeof column.link === 'function') {
+      // Link is a function that takes the row and returns a URL
+      return column.link(row);
+    }
+
+    return null;
+  }
+
+  /**
+   * Render cell content with optional link
+   * @param {Object} row - The row data
+   * @param {Object} column - The column definition
+   * @returns {TemplateResult} The rendered cell content
+   * @private
+   */
+  _renderCellContent(row, column) {
+    const value = this._formatValue(row, column);
+    const linkUrl = this._getLinkUrl(row, column);
+
+    if (linkUrl) {
+      const target = column.linkTarget || '_self';
+      const rel = target === '_blank' ? 'noopener noreferrer' : '';
+      return html`<a href="${linkUrl}" target="${target}" rel="${rel}">${value}</a>`;
+    }
+
+    return value;
+  }
+
+  /**
    * Get filtered rows based on search query
    * @returns {Array} Filtered rows
    * @private
@@ -648,7 +691,7 @@ export class DataTable extends LitElement {
                     ${this.columns.map(column => html`
                       <td class="data-table__td">
                         <slot name="cell:${column.field}" .row=${row} .value=${this._getNestedValue(row, column.field)} .column=${column}>
-                          ${this._formatValue(row, column)}
+                          ${this._renderCellContent(row, column)}
                         </slot>
                       </td>
                     `)}
