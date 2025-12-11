@@ -179,7 +179,7 @@ export class ActionMenu extends LitElement {
   _handleActionClick(e, action) {
     e.stopPropagation();
 
-    if (!action.enabled || action.enabled(this.resource)) {
+    if (this._isActionEnabled(action)) {
       this._isOpen = false;
 
       // Dispatch custom event
