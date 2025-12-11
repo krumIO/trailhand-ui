@@ -226,11 +226,29 @@ export class ActionMenu extends LitElement {
   }
 
   /**
+   * Get actions to display
+   * @returns {Array}
+   * @private
+   */
+  _getActions() {
+    // If actions are provided explicitly, use them
+    if (this.actions && this.actions.length > 0) {
+      return this.actions;
+    }
+    // Otherwise, try to get from resource.availableActions
+    if (this.resource && typeof this.resource.availableActions !== 'undefined') {
+      return this.resource.availableActions || [];
+    }
+    return [];
+  }
+
+  /**
    * Render the component
    * @returns {TemplateResult}
    */
   render() {
-    const visibleActions = this.actions.filter(action => {
+    const allActions = this._getActions();
+    const visibleActions = allActions.filter(action => {
       if (!action.visible) return true;
       if (typeof action.visible === 'function') {
         return action.visible(this.resource);
