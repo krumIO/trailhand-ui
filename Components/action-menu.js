@@ -248,12 +248,36 @@ export class ActionMenu extends LitElement {
    */
   render() {
     const allActions = this._getActions();
-    const visibleActions = allActions.filter(action => {
-      if (!action.visible) return true;
-      if (typeof action.visible === 'function') {
-        return action.visible(this.resource);
+
+    // Filter by visibility and enabled status
+    let visibleActions = allActions.filter(action => {
+      // Skip dividers in visibility check
+      if (action.divider) return true;
+
+      // Check visible property
+      if (action.visible !== undefined) {
+        if (typeof action.visible === 'function') {
+          return action.visible(this.resource);
+        }
+        return action.visible;
       }
-      return action.visible;
+
+      // If no visible property, check enabled (hide if explicitly false)
+      if (action.enabled !== undefined && action.enabled === false) {
+        return false;
+      }
+
+      return true;
+    });
+
+    // Remove consecutive dividers and trailing/leading dividers
+    visibleActions = visibleActions.filter((action, index, arr) => {
+      if (!action.divider) return true;
+      // Remove if first or last
+      if (index === 0 || index === arr.length - 1) return false;
+      // Remove if next to another divider
+      if (arr[index - 1]?.divider || arr[index + 1]?.divider) return false;
+      return true;
     });
 
     return html`
