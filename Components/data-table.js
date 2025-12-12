@@ -396,11 +396,39 @@ export class DataTable extends LitElement {
 
     if (linkUrl) {
       const target = column.linkTarget || '_self';
-      const rel = target === '_blank' ? 'noopener noreferrer' : '';
-      return html`<a href="${linkUrl}" target="${target}" rel="${rel}">${value}</a>`;
+
+      // For external links or _blank target, use regular <a> tag
+      if (target === '_blank' || linkUrl.startsWith('http://') || linkUrl.startsWith('https://')) {
+        const rel = target === '_blank' ? 'noopener noreferrer' : '';
+        return html`<a href="${linkUrl}" target="${target}" rel="${rel}">${value}</a>`;
+      }
+
+      // For internal links, use a clickable element that emits a navigation event
+      return html`<a
+        href="${linkUrl}"
+        @click="${(e) => this._handleLinkClick(e, linkUrl, row)}"
+      >${value}</a>`;
     }
 
     return value;
+  }
+
+  /**
+   * Handle link click - emit navigation event instead of following link
+   * @param {Event} event - The click event
+   * @param {string} url - The URL to navigate to
+   * @param {Object} row - The row data
+   * @private
+   */
+  _handleLinkClick(event, url, row) {
+    event.preventDefault();
+
+    // Emit custom event for navigation
+    this.dispatchEvent(new CustomEvent('navigate', {
+      detail: { url, row },
+      bubbles: true,
+      composed: true
+    }));
   }
 
   /**
