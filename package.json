@@ -3,17 +3,38 @@
   "version": "1.3.2",
   "type": "module",
   "description": "Reusable web components built with Lit Element",
-  "main": "./Components/toggle-switch.js",
-  "module": "./Components/toggle-switch.js",
+  "main": "./Components/toggle-switch.ts",
+  "module": "./Components/toggle-switch.ts",
+  "types": "./Components/toggle-switch.ts",
   "exports": {
-    ".": "./Components/toggle-switch.js",
-    "./toggle-switch": "./Components/toggle-switch.js",
-    "./data-table": "./Components/data-table.js",
-    "./action-menu": "./Components/action-menu.js",
-    "./Components/toggle-switch.js": "./Components/toggle-switch.js",
-    "./Components/data-table.js": "./Components/data-table.js",
-    "./Components/action-menu.js": "./Components/action-menu.js",
-    "./Components/button.js": "./Components/button.js"
+    ".": {
+      "types": "./Components/toggle-switch.ts",
+      "default": "./Components/toggle-switch.ts"
+    },
+    "./toggle-switch": {
+      "types": "./Components/toggle-switch.ts",
+      "default": "./Components/toggle-switch.ts"
+    },
+    "./data-table": {
+      "types": "./Components/data-table.ts",
+      "default": "./Components/data-table.ts"
+    },
+    "./action-menu": {
+      "types": "./Components/action-menu.ts",
+      "default": "./Components/action-menu.ts"
+    },
+    "./button": {
+      "types": "./Components/Button.ts",
+      "default": "./Components/Button.ts"
+    },
+    "./Components/toggle-switch.ts": "./Components/toggle-switch.ts",
+    "./Components/data-table.ts": "./Components/data-table.ts",
+    "./Components/action-menu.ts": "./Components/action-menu.ts",
+    "./Components/button.ts": "./Components/Button.ts",
+    "./Components/toggle-switch.js": "./Components/toggle-switch.ts",
+    "./Components/data-table.js": "./Components/data-table.ts",
+    "./Components/action-menu.js": "./Components/action-menu.ts",
+    "./Components/button.js": "./Components/Button.ts"
   },
   "files": [
     "Components",
@@ -25,6 +46,8 @@
   "scripts": {
     "start": "vite",
     "build": "vite build",
+    "typecheck": "tsc --noEmit",
+    "typecheck:watch": "tsc --noEmit --watch",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
@@ -52,7 +75,9 @@
     "@storybook/addon-essentials": "^8.6.14",
     "@storybook/test": "^8.6.14",
     "@storybook/web-components-vite": "^8.6.14",
+    "@types/node": "^25.0.3",
     "storybook": "^8.6.14",
+    "typescript": "^5.9.3",
     "vite": "^6.4.1"
   }
 }

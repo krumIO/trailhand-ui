@@ -1,5 +1,6 @@
-import { LitElement, html, css } from 'lit';
-import './action-menu.js';
+import { LitElement, html, css, TemplateResult } from 'lit';
+import { property, state } from 'lit/decorators.js';
+import './action-menu';
 import 'iconify-icon';
 import { addIcon } from 'iconify-icon';
 import chevronUp from '@iconify/icons-heroicons/chevron-up-20-solid';
@@ -14,13 +15,50 @@ addIcon('heroicons:chevron-left-20-solid', chevronLeft);
 addIcon('heroicons:chevron-right-20-solid', chevronRight);
 
 /**
+ * Type definition for formatter functions
+ */
+type FormatterFunction = (value: any) => string;
+
+/**
+ * Type definition for sort functions
+ */
+type SortFunction = (a: RowData, b: RowData, direction: 'asc' | 'desc') => number;
+
+/**
+ * Type definition for link functions
+ */
+type LinkFunction = (row: RowData) => string;
+
+/**
+ * Type definition for row data
+ */
+interface RowData {
+  [key: string]: any;
+}
+
+/**
+ * Type definition for column configuration
+ */
+export interface DataTableColumn {
+  field: string;
+  label: string;
+  width?: string;
+  sortable?: boolean;
+  searchable?: boolean;
+  formatter?: string | ((value: any, row: RowData) => any);
+  sortFn?: SortFunction;
+  link?: string | LinkFunction;
+  linkTarget?: '_self' | '_blank' | '_parent' | '_top';
+}
+
+/**
  * Data table formatters for common column types
  */
-export const dataTableFormatters = {
+export const dataTableFormatters: Record<string, FormatterFunction> = {
   /**
    * Format a date value as relative time (e.g., "5d", "3h", "15m")
    */
-  age: (value) => {
+  age: (value: any): string => {
     if (!value) return '-';
     const date = new Date(value);
     const now = new Date();
@@ -38,7 +76,7 @@ export const dataTableFormatters = {
   /**
    * Format a date as a localized date string
    */
-  date: (value) => {
+  date: (value: any): string => {
     if (!value) return '-';
     return new Date(value).toLocaleDateString();
   },
@@ -46,7 +84,7 @@ export const dataTableFormatters = {
   /**
    * Format a date as a localized date and time string
    */
-  dateTime: (value) => {
+  dateTime: (value: any): string => {
     if (!value) return '-';
     return new Date(value).toLocaleString();
   }
@@ -57,28 +95,56 @@ export const dataTableFormatters = {
  * Supports custom cell rendering, row actions, and various formatters.
  */
 export class DataTable extends LitElement {
-  static properties = {
-    columns: { type: Array },
-    rows: { type: Array },
-    rowsPerPage: { type: Number, attribute: 'rows-per-page' },
-    searchable: { type: Boolean },
-    sortable: { type: Boolean },
-    paginated: { type: Boolean },
-    loading: { type: Boolean },
-    keyField: { type: String, attribute: 'key-field' },
-    rowActions: { type: Boolean, attribute: 'row-actions' },
-    rowActionsWidth: { type: Number, attribute: 'row-actions-width' },
-    emptyMessage: { type: String, attribute: 'empty-message' },
-    noResultsMessage: { type: String, attribute: 'no-results-message' },
+  @property({ type: Array })
+  columns: DataTableColumn[] = [];
 
-    // Internal state
-    _searchQuery: { type: String, state: true },
-    _currentPage: { type: Number, state: true },
-    _sortColumn: { type: String, state: true },
-    _sortDirection: { type: String, state: true },
-  };
+  @property({ type: Array })
+  rows: RowData[] = [];
 
-  static styles = css`
+  @property({ type: Number, attribute: 'rows-per-page' })
+  rowsPerPage = 10;
+
+  @property({ type: Boolean })
+  searchable = true;
+
+  @property({ type: Boolean })
+  sortable = true;
+
+  @property({ type: Boolean })
+  paginated = true;
+
+  @property({ type: Boolean })
+  loading = false;
+
+  @property({ type: String, attribute: 'key-field' })
+  keyField = 'id';
+
+  @property({ type: Boolean, attribute: 'row-actions' })
+  rowActions = true;
+
+  @property({ type: Number, attribute: 'row-actions-width' })
+  rowActionsWidth = 40;
+
+  @property({ type: String, attribute: 'empty-message' })
+  emptyMessage = 'No data available';
+
+  @property({ type: String, attribute: 'no-results-message' })
+  noResultsMessage = 'No results found';
+
+  // Internal state
+  @state()
+  private _searchQuery = '';
+
+  @state()
+  private _currentPage = 1;
+
+  @state()
+  private _sortColumn: string | null = null;
+
+  @state()
+  private _sortDirection: 'asc' | 'desc' = 'asc';
+
+  static override styles = css`
     :host {
       display: block;
       width: 100%;
@@ -301,47 +367,25 @@ export class DataTable extends LitElement {
     }
   `;
 
-  constructor() {
-    super();
-    this.columns = [];
-    this.rows = [];
-    this.rowsPerPage = 10;
-    this.searchable = true;
-    this.sortable = true;
-    this.paginated = true;
-    this.loading = false;
-    this.keyField = 'id';
-    this.rowActions = true;
-    this.rowActionsWidth = 40;
-    this.emptyMessage = 'No data available';
-    this.noResultsMessage = 'No results found';
-
-    // Internal state
-    this._searchQuery = '';
-    this._currentPage = 1;
-    this._sortColumn = null;
-    this._sortDirection = 'asc';
-  }
-
   /**
    * Get nested value from object using dot notation
-   * @param {Object} obj - The object to extract value from
-   * @param {string} path - The path (e.g., 'user.name')
-   * @returns {*} The value at the path
+   * @param obj - The object to extract value from
+   * @param path - The path (e.g., 'user.name')
+   * @returns The value at the path
    * @private
    */
-  _getNestedValue(obj, path) {
+  private _getNestedValue(obj: RowData, path: string): any {
     return path.split('.').reduce((current, key) => current?.[key], obj);
   }
 
   /**
    * Format a cell value using column formatter
-   * @param {Object} row - The row data
-   * @param {Object} column - The column definition
-   * @returns {*} The formatted value
+   * @param row - The row data
+   * @param column - The column definition
+   * @returns The formatted value
    * @private
    */
-  _formatValue(row, column) {
+  private _formatValue(row: RowData, column: DataTableColumn): any {
     const value = this._getNestedValue(row, column.field);
 
     if (column.formatter) {
@@ -362,12 +406,12 @@ export class DataTable extends LitElement {
 
   /**
    * Get link URL for a cell if column has link property
-   * @param {Object} row - The row data
-   * @param {Object} column - The column definition
-   * @returns {string|null} The link URL or null
+   * @param row - The row data
+   * @param column - The column definition
+   * @returns The link URL or null
    * @private
    */
-  _getLinkUrl(row, column) {
+  private _getLinkUrl(row: RowData, column: DataTableColumn): string | null {
     if (!column.link) {
       return null;
     }
@@ -385,12 +429,12 @@ export class DataTable extends LitElement {
 
   /**
    * Render cell content with optional link
-   * @param {Object} row - The row data
-   * @param {Object} column - The column definition
-   * @returns {TemplateResult} The rendered cell content
+   * @param row - The row data
+   * @param column - The column definition
+   * @returns The rendered cell content
    * @private
    */
-  _renderCellContent(row, column) {
+  private _renderCellContent(row: RowData, column: DataTableColumn): TemplateResult | any {
     const value = this._formatValue(row, column);
     const linkUrl = this._getLinkUrl(row, column);
 
@@ -406,7 +450,7 @@ export class DataTable extends LitElement {
       // For internal links, use a clickable element that emits a navigation event
       return html`<a
         href="${linkUrl}"
-        @click="${(e) => this._handleLinkClick(e, linkUrl, row)}"
+        @click="${(e: Event) => this._handleLinkClick(e, linkUrl, row)}"
       >${value}</a>`;
     }
 
@@ -415,12 +459,12 @@ export class DataTable extends LitElement {
 
   /**
    * Handle link click - emit navigation event instead of following link
-   * @param {Event} event - The click event
-   * @param {string} url - The URL to navigate to
-   * @param {Object} row - The row data
+   * @param event - The click event
+   * @param url - The URL to navigate to
+   * @param row - The row data
    * @private
    */
-  _handleLinkClick(event, url, row) {
+  private _handleLinkClick(event: Event, url: string, row: RowData): void {
     event.preventDefault();
 
     // Emit custom event for navigation
@@ -433,10 +477,10 @@ export class DataTable extends LitElement {
 
   /**
    * Get filtered rows based on search query
-   * @returns {Array} Filtered rows
+   * @returns Filtered rows
    * @private
    */
-  get _filteredRows() {
+  private get _filteredRows(): RowData[] {
     if (!this._searchQuery || !this.searchable) {
       return this.rows;
     }
@@ -455,10 +499,10 @@ export class DataTable extends LitElement {
 
   /**
    * Get sorted rows
-   * @returns {Array} Sorted rows
+   * @returns Sorted rows
    * @private
    */
-  get _sortedRows() {
+  private get _sortedRows(): RowData[] {
     if (!this._sortColumn || !this.sortable) {
       return this._filteredRows;
     }
@@ -469,8 +513,8 @@ export class DataTable extends LitElement {
     }
 
     return [...this._filteredRows].sort((a, b) => {
-      const aValue = this._getNestedValue(a, this._sortColumn);
-      const bValue = this._getNestedValue(b, this._sortColumn);
+      const aValue = this._getNestedValue(a, this._sortColumn!);
+      const bValue = this._getNestedValue(b, this._sortColumn!);
 
       // Handle custom sort function
       if (column.sortFn) {
@@ -491,10 +535,10 @@ export class DataTable extends LitElement {
 
   /**
    * Get paginated rows
-   * @returns {Array} Paginated rows
+   * @returns Paginated rows
    * @private
    */
-  get _paginatedRows() {
+  private get _paginatedRows(): RowData[] {
     if (!this.paginated) {
       return this._sortedRows;
     }
@@ -506,10 +550,10 @@ export class DataTable extends LitElement {
 
   /**
    * Get total number of pages
-   * @returns {number} Total pages
+   * @returns Total pages
    * @private
    */
-  get _totalPages() {
+  private get _totalPages(): number {
     if (!this.paginated) {
       return 1;
     }
@@ -518,10 +562,10 @@ export class DataTable extends LitElement {
 
   /**
    * Get pagination info
-   * @returns {Object} Pagination info
+   * @returns Pagination info
    * @private
    */
-  get _paginationInfo() {
+  private get _paginationInfo(): { start: number; end: number; total: number } {
     const start = (this._currentPage - 1) * this.rowsPerPage + 1;
     const end = Math.min(this._currentPage * this.rowsPerPage, this._sortedRows.length);
     return {
@@ -533,20 +577,21 @@ export class DataTable extends LitElement {
 
   /**
    * Handle search input
-   * @param {Event} e - The input event
+   * @param e - The input event
    * @private
    */
-  _handleSearch(e) {
-    this._searchQuery = e.target.value;
+  private _handleSearch(e: Event): void {
+    const target = e.target as HTMLInputElement;
+    this._searchQuery = target.value;
     this._currentPage = 1;
   }
 
   /**
    * Handle column sort
-   * @param {string} columnField - The column field to sort by
+   * @param columnField - The column field to sort by
    * @private
    */
-  _handleSort(columnField) {
+  private _handleSort(columnField: string): void {
     const column = this.columns.find(col => col.field === columnField);
     if (!column || column.sortable === false || !this.sortable) {
       return;
@@ -565,9 +610,9 @@ export class DataTable extends LitElement {
 
   /**
    * Navigate to a specific page
-   * @param {number} page - The page number
+   * @param page - The page number
    */
-  goToPage(page) {
+  goToPage(page: number): void {
     if (page >= 1 && page <= this._totalPages) {
       this._currentPage = page;
     }
@@ -576,50 +621,40 @@ export class DataTable extends LitElement {
   /**
    * Navigate to the next page
    */
-  nextPage() {
+  nextPage(): void {
     this.goToPage(this._currentPage + 1);
   }
 
   /**
    * Navigate to the previous page
    */
-  prevPage() {
+  prevPage(): void {
     this.goToPage(this._currentPage - 1);
   }
 
   /**
    * Reset search query
    */
-  resetSearch() {
+  resetSearch(): void {
     this._searchQuery = '';
   }
 
   /**
    * Reset sort to default state
    */
-  resetSort() {
+  resetSort(): void {
     this._sortColumn = null;
     this._sortDirection = 'asc';
   }
 
-  /**
-   * Get row key
-   * @param {Object} row - The row data
-   * @param {number} index - The row index
-   * @returns {string} Row key
-   * @private
-   */
-  _getRowKey(row, index) {
-    return row[this.keyField] || `row-${index}`;
-  }
 
   /**
    * Render sort icon
-   * @param {Object} column - The column definition
-   * @returns {TemplateResult}
+   * @param column - The column definition
+   * @returns TemplateResult
    * @private
    */
-  _renderSortIcon(column) {
+  private _renderSortIcon(column: DataTableColumn): TemplateResult | string {
     if (!this.sortable || column.sortable === false) {
       return '';
     }
@@ -645,10 +680,10 @@ export class DataTable extends LitElement {
 
   /**
    * Render chevron left icon
-   * @returns {TemplateResult}
+   * @returns TemplateResult
    * @private
    */
-  _renderChevronLeft() {
+  private _renderChevronLeft(): TemplateResult {
     return html`
       <iconify-icon class="data-table__pagination-icon" icon="heroicons:chevron-left-20-solid"></iconify-icon>
     `;
@@ -656,10 +691,10 @@ export class DataTable extends LitElement {
 
   /**
    * Render chevron right icon
-   * @returns {TemplateResult}
+   * @returns TemplateResult
    * @private
    */
-  _renderChevronRight() {
+  private _renderChevronRight(): TemplateResult {
     return html`
       <iconify-icon class="data-table__pagination-icon" icon="heroicons:chevron-right-20-solid"></iconify-icon>
     `;
@@ -667,9 +702,9 @@ export class DataTable extends LitElement {
 
   /**
    * Render the component
-   * @returns {TemplateResult}
+   * @returns TemplateResult
    */
-  render() {
+  override render(): TemplateResult {
     return html`
       <div class="data-table">
         <!-- Search bar -->
@@ -723,7 +758,7 @@ export class DataTable extends LitElement {
                       </slot>
                     </td>
                   </tr>
-                ` : this._paginatedRows.map((row, index) => html`
+                ` : this._paginatedRows.map((row) => html`
                   <tr class="data-table__tr">
                     ${this.columns.map(column => html`
                       <td class="data-table__td">

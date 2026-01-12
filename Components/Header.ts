@@ -1,9 +1,24 @@
-import { html } from 'lit';
+import { html, TemplateResult } from 'lit';
 
 import { Button } from './Button';
 import './header.css';
 
-export const Header = ({ user, onLogin, onLogout, onCreateAccount }) => html`
+/**
+ * Props for the Header component
+ */
+export interface HeaderProps {
+  user?: { name?: string } | null;
+  onLogin?: (e: Event) => void;
+  onLogout?: (e: Event) => void;
+  onCreateAccount?: (e: Event) => void;
+}
+
+export const Header = ({
+  user,
+  onLogin,
+  onLogout,
+  onCreateAccount
+}: HeaderProps): TemplateResult => html`
   <header>
     <div class="storybook-header">
       <div>

@@ -1,5 +1,5 @@
-import '../Components/data-table.js';
-import { dataTableFormatters } from '../Components/data-table.js';
+import '../Components/data-table.ts';
+import { dataTableFormatters } from '../Components/data-table.ts';
 
 /**
  * The DataTable component is a feature-rich table with sorting, filtering, and pagination.

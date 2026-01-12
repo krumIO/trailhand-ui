@@ -1,4 +1,4 @@
-import '../Components/action-menu.js';
+import '../Components/action-menu.ts';
 
 /**
  * The ActionMenu component provides a dropdown menu for contextual actions.

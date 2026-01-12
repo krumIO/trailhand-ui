@@ -1,19 +1,37 @@
-import { LitElement, html, css } from 'lit';
+import { LitElement, html, css, TemplateResult } from 'lit';
+import { property } from 'lit/decorators.js';
+
+/**
+ * Interface for the toggle-changed event detail
+ */
+interface ToggleChangedDetail {
+  checked: boolean;
+  name: string;
+}
 
 /**
  * A reusable toggle switch component for boolean values.
  * Can be used for any on/off, enabled/disabled, or true/false functionality.
  */
 export class ToggleSwitch extends LitElement {
-  static properties = {
-    checked: { type: Boolean },
-    onLabel: { type: String, attribute: 'on-label' },
-    offLabel: { type: String, attribute: 'off-label' },
-    storageKey: { type: String, attribute: 'storage-key' },
-    name: { type: String },
-  };
+  @property({ type: Boolean })
+  checked = false;
 
-  static styles = css`
+  @property({ type: String, attribute: 'on-label' })
+  onLabel = 'On';
+
+  @property({ type: String, attribute: 'off-label' })
+  offLabel = 'Off';
+
+  @property({ type: String, attribute: 'storage-key' })
+  storageKey: string | null = null;
+
+  @property({ type: String })
+  name = '';
+
+  private boundHandleExternalChange: (e: Event) => void;
+
+  static override styles = css`
     :host {
       display: flex;
       align-items: center;
@@ -74,18 +92,12 @@ export class ToggleSwitch extends LitElement {
 
   constructor() {
     super();
-    this.checked = false;
-    this.onLabel = 'On';
-    this.offLabel = 'Off';
-    this.storageKey = null;
-    this.name = '';
-
     // Listen for changes from other instances with the same name
     this.boundHandleExternalChange = this.handleExternalChange.bind(this);
     window.addEventListener('toggle-changed', this.boundHandleExternalChange);
   }
 
-  connectedCallback() {
+  override connectedCallback(): void {
     super.connectedCallback();
     // Initialize from localStorage if storageKey is provided
     if (this.storageKey) {
@@ -96,26 +108,27 @@ export class ToggleSwitch extends LitElement {
     }
   }
 
-  disconnectedCallback() {
+  override disconnectedCallback(): void {
     super.disconnectedCallback();
     window.removeEventListener('toggle-changed', this.boundHandleExternalChange);
   }
 
   /**
    * Handle changes from other toggle instances with the same name
-   * @param {CustomEvent} e - The toggle-changed event
+   * @param e - The toggle-changed event
    */
-  handleExternalChange(e) {
-    if (this.name && e.detail.name === this.name) {
-      this.checked = e.detail.checked;
+  handleExternalChange(e: Event): void {
+    const customEvent = e as CustomEvent<ToggleChangedDetail>;
+    if (this.name && customEvent.detail.name === this.name) {
+      this.checked = customEvent.detail.checked;
     }
   }
 
   /**
    * Dispatch a change event
-   * @param {boolean} checked - The new checked state
+   * @param checked - The new checked state
    */
-  dispatchChangeEvent(checked) {
+  dispatchChangeEvent(checked: boolean): void {
     const event = new CustomEvent('toggle-change', {
       bubbles: true,
       composed: true,
@@ -133,10 +146,11 @@ export class ToggleSwitch extends LitElement {
 
   /**
    * Handle toggle switch change
-   * @param {Event} e - The change event
+   * @param e - The change event
    */
-  handleToggleChange(e) {
-    this.checked = e.target.checked;
+  handleToggleChange(e: Event): void {
+    const target = e.target as HTMLInputElement;
+    this.checked = target.checked;
 
     // Save to localStorage if storageKey is provided
     if (this.storageKey) {
@@ -149,9 +163,9 @@ export class ToggleSwitch extends LitElement {
 
   /**
    * Render the component
-   * @returns {TemplateResult}
+   * @returns TemplateResult
    */
-  render() {
+  override render(): TemplateResult {
     return html`
       <span class="label">${this.offLabel}</span>
       <label class="toggle-switch">
