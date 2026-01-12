@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DataTable & ActionMenu Test</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: "Lato", arial, helvetica, sans-serif;
+      padding: 2rem;
+      background: #f5f5f5;
+      margin: 0;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      margin-top: 0;
+      color: #333;
+    }
+
+    h2 {
+      margin-top: 2rem;
+      padding-top: 2rem;
+      border-top: 1px solid #ddd;
+      color: #555;
+    }
+
+    .test-section {
+      margin-top: 1rem;
+    }
+
+    p {
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>DataTable & ActionMenu Components Test</h1>
+
+    <h2>ActionMenu Component</h2>
+    <div class="test-section">
+      <p>Click the three-dot menu below:</p>
+      <action-menu id="test-menu"></action-menu>
+    </div>
+
+    <h2>DataTable Component</h2>
+    <div class="test-section">
+      <data-table id="test-table"></data-table>
+    </div>
+  </div>
+
+  <script type="module">
+    import './Components/data-table.js';
+    import './Components/action-menu.js';
+
+    // Test ActionMenu
+    const menu = document.getElementById('test-menu');
+    menu.actions = [
+      {
+        label: 'Edit',
+        action: (resource) => alert('Edit clicked: ' + JSON.stringify(resource)),
+      },
+      {
+        label: 'Duplicate',
+        action: (resource) => alert('Duplicate clicked'),
+      },
+      {
+        divider: true,
+      },
+      {
+        label: 'Delete',
+        action: (resource) => alert('Delete clicked'),
+        danger: true,
+      },
+    ];
+    menu.resource = { id: 1, name: 'Test Item' };
+
+    // Test DataTable
+    const table = document.getElementById('test-table');
+    table.columns = [
+      { field: 'name', label: 'Name', width: '200px' },
+      { field: 'email', label: 'Email', width: '250px' },
+      { field: 'role', label: 'Role', width: '120px' },
+      { field: 'status', label: 'Status', width: '100px' },
+      { field: 'createdAt', label: 'Created', width: '150px', formatter: 'dateTime' },
+    ];
+
+    table.rows = [
+      { id: 1, name: 'Alice Johnson', email: 'alice@example.com', role: 'Admin', status: 'Active', createdAt: '2024-01-15T10:30:00Z' },
+      { id: 2, name: 'Bob Smith', email: 'bob@example.com', role: 'User', status: 'Active', createdAt: '2024-02-20T14:20:00Z' },
+      { id: 3, name: 'Charlie Brown', email: 'charlie@example.com', role: 'User', status: 'Inactive', createdAt: '2024-03-10T09:15:00Z' },
+      { id: 4, name: 'Diana Prince', email: 'diana@example.com', role: 'Editor', status: 'Active', createdAt: '2024-04-05T16:45:00Z' },
+      { id: 5, name: 'Ethan Hunt', email: 'ethan@example.com', role: 'User', status: 'Active', createdAt: '2024-05-12T11:00:00Z' },
+      { id: 6, name: 'Fiona Gallagher', email: 'fiona@example.com', role: 'Admin', status: 'Active', createdAt: '2024-06-18T08:30:00Z' },
+      { id: 7, name: 'George Miller', email: 'george@example.com', role: 'User', status: 'Inactive', createdAt: '2024-07-22T13:20:00Z' },
+      { id: 8, name: 'Hannah Baker', email: 'hannah@example.com', role: 'Editor', status: 'Active', createdAt: '2024-08-30T10:10:00Z' },
+    ];
+
+    table.rowsPerPage = 5;
+
+    // Configure action menus for each row
+    setTimeout(() => {
+      const actionMenus = table.shadowRoot.querySelectorAll('action-menu');
+      actionMenus.forEach((menu) => {
+        menu.actions = [
+          {
+            label: 'View Details',
+            action: (resource) => alert(`View: ${resource.name}`),
+          },
+          {
+            label: 'Edit',
+            action: (resource) => alert(`Edit: ${resource.name}`),
+          },
+          {
+            divider: true,
+          },
+          {
+            label: 'Delete',
+            action: (resource) => alert(`Delete: ${resource.name}`),
+            danger: true,
+          },
+        ];
+      });
+    }, 100);
+  </script>
+</body>
+</html>

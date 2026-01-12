@@ -1,6 +1,6 @@
 {
   "name": "@krumio/trailhand-ui",
-  "version": "1.0.0",
+  "version": "1.3.2",
   "type": "module",
   "description": "Reusable web components built with Lit Element",
   "main": "./Components/toggle-switch.js",
@@ -8,7 +8,11 @@
   "exports": {
     ".": "./Components/toggle-switch.js",
     "./toggle-switch": "./Components/toggle-switch.js",
+    "./data-table": "./Components/data-table.js",
+    "./action-menu": "./Components/action-menu.js",
     "./Components/toggle-switch.js": "./Components/toggle-switch.js",
+    "./Components/data-table.js": "./Components/data-table.js",
+    "./Components/action-menu.js": "./Components/action-menu.js",
     "./Components/button.js": "./Components/button.js"
   },
   "files": [
@@ -38,6 +42,8 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@iconify/icons-heroicons": "^1.2.9",
+    "iconify-icon": "^3.0.2",
     "lit": "^3.3.1"
   },
   "devDependencies": {
