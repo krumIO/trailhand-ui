@@ -1,6 +1,6 @@
 {
   "name": "@krumio/trailhand-ui",
-  "version": "1.3.2",
+  "version": "1.4.0",
   "type": "module",
   "description": "Reusable web components built with Lit Element",
   "main": "./Components/toggle-switch.ts",
