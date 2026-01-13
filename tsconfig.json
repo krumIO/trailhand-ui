@@ -18,7 +18,7 @@
     "declarationMap": true,
     "sourceMap": true,
     "outDir": "./dist",
-    "rootDir": "./",
+    "rootDir": "./Components",
 
     // Type checking - start lenient, will tighten later
     "strict": true,
@@ -49,10 +49,7 @@
     "skipLibCheck": true
   },
   "include": [
-    "Components/**/*",
-    "src/**/*",
-    "stories/**/*",
-    ".storybook/**/*"
+    "Components/**/*"
   ],
   "exclude": [
     "node_modules",
