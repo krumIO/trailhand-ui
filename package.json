@@ -1,22 +1,35 @@
 {
   "name": "@krumio/trailhand-ui",
-  "version": "1.3.2",
+  "version": "1.4.1",
   "type": "module",
   "description": "Reusable web components built with Lit Element",
-  "main": "./Components/toggle-switch.js",
-  "module": "./Components/toggle-switch.js",
+  "main": "./dist/toggle-switch.js",
+  "module": "./dist/toggle-switch.js",
+  "types": "./dist/toggle-switch.d.ts",
   "exports": {
-    ".": "./Components/toggle-switch.js",
-    "./toggle-switch": "./Components/toggle-switch.js",
-    "./data-table": "./Components/data-table.js",
-    "./action-menu": "./Components/action-menu.js",
-    "./Components/toggle-switch.js": "./Components/toggle-switch.js",
-    "./Components/data-table.js": "./Components/data-table.js",
-    "./Components/action-menu.js": "./Components/action-menu.js",
-    "./Components/button.js": "./Components/button.js"
+    ".": {
+      "types": "./dist/toggle-switch.d.ts",
+      "default": "./dist/toggle-switch.js"
+    },
+    "./toggle-switch": {
+      "types": "./dist/toggle-switch.d.ts",
+      "default": "./dist/toggle-switch.js"
+    },
+    "./data-table": {
+      "types": "./dist/data-table.d.ts",
+      "default": "./dist/data-table.js"
+    },
+    "./action-menu": {
+      "types": "./dist/action-menu.d.ts",
+      "default": "./dist/action-menu.js"
+    },
+    "./button": {
+      "types": "./dist/Button.d.ts",
+      "default": "./dist/Button.js"
+    }
   },
   "files": [
-    "Components",
+    "dist",
     "README.md"
   ],
   "publishConfig": {
@@ -24,9 +37,13 @@
   },
   "scripts": {
     "start": "vite",
-    "build": "vite build",
+    "build": "tsc",
+    "build:demo": "vite build",
+    "typecheck": "tsc --noEmit",
+    "typecheck:watch": "tsc --noEmit --watch",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "prepublishOnly": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -52,7 +69,9 @@
     "@storybook/addon-essentials": "^8.6.14",
     "@storybook/test": "^8.6.14",
     "@storybook/web-components-vite": "^8.6.14",
+    "@types/node": "^25.0.3",
     "storybook": "^8.6.14",
+    "typescript": "^5.9.3",
     "vite": "^6.4.1"
   }
 }

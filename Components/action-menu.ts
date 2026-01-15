@@ -1,18 +1,46 @@
-import { LitElement, html, css } from 'lit';
+import { LitElement, html, css, TemplateResult } from 'lit';
+import { property, state } from 'lit/decorators.js';
+
+/**
+ * Type definition for resource data
+ */
+interface ResourceData {
+  [key: string]: any;
+  availableActions?: ActionMenuItem[];
+}
+
+/**
+ * Type definition for action menu items
+ */
+export interface ActionMenuItem {
+  label?: string;
+  action?: (resource: ResourceData) => void;
+  enabled?: boolean | ((resource: ResourceData) => boolean);
+  visible?: boolean | ((resource: ResourceData) => boolean);
+  danger?: boolean;
+  divider?: boolean;
+}
 
 /**
  * A dropdown action menu component for displaying contextual actions.
  * Typically used in table rows or cards to provide action options.
  */
 export class ActionMenu extends LitElement {
-  static properties = {
-    actions: { type: Array },
-    resource: { type: Object },
-    disabled: { type: Boolean },
-    _isOpen: { type: Boolean, state: true },
-  };
+  @property({ type: Array })
+  actions: ActionMenuItem[] = [];
 
-  static styles = css`
+  @property({ type: Object })
+  resource: ResourceData = {};
+
+  @property({ type: Boolean })
+  disabled = false;
+
+  @state()
+  private _isOpen = false;
+
+  private _boundHandleClickOutside: (e: Event) => void;
+
+  static override styles = css`
     :host {
       display: inline-block;
       position: relative;
@@ -130,40 +158,37 @@ export class ActionMenu extends LitElement {
 
   constructor() {
     super();
-    this.actions = [];
-    this.resource = {};
-    this.disabled = false;
-    this._isOpen = false;
     this._boundHandleClickOutside = this._handleClickOutside.bind(this);
   }
 
-  connectedCallback() {
+  override connectedCallback(): void {
     super.connectedCallback();
     document.addEventListener('click', this._boundHandleClickOutside);
   }
 
-  disconnectedCallback() {
+  override disconnectedCallback(): void {
     super.disconnectedCallback();
     document.removeEventListener('click', this._boundHandleClickOutside);
   }
 
   /**
    * Handle clicks outside the menu to close it
-   * @param {Event} e - The click event
+   * @param e - The click event
    * @private
    */
-  _handleClickOutside(e) {
-    if (this._isOpen && !this.contains(e.target)) {
+  private _handleClickOutside(e: Event): void {
+    const target = e.target as Node;
+    if (this._isOpen && !this.contains(target)) {
       this._isOpen = false;
     }
   }
 
   /**
    * Toggle the dropdown menu open/closed
-   * @param {Event} e - The click event
+   * @param e - The click event
    * @private
    */
-  _toggleMenu(e) {
+  private _toggleMenu(e: Event): void {
     e.stopPropagation();
     if (!this.disabled) {
       this._isOpen = !this._isOpen;
@@ -172,11 +197,11 @@ export class ActionMenu extends LitElement {
 
   /**
    * Handle action click
-   * @param {Event} e - The click event
-   * @param {Object} action - The action object
+   * @param e - The click event
+   * @param action - The action object
    * @private
    */
-  _handleActionClick(e, action) {
+  private _handleActionClick(e: Event, action: ActionMenuItem): void {
     e.stopPropagation();
 
     if (this._isActionEnabled(action)) {
@@ -198,11 +223,11 @@ export class ActionMenu extends LitElement {
 
   /**
    * Check if an action is enabled
-   * @param {Object} action - The action object
-   * @returns {boolean}
+   * @param action - The action object
+   * @returns boolean
    * @private
    */
-  _isActionEnabled(action) {
+  private _isActionEnabled(action: ActionMenuItem): boolean {
     if (!action.enabled) return true;
     if (typeof action.enabled === 'function') {
       return action.enabled(this.resource);
@@ -212,10 +237,10 @@ export class ActionMenu extends LitElement {
 
   /**
    * Render the three-dots icon
-   * @returns {TemplateResult}
+   * @returns TemplateResult
    * @private
    */
-  _renderIcon() {
+  private _renderIcon(): TemplateResult {
     return html`
       <svg class="action-menu__icon" viewBox="0 0 16 16" fill="currentColor">
         <circle cx="2" cy="8" r="1.5" />
@@ -227,10 +252,10 @@ export class ActionMenu extends LitElement {
 
   /**
    * Get actions to display
-   * @returns {Array}
+   * @returns Array of actions
    * @private
    */
-  _getActions() {
+  private _getActions(): ActionMenuItem[] {
     // If actions are provided explicitly, use them
     if (this.actions && this.actions.length > 0) {
       return this.actions;
@@ -244,9 +269,9 @@ export class ActionMenu extends LitElement {
 
   /**
    * Render the component
-   * @returns {TemplateResult}
+   * @returns TemplateResult
    */
-  render() {
+  override render(): TemplateResult {
     const allActions = this._getActions();
 
     // Filter by visibility and enabled status
@@ -296,7 +321,7 @@ export class ActionMenu extends LitElement {
           <div class="action-menu__empty">No actions available</div>
         ` : html`
           <ul class="action-menu__list" role="menu">
-            ${visibleActions.map((action, index) => html`
+            ${visibleActions.map((action) => html`
               ${action.divider ? html`
                 <li class="action-menu__divider" role="separator"></li>
               ` : html`
@@ -304,7 +329,7 @@ export class ActionMenu extends LitElement {
                   <button
                     class="action-menu__action ${action.danger ? 'action-menu__action--danger' : ''}"
                     ?disabled=${!this._isActionEnabled(action)}
-                    @click=${(e) => this._handleActionClick(e, action)}
+                    @click=${(e: Event) => this._handleActionClick(e, action)}
                     role="menuitem"
                   >
                     ${action.label}

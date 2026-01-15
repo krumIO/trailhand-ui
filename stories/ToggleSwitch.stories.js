@@ -1,4 +1,4 @@
-import '../Components/toggle-switch.js';
+import '../Components/toggle-switch.ts';
 
 /**
  * The ToggleSwitch component is a reusable boolean toggle that can be used

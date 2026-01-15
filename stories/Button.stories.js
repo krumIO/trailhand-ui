@@ -1,6 +1,6 @@
 import { fn } from '@storybook/test';
 
-import { Button } from '../Components/Button';
+import { Button } from '../Components/Button.ts';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories
 export default {
