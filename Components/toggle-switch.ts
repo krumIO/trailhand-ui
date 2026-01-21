@@ -59,7 +59,7 @@ export class ToggleSwitch extends LitElement {
       left: 0;
       right: 0;
       bottom: 0;
-      background-color: #4a5568;
+      background-color: var(--color-grey-500, #8D8D8D);
       transition: .3s;
       border-radius: 24px;
     }
@@ -71,13 +71,13 @@ export class ToggleSwitch extends LitElement {
       width: 18px;
       left: 3px;
       bottom: 3px;
-      background-color: white;
+      background-color: var(--color-white, #FFFFFF);
       transition: .3s;
       border-radius: 50%;
     }
 
     input:checked + .slider {
-      background-color: #3b82f6;
+      background-color: var(--color-primary, #005CB9);
     }
 
     input:checked + .slider:before {

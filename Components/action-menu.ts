@@ -139,7 +139,7 @@ export class ActionMenu extends LitElement {
     }
 
     .action-menu__action--danger:hover:not(:disabled) {
-      background-color: rgba(220, 53, 69, 0.1);
+      background-color: rgba(159, 58, 58, 0.1);
     }
 
     .action-menu__divider {
