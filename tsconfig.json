@@ -18,7 +18,7 @@
     "declarationMap": true,
     "sourceMap": true,
     "outDir": "./dist",
-    "rootDir": "./Components",
+    "rootDir": "./src",
 
     // Type checking - start lenient, will tighten later
     "strict": true,
@@ -48,12 +48,6 @@
     // Skip lib check for faster compilation
     "skipLibCheck": true
   },
-  "include": [
-    "Components/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "storybook-static"
-  ]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "storybook-static"]
 }

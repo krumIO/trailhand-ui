@@ -208,11 +208,13 @@ export class ActionMenu extends LitElement {
       this._isOpen = false;
 
       // Dispatch custom event
-      this.dispatchEvent(new CustomEvent('action-click', {
-        bubbles: true,
-        composed: true,
-        detail: { action, resource: this.resource }
-      }));
+      this.dispatchEvent(
+        new CustomEvent('action-click', {
+          bubbles: true,
+          composed: true,
+          detail: { action, resource: this.resource },
+        }),
+      );
 
       // Call action handler if provided
       if (action.action && typeof action.action === 'function') {
@@ -261,7 +263,10 @@ export class ActionMenu extends LitElement {
       return this.actions;
     }
     // Otherwise, try to get from resource.availableActions
-    if (this.resource && typeof this.resource.availableActions !== 'undefined') {
+    if (
+      this.resource &&
+      typeof this.resource.availableActions !== 'undefined'
+    ) {
       return this.resource.availableActions || [];
     }
     return [];
@@ -275,7 +280,7 @@ export class ActionMenu extends LitElement {
     const allActions = this._getActions();
 
     // Filter by visibility and enabled status
-    let visibleActions = allActions.filter(action => {
+    let visibleActions = allActions.filter((action) => {
       // Skip dividers in visibility check
       if (action.divider) return true;
 
@@ -316,29 +321,43 @@ export class ActionMenu extends LitElement {
         ${this._renderIcon()}
       </button>
 
-      <div class="action-menu__dropdown ${this._isOpen ? 'action-menu__dropdown--open' : ''}">
-        ${visibleActions.length === 0 ? html`
-          <div class="action-menu__empty">No actions available</div>
-        ` : html`
-          <ul class="action-menu__list" role="menu">
-            ${visibleActions.map((action) => html`
-              ${action.divider ? html`
-                <li class="action-menu__divider" role="separator"></li>
-              ` : html`
-                <li class="action-menu__item" role="none">
-                  <button
-                    class="action-menu__action ${action.danger ? 'action-menu__action--danger' : ''}"
-                    ?disabled=${!this._isActionEnabled(action)}
-                    @click=${(e: Event) => this._handleActionClick(e, action)}
-                    role="menuitem"
-                  >
-                    ${action.label}
-                  </button>
-                </li>
-              `}
-            `)}
-          </ul>
-        `}
+      <div
+        class="action-menu__dropdown ${this._isOpen
+          ? 'action-menu__dropdown--open'
+          : ''}"
+      >
+        ${visibleActions.length === 0
+          ? html` <div class="action-menu__empty">No actions available</div> `
+          : html`
+              <ul class="action-menu__list" role="menu">
+                ${visibleActions.map(
+                  (action) => html`
+                    ${action.divider
+                      ? html`
+                          <li
+                            class="action-menu__divider"
+                            role="separator"
+                          ></li>
+                        `
+                      : html`
+                          <li class="action-menu__item" role="none">
+                            <button
+                              class="action-menu__action ${action.danger
+                                ? 'action-menu__action--danger'
+                                : ''}"
+                              ?disabled=${!this._isActionEnabled(action)}
+                              @click=${(e: Event) =>
+                                this._handleActionClick(e, action)}
+                              role="menuitem"
+                            >
+                              ${action.label}
+                            </button>
+                          </li>
+                        `}
+                  `,
+                )}
+              </ul>
+            `}
       </div>
     `;
   }
