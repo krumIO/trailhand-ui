@@ -1,0 +1,53 @@
+/* =========================
+   Base (Light / Default)
+   ========================= */
+:root {
+  --background-color: #f9f9f9;
+  --text-color: #121212;
+
+  --button-primary-bg: #005cb9;
+  --button-primary-bg-hover: #00478e;
+  --button-primary-color: #ffffff;
+
+  --button-secondary-bg: #ffffff;
+  --button-secondary-bg-hover: #f5faff;
+  --button-secondary-color: #005cb9;
+
+  --button-destructive-bg: #9f3a3a;
+  --button-destructive-bg-hover: #731616;
+  --button-destructive-color: #ffffff;
+
+  --button-confirmation-bg: #30ac66;
+  --button-confirmation-bg-hover: #0f8240;
+  --button-confirmation-color: #ffffff;
+
+  --button-disabled-bg: #ebebeb;
+  --button-disabled-color: #8d8d8d;
+}
+
+/* =========================
+   Dark Theme Overrides
+   ========================= */
+[data-theme='dark'] {
+  --background-color: #212121;
+  --text-color: #e0e0e0;
+
+  --button-primary-bg: #005cb9;
+  --button-primary-bg-hover: #00478e;
+  --button-primary-color: #ffffff;
+
+  --button-secondary-bg: #212121;
+  --button-secondary-bg-hover: #303131;
+  --button-secondary-color: #3492f1;
+
+  --button-destructive-bg: #9f3a3a;
+  --button-destructive-bg-hover: #731616;
+  --button-destructive-color: #ffffff;
+
+  --button-confirmation-bg: #30ac66;
+  --button-confirmation-bg-hover: #0f8240;
+  --button-confirmation-color: #ffffff;
+
+  --button-disabled-bg: #303131;
+  --button-disabled-color: #8d8d8d;
+}
