@@ -1,19 +1,17 @@
 import type { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import './icon';
-import type { AvailableIcons } from './icon';
+import type { IconProps } from './icon';
+import { availableIcons } from './icon';
 
-interface IconArgs {
-  name: AvailableIcons;
-}
-
-const meta: Meta<IconArgs> = {
+const meta: Meta<IconProps> = {
   title: 'Components/Icon',
   component: 'trailhand-icon',
   tags: ['autodocs'],
   argTypes: {
     name: {
-      control: { type: 'text' },
+      control: { type: 'select' },
+      options: availableIcons,
       description: 'The FontAwesome icon name (without fa- prefix)',
     },
   },
@@ -23,7 +21,7 @@ const meta: Meta<IconArgs> = {
 };
 
 export default meta;
-type Story = StoryObj<IconArgs>;
+type Story = StoryObj<IconProps>;
 
 export const Default: Story = {
   args: {

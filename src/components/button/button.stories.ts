@@ -1,22 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import './button';
+import { ButtonProps } from './button';
 import '../icon/icon';
 
-interface ButtonArgs {
-  variant:
-    | 'primary'
-    | 'secondary'
-    | 'alternate'
-    | 'destructive'
-    | 'confirmation';
-  size: 'small' | 'medium' | 'large';
-  disabled: boolean;
-  type: 'button' | 'submit' | 'reset';
-  name: string;
-}
-
-const meta: Meta<ButtonArgs> = {
+const meta: Meta<ButtonProps> = {
   title: 'Components/Button',
   component: 'trailhand-button',
   tags: ['autodocs'],
@@ -72,7 +60,7 @@ const meta: Meta<ButtonArgs> = {
 };
 
 export default meta;
-type Story = StoryObj<ButtonArgs>;
+type Story = StoryObj<ButtonProps>;
 
 export const Primary: Story = {
   args: {

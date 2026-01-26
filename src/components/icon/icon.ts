@@ -9,9 +9,15 @@ const iconMap = {
   user: faUser,
 };
 
+export const availableIcons = Object.keys(iconMap) as (keyof typeof iconMap)[];
+
 library.add(...Object.values(iconMap));
 
-export type AvailableIcons = keyof typeof iconMap;
+type AvailableIcons = keyof typeof iconMap;
+
+export interface IconProps {
+  name: AvailableIcons;
+}
 
 export class Icon extends LitElement {
   @property({ type: String }) name: AvailableIcons = 'user';

@@ -2,6 +2,19 @@ import { LitElement, html, css, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
+export interface ButtonProps {
+  variant:
+    | 'primary'
+    | 'secondary'
+    | 'alternate'
+    | 'destructive'
+    | 'confirmation';
+  size: 'small' | 'medium' | 'large';
+  disabled: boolean;
+  type: 'button' | 'submit' | 'reset';
+  name: string;
+}
+
 export class Button extends LitElement {
   @property({ type: String })
   variant:
