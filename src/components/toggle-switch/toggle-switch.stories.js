@@ -1,4 +1,4 @@
-import '../Components/toggle-switch.ts';
+import './toggle-switch.ts';
 
 /**
  * The ToggleSwitch component is a reusable boolean toggle that can be used
@@ -159,7 +159,8 @@ export const WithPersistence = {
   parameters: {
     docs: {
       description: {
-        story: 'Toggle state persists across page reloads using localStorage. Try toggling and refreshing the page.',
+        story:
+          'Toggle state persists across page reloads using localStorage. Try toggling and refreshing the page.',
       },
       source: {
         code: '<toggle-switch storageKey="my-setting"></toggle-switch>',
@@ -174,15 +175,18 @@ export const WithPersistence = {
 export const SyncedToggles = {
   render: () => {
     const container = document.createElement('div');
-    container.style.cssText = 'display: flex; flex-direction: column; gap: 20px;';
+    container.style.cssText =
+      'display: flex; flex-direction: column; gap: 20px;';
 
     const description = document.createElement('p');
-    description.textContent = 'These toggles share the same name, so toggling one updates all others:';
+    description.textContent =
+      'These toggles share the same name, so toggling one updates all others:';
     container.appendChild(description);
 
     for (let i = 1; i <= 3; i++) {
       const wrapper = document.createElement('div');
-      wrapper.style.cssText = 'padding: 12px; background: #f5f5f5; border-radius: 4px;';
+      wrapper.style.cssText =
+        'padding: 12px; background: #f5f5f5; border-radius: 4px;';
 
       const label = document.createElement('span');
       label.textContent = `Toggle ${i}: `;
@@ -203,7 +207,8 @@ export const SyncedToggles = {
   parameters: {
     docs: {
       description: {
-        story: 'Multiple toggle instances with the same `name` prop stay synchronized.',
+        story:
+          'Multiple toggle instances with the same `name` prop stay synchronized.',
       },
       source: {
         code: `<toggle-switch name="synced-demo" onLabel="Yes" offLabel="No"></toggle-switch>
@@ -228,7 +233,9 @@ export const ThemeSwitching = {
         applyTheme(savedTheme);
         return savedTheme === 'dark';
       } else {
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const prefersDark = window.matchMedia(
+          '(prefers-color-scheme: dark)',
+        ).matches;
         return prefersDark;
       }
     };
@@ -251,12 +258,14 @@ export const ThemeSwitching = {
     });
 
     const header = document.createElement('div');
-    header.style.cssText = 'display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;';
+    header.style.cssText =
+      'display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;';
     header.innerHTML = '<h2 style="margin: 0;">Theme Switching Demo</h2>';
     header.appendChild(toggle);
 
     const intro = document.createElement('p');
-    intro.textContent = 'Toggle the switch to see the theme change in real-time. Notice how the background, text, and card colors all update smoothly.';
+    intro.textContent =
+      'Toggle the switch to see the theme change in real-time. Notice how the background, text, and card colors all update smoothly.';
 
     const card1 = document.createElement('div');
     card1.className = 'theme-demo-card';
@@ -350,7 +359,8 @@ export const ThemeSwitching = {
   parameters: {
     docs: {
       description: {
-        story: 'Using toggle-switch for theme management. Detects system preference and allows user override with localStorage persistence.',
+        story:
+          'Using toggle-switch for theme management. Detects system preference and allows user override with localStorage persistence.',
       },
       source: {
         code: `<toggle-switch
@@ -384,7 +394,8 @@ export const ThemeSwitching = {
 export const UseCaseExamples = {
   render: () => {
     const container = document.createElement('div');
-    container.style.cssText = 'display: flex; flex-direction: column; gap: 16px;';
+    container.style.cssText =
+      'display: flex; flex-direction: column; gap: 16px;';
 
     const useCases = [
       { label: 'Notifications:', onLabel: 'On', offLabel: 'Off' },
@@ -416,7 +427,8 @@ export const UseCaseExamples = {
   parameters: {
     docs: {
       description: {
-        story: 'Examples of how toggle-switch can be used in different contexts.',
+        story:
+          'Examples of how toggle-switch can be used in different contexts.',
       },
       source: {
         code: `<toggle-switch onLabel="On" offLabel="Off"></toggle-switch>

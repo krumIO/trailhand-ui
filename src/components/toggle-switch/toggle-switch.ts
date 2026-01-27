@@ -60,19 +60,19 @@ export class ToggleSwitch extends LitElement {
       right: 0;
       bottom: 0;
       background-color: #4a5568;
-      transition: .3s;
+      transition: 0.3s;
       border-radius: 24px;
     }
 
     .slider:before {
       position: absolute;
-      content: "";
+      content: '';
       height: 18px;
       width: 18px;
       left: 3px;
       bottom: 3px;
       background-color: white;
-      transition: .3s;
+      transition: 0.3s;
       border-radius: 50%;
     }
 
@@ -110,7 +110,10 @@ export class ToggleSwitch extends LitElement {
 
   override disconnectedCallback(): void {
     super.disconnectedCallback();
-    window.removeEventListener('toggle-changed', this.boundHandleExternalChange);
+    window.removeEventListener(
+      'toggle-changed',
+      this.boundHandleExternalChange,
+    );
   }
 
   /**
@@ -132,15 +135,17 @@ export class ToggleSwitch extends LitElement {
     const event = new CustomEvent('toggle-change', {
       bubbles: true,
       composed: true,
-      detail: { checked, name: this.name }
+      detail: { checked, name: this.name },
     });
     this.dispatchEvent(event);
 
     // Dispatch on window if name is provided (for syncing multiple instances)
     if (this.name) {
-      window.dispatchEvent(new CustomEvent('toggle-changed', {
-        detail: { checked, name: this.name }
-      }));
+      window.dispatchEvent(
+        new CustomEvent('toggle-changed', {
+          detail: { checked, name: this.name },
+        }),
+      );
     }
   }
 
@@ -173,7 +178,7 @@ export class ToggleSwitch extends LitElement {
           type="checkbox"
           .checked=${this.checked}
           @change=${this.handleToggleChange}
-        >
+        />
         <span class="slider"></span>
       </label>
       <span class="label">${this.onLabel}</span>

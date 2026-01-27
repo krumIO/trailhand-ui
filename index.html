@@ -1,155 +1,185 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Toggle Switch Demo</title>
-  <style>
-    /* Default light mode colors */
-    :root {
-      --background-color: #ffffff;
-      --text-color: #333333;
-      --card-bg: #f5f5f5;
-      --border-color: #e0e0e0;
-    }
-
-    /* System dark mode preference */
-    @media (prefers-color-scheme: dark) {
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Toggle Switch Demo</title>
+    <style>
+      /* Default light mode colors */
       :root {
+        --background-color: #ffffff;
+        --text-color: #333333;
+        --card-bg: #f5f5f5;
+        --border-color: #e0e0e0;
+      }
+
+      /* System dark mode preference */
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --background-color: #121212;
+          --text-color: #e0e0e0;
+          --card-bg: #1e1e1e;
+          --border-color: #333333;
+        }
+      }
+
+      /* User override: explicitly chose light theme */
+      body.theme-light {
+        --background-color: #ffffff;
+        --text-color: #333333;
+        --card-bg: #f5f5f5;
+        --border-color: #e0e0e0;
+      }
+
+      /* User override: explicitly chose dark theme */
+      body.theme-dark {
         --background-color: #121212;
         --text-color: #e0e0e0;
         --card-bg: #1e1e1e;
         --border-color: #333333;
       }
-    }
 
-    /* User override: explicitly chose light theme */
-    body.theme-light {
-      --background-color: #ffffff;
-      --text-color: #333333;
-      --card-bg: #f5f5f5;
-      --border-color: #e0e0e0;
-    }
-
-    /* User override: explicitly chose dark theme */
-    body.theme-dark {
-      --background-color: #121212;
-      --text-color: #e0e0e0;
-      --card-bg: #1e1e1e;
-      --border-color: #333333;
-    }
-
-    body {
-      background-color: var(--background-color);
-      color: var(--text-color);
-      font-family: system-ui, sans-serif;
-      margin: 0;
-      padding: 2rem;
-      transition: background-color 0.3s ease, color 0.3s ease;
-    }
-
-    .card {
-      background-color: var(--card-bg);
-      border: 1px solid var(--border-color);
-      padding: 1.5rem;
-      border-radius: 8px;
-      margin-top: 2rem;
-    }
-
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 2rem;
-    }
-  </style>
-  <script type="module" src="./Components/toggle-switch.js"></script>
-  <script type="module">
-    // Initialize theme from system preference or localStorage
-    const initializeTheme = () => {
-      const savedTheme = localStorage.getItem('user-theme-preference');
-      if (savedTheme === 'dark' || savedTheme === 'light') {
-        applyTheme(savedTheme);
-        return savedTheme === 'dark';
-      } else {
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        return prefersDark;
+      body {
+        background-color: var(--background-color);
+        color: var(--text-color);
+        font-family: system-ui, sans-serif;
+        margin: 0;
+        padding: 2rem;
+        transition:
+          background-color 0.3s ease,
+          color 0.3s ease;
       }
-    };
 
-    const applyTheme = (theme) => {
-      document.body.classList.remove('theme-dark', 'theme-light');
-      document.body.classList.add(`theme-${theme}`);
-    };
+      .card {
+        background-color: var(--card-bg);
+        border: 1px solid var(--border-color);
+        padding: 1.5rem;
+        border-radius: 8px;
+        margin-top: 2rem;
+      }
 
-    // Wait for components to be defined
-    customElements.whenDefined('toggle-switch').then(() => {
-      const toggles = document.querySelectorAll('toggle-switch');
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+      }
+    </style>
+    <script type="module" src="./src/components/toggle-switch/"></script>
+    <script type="module">
+      // Initialize theme from system preference or localStorage
+      const initializeTheme = () => {
+        const savedTheme = localStorage.getItem('user-theme-preference');
+        if (savedTheme === 'dark' || savedTheme === 'light') {
+          applyTheme(savedTheme);
+          return savedTheme === 'dark';
+        } else {
+          const prefersDark = window.matchMedia(
+            '(prefers-color-scheme: dark)',
+          ).matches;
+          return prefersDark;
+        }
+      };
 
-      // Initialize all toggles
-      const isDark = initializeTheme();
-      toggles.forEach(toggle => {
-        toggle.checked = isDark;
-      });
+      const applyTheme = (theme) => {
+        document.body.classList.remove('theme-dark', 'theme-light');
+        document.body.classList.add(`theme-${theme}`);
+      };
 
-      // Handle theme changes
-      toggles.forEach(toggle => {
-        toggle.addEventListener('toggle-change', (e) => {
-          const theme = e.detail.checked ? 'dark' : 'light';
-          localStorage.setItem('user-theme-preference', theme);
-          applyTheme(theme);
+      // Wait for components to be defined
+      customElements.whenDefined('toggle-switch').then(() => {
+        const toggles = document.querySelectorAll('toggle-switch');
+
+        // Initialize all toggles
+        const isDark = initializeTheme();
+        toggles.forEach((toggle) => {
+          toggle.checked = isDark;
+        });
+
+        // Handle theme changes
+        toggles.forEach((toggle) => {
+          toggle.addEventListener('toggle-change', (e) => {
+            const theme = e.detail.checked ? 'dark' : 'light';
+            localStorage.setItem('user-theme-preference', theme);
+            applyTheme(theme);
+          });
         });
       });
-    });
-  </script>
-</head>
-<body>
-  <header>
-    <h1>Toggle Switch Demo</h1>
-    <toggle-switch name="theme"></toggle-switch>
-  </header>
-  <script type="module">
-    // Set labels after component is ready
-    customElements.whenDefined('toggle-switch').then(() => {
-      const headerToggle = document.querySelector('header toggle-switch');
-      headerToggle.onLabel = '🌙 Dark';
-      headerToggle.offLabel = '☀️ Light';
-    });
-  </script>
+    </script>
+  </head>
+  <body>
+    <header>
+      <h1>Toggle Switch Demo</h1>
+      <toggle-switch name="theme"></toggle-switch>
+    </header>
+    <script type="module">
+      // Set labels after component is ready
+      customElements.whenDefined('toggle-switch').then(() => {
+        const headerToggle = document.querySelector('header toggle-switch');
+        headerToggle.onLabel = '🌙 Dark';
+        headerToggle.offLabel = '☀️ Light';
+      });
+    </script>
 
-  <main>
-    <p>This demo shows the toggle switch component used for theme switching.</p>
-    <p>The theme automatically matches your system preference, but you can override it using the toggle above.</p>
+    <main>
+      <p>
+        This demo shows the toggle switch component used for theme switching.
+      </p>
+      <p>
+        The theme automatically matches your system preference, but you can
+        override it using the toggle above.
+      </p>
 
-    <div class="card">
-      <h2>How it works</h2>
-      <ul>
-        <li>CSS uses <code>@media (prefers-color-scheme: dark)</code> for system preference</li>
-        <li>Toggling adds <code>.theme-light</code> or <code>.theme-dark</code> class to body</li>
-        <li>Body classes override the media query (higher CSS specificity)</li>
-        <li>Your choice is saved to localStorage</li>
-      </ul>
-    </div>
+      <div class="card">
+        <h2>How it works</h2>
+        <ul>
+          <li>
+            CSS uses <code>@media (prefers-color-scheme: dark)</code> for system
+            preference
+          </li>
+          <li>
+            Toggling adds <code>.theme-light</code> or
+            <code>.theme-dark</code> class to body
+          </li>
+          <li>
+            Body classes override the media query (higher CSS specificity)
+          </li>
+          <li>Your choice is saved to localStorage</li>
+        </ul>
+      </div>
 
-    <div class="card">
-      <h2>Test it out</h2>
-      <p>Try toggling the switch above to see the theme change. Your preference will be remembered when you return!</p>
-      <p><small>To reset to system preference: Open console and run <code>localStorage.removeItem('user-theme-preference')</code> then reload.</small></p>
-    </div>
+      <div class="card">
+        <h2>Test it out</h2>
+        <p>
+          Try toggling the switch above to see the theme change. Your preference
+          will be remembered when you return!
+        </p>
+        <p>
+          <small
+            >To reset to system preference: Open console and run
+            <code>localStorage.removeItem('user-theme-preference')</code> then
+            reload.</small
+          >
+        </p>
+      </div>
 
-    <div class="card">
-      <h2>Synced toggles</h2>
-      <p>These toggles share the same name, so they stay synchronized:</p>
-      <toggle-switch name="theme" id="sync1"></toggle-switch>
-      <toggle-switch name="theme" onLabel="Dark" offLabel="Light"></toggle-switch>
-    </div>
-  <script type="module">
-    customElements.whenDefined('toggle-switch').then(() => {
-      const sync1 = document.getElementById('sync1');
-      sync1.onLabel = '🌙';
-      sync1.offLabel = '☀️';
-    });
-  </script>
-  </main>
-</body>
+      <div class="card">
+        <h2>Synced toggles</h2>
+        <p>These toggles share the same name, so they stay synchronized:</p>
+        <toggle-switch name="theme" id="sync1"></toggle-switch>
+        <toggle-switch
+          name="theme"
+          onLabel="Dark"
+          offLabel="Light"
+        ></toggle-switch>
+      </div>
+      <script type="module">
+        customElements.whenDefined('toggle-switch').then(() => {
+          const sync1 = document.getElementById('sync1');
+          sync1.onLabel = '🌙';
+          sync1.offLabel = '☀️';
+        });
+      </script>
+    </main>
+  </body>
 </html>

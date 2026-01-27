@@ -1,6 +1,6 @@
 import { LitElement, html, css, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
-import './action-menu';
+import '../action-menu/action-menu';
 import 'iconify-icon';
 import { addIcon } from 'iconify-icon';
 import chevronUp from '@iconify/icons-heroicons/chevron-up-20-solid';
@@ -22,7 +22,11 @@ type FormatterFunction = (value: any) => string;
 /**
  * Type definition for sort functions
  */
-type SortFunction = (a: RowData, b: RowData, direction: 'asc' | 'desc') => number;
+type SortFunction = (
+  a: RowData,
+  b: RowData,
+  direction: 'asc' | 'desc',
+) => number;
 
 /**
  * Type definition for link functions
@@ -115,7 +119,7 @@ export const dataTableFormatters: Record<string, FormatterFunction> = {
 
     const formatted = Math.round(Number(value)).toString();
     return formatted === '0' ? '0' : formatted;
-  }
+  },
 };
 
 /**
@@ -462,7 +466,10 @@ export class DataTable extends LitElement {
    * @returns The rendered cell content
    * @private
    */
-  private _renderCellContent(row: RowData, column: DataTableColumn): TemplateResult | any {
+  private _renderCellContent(
+    row: RowData,
+    column: DataTableColumn,
+  ): TemplateResult | any {
     const value = this._formatValue(row, column);
     const linkUrl = this._getLinkUrl(row, column);
 
@@ -470,16 +477,23 @@ export class DataTable extends LitElement {
       const target = column.linkTarget || '_self';
 
       // For external links or _blank target, use regular <a> tag
-      if (target === '_blank' || linkUrl.startsWith('http://') || linkUrl.startsWith('https://')) {
+      if (
+        target === '_blank' ||
+        linkUrl.startsWith('http://') ||
+        linkUrl.startsWith('https://')
+      ) {
         const rel = target === '_blank' ? 'noopener noreferrer' : '';
-        return html`<a href="${linkUrl}" target="${target}" rel="${rel}">${value}</a>`;
+        return html`<a href="${linkUrl}" target="${target}" rel="${rel}"
+          >${value}</a
+        >`;
       }
 
       // For internal links, use a clickable element that emits a navigation event
       return html`<a
         href="${linkUrl}"
         @click="${(e: Event) => this._handleLinkClick(e, linkUrl, row)}"
-      >${value}</a>`;
+        >${value}</a
+      >`;
     }
 
     return value;
@@ -496,11 +510,13 @@ export class DataTable extends LitElement {
     event.preventDefault();
 
     // Emit custom event for navigation
-    this.dispatchEvent(new CustomEvent('navigate', {
-      detail: { url, row },
-      bubbles: true,
-      composed: true
-    }));
+    this.dispatchEvent(
+      new CustomEvent('navigate', {
+        detail: { url, row },
+        bubbles: true,
+        composed: true,
+      }),
+    );
   }
 
   /**
@@ -514,8 +530,8 @@ export class DataTable extends LitElement {
     }
 
     const query = this._searchQuery.toLowerCase();
-    return this.rows.filter(row => {
-      return this.columns.some(column => {
+    return this.rows.filter((row) => {
+      return this.columns.some((column) => {
         if (column.searchable === false) {
           return false;
         }
@@ -535,7 +551,7 @@ export class DataTable extends LitElement {
       return this._filteredRows;
     }
 
-    const column = this.columns.find(col => col.field === this._sortColumn);
+    const column = this.columns.find((col) => col.field === this._sortColumn);
     if (!column || column.sortable === false) {
       return this._filteredRows;
     }
@@ -595,11 +611,14 @@ export class DataTable extends LitElement {
    */
   private get _paginationInfo(): { start: number; end: number; total: number } {
     const start = (this._currentPage - 1) * this.rowsPerPage + 1;
-    const end = Math.min(this._currentPage * this.rowsPerPage, this._sortedRows.length);
+    const end = Math.min(
+      this._currentPage * this.rowsPerPage,
+      this._sortedRows.length,
+    );
     return {
       start,
       end,
-      total: this._sortedRows.length
+      total: this._sortedRows.length,
     };
   }
 
@@ -620,7 +639,7 @@ export class DataTable extends LitElement {
    * @private
    */
   private _handleSort(columnField: string): void {
-    const column = this.columns.find(col => col.field === columnField);
+    const column = this.columns.find((col) => col.field === columnField);
     if (!column || column.sortable === false || !this.sortable) {
       return;
     }
@@ -675,7 +694,6 @@ export class DataTable extends LitElement {
     this._sortDirection = 'asc';
   }
 
-
   /**
    * Render sort icon
    * @param column - The column definition
@@ -692,17 +710,27 @@ export class DataTable extends LitElement {
     if (isSorted) {
       if (this._sortDirection === 'asc') {
         return html`
-          <iconify-icon class="data-table__sort-icon" icon="heroicons:chevron-up-20-solid"></iconify-icon>
+          <iconify-icon
+            class="data-table__sort-icon"
+            icon="heroicons:chevron-up-20-solid"
+          ></iconify-icon>
         `;
       } else {
         return html`
-          <iconify-icon class="data-table__sort-icon" icon="heroicons:chevron-down-20-solid"></iconify-icon>
+          <iconify-icon
+            class="data-table__sort-icon"
+            icon="heroicons:chevron-down-20-solid"
+          ></iconify-icon>
         `;
       }
     }
 
     return html`
-      <iconify-icon class="data-table__sort-icon" icon="heroicons:chevron-up-20-solid" style="opacity: 0.3"></iconify-icon>
+      <iconify-icon
+        class="data-table__sort-icon"
+        icon="heroicons:chevron-up-20-solid"
+        style="opacity: 0.3"
+      ></iconify-icon>
     `;
   }
 
@@ -713,7 +741,10 @@ export class DataTable extends LitElement {
    */
   private _renderChevronLeft(): TemplateResult {
     return html`
-      <iconify-icon class="data-table__pagination-icon" icon="heroicons:chevron-left-20-solid"></iconify-icon>
+      <iconify-icon
+        class="data-table__pagination-icon"
+        icon="heroicons:chevron-left-20-solid"
+      ></iconify-icon>
     `;
   }
 
@@ -724,7 +755,10 @@ export class DataTable extends LitElement {
    */
   private _renderChevronRight(): TemplateResult {
     return html`
-      <iconify-icon class="data-table__pagination-icon" icon="heroicons:chevron-right-20-solid"></iconify-icon>
+      <iconify-icon
+        class="data-table__pagination-icon"
+        icon="heroicons:chevron-right-20-solid"
+      ></iconify-icon>
     `;
   }
 
@@ -736,110 +770,159 @@ export class DataTable extends LitElement {
     return html`
       <div class="data-table">
         <!-- Search bar -->
-        ${this.searchable ? html`
-          <div class="data-table__search">
-            <input
-              type="text"
-              class="data-table__search-input"
-              placeholder="Search..."
-              .value=${this._searchQuery}
-              @input=${this._handleSearch}
-            >
-          </div>
-        ` : ''}
+        ${this.searchable
+          ? html`
+              <div class="data-table__search">
+                <input
+                  type="text"
+                  class="data-table__search-input"
+                  placeholder="Search..."
+                  .value=${this._searchQuery}
+                  @input=${this._handleSearch}
+                />
+              </div>
+            `
+          : ''}
 
         <!-- Loading state -->
-        ${this.loading ? html`
-          <div class="data-table__loading">
-            <div class="data-table__spinner"></div>
-            <span>Loading...</span>
-          </div>
-        ` : html`
-          <!-- Table -->
-          <div class="data-table__wrapper">
-            <table class="data-table__table">
-              <thead class="data-table__thead">
-                <tr>
-                  ${this.columns.map(column => html`
-                    <th
-                      class="data-table__th ${this.sortable && column.sortable !== false ? 'data-table__th--sortable' : ''} ${this._sortColumn === column.field ? 'data-table__th--sorted' : ''}"
-                      style=${column.width ? `width: ${column.width}` : ''}
-                      @click=${() => this._handleSort(column.field)}
-                    >
-                      <div class="data-table__th-content">
-                        <span>${column.label}</span>
-                        ${this._renderSortIcon(column)}
+        ${this.loading
+          ? html`
+              <div class="data-table__loading">
+                <div class="data-table__spinner"></div>
+                <span>Loading...</span>
+              </div>
+            `
+          : html`
+              <!-- Table -->
+              <div class="data-table__wrapper">
+                <table class="data-table__table">
+                  <thead class="data-table__thead">
+                    <tr>
+                      ${this.columns.map(
+                        (column) => html`
+                          <th
+                            class="data-table__th ${this.sortable &&
+                            column.sortable !== false
+                              ? 'data-table__th--sortable'
+                              : ''} ${this._sortColumn === column.field
+                              ? 'data-table__th--sorted'
+                              : ''}"
+                            style=${column.width
+                              ? `width: ${column.width}`
+                              : ''}
+                            @click=${() => this._handleSort(column.field)}
+                          >
+                            <div class="data-table__th-content">
+                              <span>${column.label}</span>
+                              ${this._renderSortIcon(column)}
+                            </div>
+                          </th>
+                        `,
+                      )}
+                      ${this.rowActions
+                        ? html`
+                            <th
+                              class="data-table__th data-table__th--actions"
+                              style="width: ${this.rowActionsWidth}px"
+                            ></th>
+                          `
+                        : ''}
+                    </tr>
+                  </thead>
+                  <tbody class="data-table__tbody">
+                    ${this._paginatedRows.length === 0
+                      ? html`
+                          <tr class="data-table__tr">
+                            <td
+                              class="data-table__td data-table__td--empty"
+                              colspan=${this.rowActions
+                                ? this.columns.length + 1
+                                : this.columns.length}
+                            >
+                              <slot name="empty">
+                                ${this._searchQuery
+                                  ? this.noResultsMessage
+                                  : this.emptyMessage}
+                              </slot>
+                            </td>
+                          </tr>
+                        `
+                      : this._paginatedRows.map(
+                          (row) => html`
+                            <tr class="data-table__tr">
+                              ${this.columns.map(
+                                (column) => html`
+                                  <td class="data-table__td">
+                                    <slot
+                                      name="cell:${column.field}"
+                                      .row=${row}
+                                      .value=${this._getNestedValue(
+                                        row,
+                                        column.field,
+                                      )}
+                                      .column=${column}
+                                    >
+                                      ${this._renderCellContent(row, column)}
+                                    </slot>
+                                  </td>
+                                `,
+                              )}
+                              ${this.rowActions
+                                ? html`
+                                    <td
+                                      class="data-table__td data-table__td--actions"
+                                    >
+                                      <slot name="actions" .row=${row}>
+                                        <action-menu
+                                          .resource=${row}
+                                        ></action-menu>
+                                      </slot>
+                                    </td>
+                                  `
+                                : ''}
+                            </tr>
+                          `,
+                        )}
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Pagination -->
+              ${this.paginated && !this.loading && this._totalPages > 1
+                ? html`
+                    <div class="data-table__pagination">
+                      <div class="data-table__pagination-info">
+                        ${this._paginationInfo.start}-${this._paginationInfo
+                          .end}
+                        of ${this._paginationInfo.total}
                       </div>
-                    </th>
-                  `)}
-                  ${this.rowActions ? html`
-                    <th class="data-table__th data-table__th--actions" style="width: ${this.rowActionsWidth}px"></th>
-                  ` : ''}
-                </tr>
-              </thead>
-              <tbody class="data-table__tbody">
-                ${this._paginatedRows.length === 0 ? html`
-                  <tr class="data-table__tr">
-                    <td class="data-table__td data-table__td--empty" colspan=${this.rowActions ? this.columns.length + 1 : this.columns.length}>
-                      <slot name="empty">
-                        ${this._searchQuery ? this.noResultsMessage : this.emptyMessage}
-                      </slot>
-                    </td>
-                  </tr>
-                ` : this._paginatedRows.map((row) => html`
-                  <tr class="data-table__tr">
-                    ${this.columns.map(column => html`
-                      <td class="data-table__td">
-                        <slot name="cell:${column.field}" .row=${row} .value=${this._getNestedValue(row, column.field)} .column=${column}>
-                          ${this._renderCellContent(row, column)}
-                        </slot>
-                      </td>
-                    `)}
-                    ${this.rowActions ? html`
-                      <td class="data-table__td data-table__td--actions">
-                        <slot name="actions" .row=${row}>
-                          <action-menu .resource=${row}></action-menu>
-                        </slot>
-                      </td>
-                    ` : ''}
-                  </tr>
-                `)}
-              </tbody>
-            </table>
-          </div>
+                      <div class="data-table__pagination-controls">
+                        <button
+                          class="data-table__pagination-btn"
+                          ?disabled=${this._currentPage === 1}
+                          @click=${this.prevPage}
+                          aria-label="Previous page"
+                        >
+                          ${this._renderChevronLeft()}
+                        </button>
 
-          <!-- Pagination -->
-          ${this.paginated && !this.loading && this._totalPages > 1 ? html`
-            <div class="data-table__pagination">
-              <div class="data-table__pagination-info">
-                ${this._paginationInfo.start}-${this._paginationInfo.end} of ${this._paginationInfo.total}
-              </div>
-              <div class="data-table__pagination-controls">
-                <button
-                  class="data-table__pagination-btn"
-                  ?disabled=${this._currentPage === 1}
-                  @click=${this.prevPage}
-                  aria-label="Previous page"
-                >
-                  ${this._renderChevronLeft()}
-                </button>
+                        <span class="data-table__pagination-current">
+                          ${this._currentPage} / ${this._totalPages}
+                        </span>
 
-                <span class="data-table__pagination-current">
-                  ${this._currentPage} / ${this._totalPages}
-                </span>
-
-                <button
-                  class="data-table__pagination-btn"
-                  ?disabled=${this._currentPage === this._totalPages}
-                  @click=${this.nextPage}
-                  aria-label="Next page"
-                >
-                  ${this._renderChevronRight()}
-                </button>
-              </div>
-            </div>
-          ` : ''}
-        `}
+                        <button
+                          class="data-table__pagination-btn"
+                          ?disabled=${this._currentPage === this._totalPages}
+                          @click=${this.nextPage}
+                          aria-label="Next page"
+                        >
+                          ${this._renderChevronRight()}
+                        </button>
+                      </div>
+                    </div>
+                  `
+                : ''}
+            `}
       </div>
     `;
   }

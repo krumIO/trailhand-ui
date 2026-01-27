@@ -1,5 +1,5 @@
-import '../Components/data-table.ts';
-import { dataTableFormatters } from '../Components/data-table.ts';
+import './data-table.ts';
+import { dataTableFormatters } from './data-table.ts';
 
 /**
  * The DataTable component is a feature-rich table with sorting, filtering, and pagination.
@@ -20,7 +20,8 @@ export default {
     if (args.loading !== undefined) table.loading = args.loading;
     if (args.keyField) table.keyField = args.keyField;
     if (args.rowActions !== undefined) table.rowActions = args.rowActions;
-    if (args.rowActionsWidth !== undefined) table.rowActionsWidth = args.rowActionsWidth;
+    if (args.rowActionsWidth !== undefined)
+      table.rowActionsWidth = args.rowActionsWidth;
     if (args.emptyMessage) table.emptyMessage = args.emptyMessage;
     if (args.noResultsMessage) table.noResultsMessage = args.noResultsMessage;
 
@@ -29,7 +30,8 @@ export default {
   argTypes: {
     columns: {
       control: 'object',
-      description: 'Array of column definitions with field, label, width, sortable, searchable, and formatter',
+      description:
+        'Array of column definitions with field, label, width, sortable, searchable, and formatter',
     },
     rows: {
       control: 'object',
@@ -101,18 +103,102 @@ A feature-rich data table component with sorting, filtering, and pagination.
 
 // Sample data for stories
 const sampleUsers = [
-  { id: 1, name: 'Alice Johnson', email: 'alice@example.com', role: 'Admin', status: 'Active', createdAt: '2024-01-15T10:30:00Z' },
-  { id: 2, name: 'Bob Smith', email: 'bob@example.com', role: 'User', status: 'Active', createdAt: '2024-02-20T14:20:00Z' },
-  { id: 3, name: 'Charlie Brown', email: 'charlie@example.com', role: 'User', status: 'Inactive', createdAt: '2024-03-10T09:15:00Z' },
-  { id: 4, name: 'Diana Prince', email: 'diana@example.com', role: 'Editor', status: 'Active', createdAt: '2024-04-05T16:45:00Z' },
-  { id: 5, name: 'Ethan Hunt', email: 'ethan@example.com', role: 'User', status: 'Active', createdAt: '2024-05-12T11:00:00Z' },
-  { id: 6, name: 'Fiona Gallagher', email: 'fiona@example.com', role: 'Admin', status: 'Active', createdAt: '2024-06-18T08:30:00Z' },
-  { id: 7, name: 'George Miller', email: 'george@example.com', role: 'User', status: 'Inactive', createdAt: '2024-07-22T13:20:00Z' },
-  { id: 8, name: 'Hannah Baker', email: 'hannah@example.com', role: 'Editor', status: 'Active', createdAt: '2024-08-30T10:10:00Z' },
-  { id: 9, name: 'Ivan Drago', email: 'ivan@example.com', role: 'User', status: 'Active', createdAt: '2024-09-14T15:55:00Z' },
-  { id: 10, name: 'Julia Roberts', email: 'julia@example.com', role: 'User', status: 'Inactive', createdAt: '2024-10-01T12:40:00Z' },
-  { id: 11, name: 'Kevin Hart', email: 'kevin@example.com', role: 'Editor', status: 'Active', createdAt: '2024-10-15T09:25:00Z' },
-  { id: 12, name: 'Laura Palmer', email: 'laura@example.com', role: 'Admin', status: 'Active', createdAt: '2024-11-02T14:00:00Z' },
+  {
+    id: 1,
+    name: 'Alice Johnson',
+    email: 'alice@example.com',
+    role: 'Admin',
+    status: 'Active',
+    createdAt: '2024-01-15T10:30:00Z',
+  },
+  {
+    id: 2,
+    name: 'Bob Smith',
+    email: 'bob@example.com',
+    role: 'User',
+    status: 'Active',
+    createdAt: '2024-02-20T14:20:00Z',
+  },
+  {
+    id: 3,
+    name: 'Charlie Brown',
+    email: 'charlie@example.com',
+    role: 'User',
+    status: 'Inactive',
+    createdAt: '2024-03-10T09:15:00Z',
+  },
+  {
+    id: 4,
+    name: 'Diana Prince',
+    email: 'diana@example.com',
+    role: 'Editor',
+    status: 'Active',
+    createdAt: '2024-04-05T16:45:00Z',
+  },
+  {
+    id: 5,
+    name: 'Ethan Hunt',
+    email: 'ethan@example.com',
+    role: 'User',
+    status: 'Active',
+    createdAt: '2024-05-12T11:00:00Z',
+  },
+  {
+    id: 6,
+    name: 'Fiona Gallagher',
+    email: 'fiona@example.com',
+    role: 'Admin',
+    status: 'Active',
+    createdAt: '2024-06-18T08:30:00Z',
+  },
+  {
+    id: 7,
+    name: 'George Miller',
+    email: 'george@example.com',
+    role: 'User',
+    status: 'Inactive',
+    createdAt: '2024-07-22T13:20:00Z',
+  },
+  {
+    id: 8,
+    name: 'Hannah Baker',
+    email: 'hannah@example.com',
+    role: 'Editor',
+    status: 'Active',
+    createdAt: '2024-08-30T10:10:00Z',
+  },
+  {
+    id: 9,
+    name: 'Ivan Drago',
+    email: 'ivan@example.com',
+    role: 'User',
+    status: 'Active',
+    createdAt: '2024-09-14T15:55:00Z',
+  },
+  {
+    id: 10,
+    name: 'Julia Roberts',
+    email: 'julia@example.com',
+    role: 'User',
+    status: 'Inactive',
+    createdAt: '2024-10-01T12:40:00Z',
+  },
+  {
+    id: 11,
+    name: 'Kevin Hart',
+    email: 'kevin@example.com',
+    role: 'Editor',
+    status: 'Active',
+    createdAt: '2024-10-15T09:25:00Z',
+  },
+  {
+    id: 12,
+    name: 'Laura Palmer',
+    email: 'laura@example.com',
+    role: 'Admin',
+    status: 'Active',
+    createdAt: '2024-11-02T14:00:00Z',
+  },
 ];
 
 const userColumns = [
@@ -120,7 +206,12 @@ const userColumns = [
   { field: 'email', label: 'Email', width: '220px' },
   { field: 'role', label: 'Role', width: '120px' },
   { field: 'status', label: 'Status', width: '100px' },
-  { field: 'createdAt', label: 'Created', width: '150px', formatter: 'dateTime' },
+  {
+    field: 'createdAt',
+    label: 'Created',
+    width: '150px',
+    formatter: 'dateTime',
+  },
 ];
 
 /**
@@ -287,7 +378,8 @@ export const WithFormatters = {
   parameters: {
     docs: {
       description: {
-        story: 'Use built-in formatters like "age", "date", and "dateTime" to format cell values.',
+        story:
+          'Use built-in formatters like "age", "date", and "dateTime" to format cell values.',
       },
     },
   },
@@ -303,7 +395,12 @@ export const NonSortableColumns = {
       { field: 'email', label: 'Email', width: '220px', sortable: false },
       { field: 'role', label: 'Role', width: '120px' },
       { field: 'status', label: 'Status', width: '100px', sortable: false },
-      { field: 'createdAt', label: 'Created', width: '150px', formatter: 'dateTime' },
+      {
+        field: 'createdAt',
+        label: 'Created',
+        width: '150px',
+        formatter: 'dateTime',
+      },
     ],
     rows: sampleUsers,
     rowsPerPage: 5,
@@ -327,7 +424,13 @@ export const NonSearchableColumns = {
       { field: 'email', label: 'Email', width: '220px', searchable: false },
       { field: 'role', label: 'Role', width: '120px' },
       { field: 'status', label: 'Status', width: '100px' },
-      { field: 'createdAt', label: 'Created', width: '150px', formatter: 'dateTime', searchable: false },
+      {
+        field: 'createdAt',
+        label: 'Created',
+        width: '150px',
+        formatter: 'dateTime',
+        searchable: false,
+      },
     ],
     rows: sampleUsers,
     rowsPerPage: 5,
@@ -335,7 +438,8 @@ export const NonSearchableColumns = {
   parameters: {
     docs: {
       description: {
-        story: 'Exclude specific columns from search by setting searchable: false. Try searching for an email - it won\'t match.',
+        story:
+          "Exclude specific columns from search by setting searchable: false. Try searching for an email - it won't match.",
       },
     },
   },
@@ -357,19 +461,19 @@ export const NestedObjectData = {
         id: 1,
         name: 'Alice Johnson',
         contact: { email: 'alice@example.com', phone: '555-0101' },
-        metadata: { department: 'Engineering' }
+        metadata: { department: 'Engineering' },
       },
       {
         id: 2,
         name: 'Bob Smith',
         contact: { email: 'bob@example.com', phone: '555-0102' },
-        metadata: { department: 'Marketing' }
+        metadata: { department: 'Marketing' },
       },
       {
         id: 3,
         name: 'Charlie Brown',
         contact: { email: 'charlie@example.com', phone: '555-0103' },
-        metadata: { department: 'Sales' }
+        metadata: { department: 'Sales' },
       },
     ],
     rowsPerPage: 5,
@@ -377,7 +481,8 @@ export const NestedObjectData = {
   parameters: {
     docs: {
       description: {
-        story: 'Access nested object properties using dot notation (e.g., "contact.email").',
+        story:
+          'Access nested object properties using dot notation (e.g., "contact.email").',
       },
     },
   },
@@ -436,7 +541,8 @@ export const CustomRowActions = {
   parameters: {
     docs: {
       description: {
-        story: 'Customize row actions by accessing the action-menu elements and setting their actions property.',
+        story:
+          'Customize row actions by accessing the action-menu elements and setting their actions property.',
       },
     },
   },
@@ -454,14 +560,21 @@ export const LargeDataset = {
       email: `user${i + 1}@example.com`,
       role: ['Admin', 'User', 'Editor'][i % 3],
       status: ['Active', 'Inactive'][i % 2],
-      createdAt: new Date(2024, 0, 1 + (i % 30), 10 + (i % 12), i % 60).toISOString(),
+      createdAt: new Date(
+        2024,
+        0,
+        1 + (i % 30),
+        10 + (i % 12),
+        i % 60,
+      ).toISOString(),
     })),
     rowsPerPage: 10,
   },
   parameters: {
     docs: {
       description: {
-        story: 'The DataTable efficiently handles large datasets with pagination.',
+        story:
+          'The DataTable efficiently handles large datasets with pagination.',
       },
     },
   },
@@ -479,7 +592,8 @@ export const CustomPageSize = {
   parameters: {
     docs: {
       description: {
-        story: 'Configure the number of rows per page with the rowsPerPage property.',
+        story:
+          'Configure the number of rows per page with the rowsPerPage property.',
       },
     },
   },
