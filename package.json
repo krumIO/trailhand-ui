@@ -26,6 +26,14 @@
     "./button": {
       "types": "./dist/Button.d.ts",
       "default": "./dist/Button.js"
+    },
+    "./th-tag": {
+      "types": "./dist/components/th-tag/th-tag.d.ts",
+      "default": "./dist/components/th-tag/th-tag.js"
+    },
+    "./th-card": {
+      "types": "./dist/components/th-card/th-card.d.ts",
+      "default": "./dist/components/th-card/th-card.js"
     }
   },
   "files": [
