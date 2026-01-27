@@ -1,4 +1,4 @@
-import '../Components/action-menu.ts';
+import './action-menu.js';
 
 /**
  * The ActionMenu component provides a dropdown menu for contextual actions.
@@ -23,7 +23,8 @@ export default {
   argTypes: {
     actions: {
       control: 'object',
-      description: 'Array of action objects with label, action, enabled, visible, danger, and divider properties',
+      description:
+        'Array of action objects with label, action, enabled, visible, danger, and divider properties',
     },
     resource: {
       control: 'object',
@@ -177,13 +178,14 @@ export const ConditionalVisibility = {
       name: 'Blog Post',
       status: 'draft',
       canEdit: true,
-      canDelete: true
+      canDelete: true,
     },
   },
   parameters: {
     docs: {
       description: {
-        story: 'Actions can be conditionally shown/hidden based on the resource state.',
+        story:
+          'Actions can be conditionally shown/hidden based on the resource state.',
       },
     },
   },
@@ -220,13 +222,14 @@ export const DisabledActions = {
       id: 4,
       name: 'Document',
       isEditable: false,
-      isDeletable: true
+      isDeletable: true,
     },
   },
   parameters: {
     docs: {
       description: {
-        story: 'Actions can be disabled based on conditions or static configuration.',
+        story:
+          'Actions can be disabled based on conditions or static configuration.',
       },
     },
   },
@@ -254,7 +257,8 @@ export const DisabledMenu = {
   parameters: {
     docs: {
       description: {
-        story: 'The entire menu can be disabled when actions are not available.',
+        story:
+          'The entire menu can be disabled when actions are not available.',
       },
     },
   },
@@ -283,10 +287,12 @@ export const EmptyMenu = {
 export const InTableContext = {
   render: () => {
     const container = document.createElement('div');
-    container.style.cssText = 'border: 1px solid #ddd; border-radius: 4px; overflow: hidden;';
+    container.style.cssText =
+      'border: 1px solid #ddd; border-radius: 4px; overflow: hidden;';
 
     const table = document.createElement('table');
-    table.style.cssText = 'width: 100%; border-collapse: collapse; background: white;';
+    table.style.cssText =
+      'width: 100%; border-collapse: collapse; background: white;';
 
     const thead = document.createElement('thead');
     thead.style.cssText = 'background: #f8f9fa;';
@@ -304,7 +310,12 @@ export const InTableContext = {
     const items = [
       { id: 1, name: 'Project Alpha', status: 'Active', created: '2024-01-15' },
       { id: 2, name: 'Project Beta', status: 'Draft', created: '2024-02-20' },
-      { id: 3, name: 'Project Gamma', status: 'Archived', created: '2024-03-10' },
+      {
+        id: 3,
+        name: 'Project Gamma',
+        status: 'Archived',
+        created: '2024-03-10',
+      },
     ];
 
     items.forEach((item, index) => {
@@ -369,7 +380,8 @@ export const InTableContext = {
   parameters: {
     docs: {
       description: {
-        story: 'Example of ActionMenu used in a table row, showing typical usage with row data.',
+        story:
+          'Example of ActionMenu used in a table row, showing typical usage with row data.',
       },
     },
   },
