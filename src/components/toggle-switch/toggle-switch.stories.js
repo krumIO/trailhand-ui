@@ -186,7 +186,7 @@ export const SyncedToggles = {
     for (let i = 1; i <= 3; i++) {
       const wrapper = document.createElement('div');
       wrapper.style.cssText =
-        'padding: 12px; background: #f5f5f5; border-radius: 4px;';
+        'padding: 12px; background: var(--color-grey-100, #FAFAFA); border-radius: 4px;';
 
       const label = document.createElement('span');
       label.textContent = `Toggle ${i}: `;
@@ -301,33 +301,33 @@ export const ThemeSwitching = {
       const style = document.createElement('style');
       style.textContent = `
         :root {
-          --demo-bg: #ffffff;
-          --demo-text: #333333;
-          --demo-card-bg: #f5f5f5;
-          --demo-border: #e0e0e0;
+          --demo-bg: var(--color-white, #FFFFFF);
+          --demo-text: var(--color-text-primary, #212121);
+          --demo-card-bg: var(--color-grey-100, #FAFAFA);
+          --demo-border: var(--color-grey-200, #EBEBEB);
         }
 
         @media (prefers-color-scheme: dark) {
           :root {
-            --demo-bg: #121212;
-            --demo-text: #e0e0e0;
-            --demo-card-bg: #1e1e1e;
-            --demo-border: #333333;
+            --demo-bg: var(--color-grey-800, #212121);
+            --demo-text: var(--color-grey-200, #EBEBEB);
+            --demo-card-bg: var(--color-grey-700, #303131);
+            --demo-border: var(--color-grey-600, #636363);
           }
         }
 
         body.theme-light {
-          --demo-bg: #ffffff !important;
-          --demo-text: #333333 !important;
-          --demo-card-bg: #f5f5f5 !important;
-          --demo-border: #e0e0e0 !important;
+          --demo-bg: var(--color-white, #FFFFFF) !important;
+          --demo-text: var(--color-text-primary, #212121) !important;
+          --demo-card-bg: var(--color-grey-100, #FAFAFA) !important;
+          --demo-border: var(--color-grey-200, #EBEBEB) !important;
         }
 
         body.theme-dark {
-          --demo-bg: #121212 !important;
-          --demo-text: #e0e0e0 !important;
-          --demo-card-bg: #1e1e1e !important;
-          --demo-border: #333333 !important;
+          --demo-bg: var(--color-grey-800, #212121) !important;
+          --demo-text: var(--color-grey-200, #EBEBEB) !important;
+          --demo-card-bg: var(--color-grey-700, #303131) !important;
+          --demo-border: var(--color-grey-600, #636363) !important;
         }
 
         body {
