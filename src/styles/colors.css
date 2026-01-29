@@ -8,7 +8,8 @@
 
 :root {
   /* Primary Blues */
-  --color-primary: #3d98d3;           /* Light Blue - Primary brand color */
+  --color-primary: #3d98d3;           /* Primary brand color */
+  --color-primary-light: #e0f2fe;     /* Light variant for backgrounds */
 
   /* Black + White */
   --color-black: #000000;
@@ -27,7 +28,12 @@
   /* Status Colors */
   --color-red: #9F3A3A;
   --color-green: #30AC66;
-  --color-yellow: #D3C255;
+  --color-yellow: #bda509;
+  --color-blue: #1d4ed8;
+  --color-light-red: #fee2e2;
+  --color-light-green: #dcfce7;
+  --color-light-yellow: #fef3c7;
+  --color-light-blue: #dbeafe;
 
   /* Semantic Aliases - for common use cases */
   --color-text-primary: var(--color-grey-800);
@@ -42,9 +48,15 @@
   --color-border: var(--color-grey-300);
   --color-border-light: var(--color-grey-200);
 
-  --color-error: var(--color-red);
-  --color-success: var(--color-green);
-  --color-warning: var(--color-yellow);
+  --color-error-outline: var(--color-red);
+  --color-success-outline: var(--color-green);
+  --color-warning-outline: var(--color-yellow);
+  --color-info-outline: var(--color-blue);
+
+  --color-error-fill: var(--color-light-red);
+  --color-success-fill: var(--color-light-green);
+  --color-warning-fill: var(--color-light-yellow);
+  --color-info-fill: var(--color-light-blue);
 
   /* Component-specific variables (mapped to palette) */
   --color-link: var(--color-primary);
