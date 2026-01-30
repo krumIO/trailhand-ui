@@ -53,17 +53,17 @@ export class ActionMenu extends LitElement {
       width: 32px;
       height: 32px;
       padding: 0;
-      border: 1px solid var(--border, #ddd);
+      border: 1px solid var(--border, var(--color-border, #D7D7D7));
       border-radius: 4px;
-      background-color: var(--body-bg, #fff);
-      color: var(--body-text, #333);
+      background-color: var(--body-bg, var(--color-white, #FFFFFF));
+      color: var(--body-text, var(--color-text-primary, #212121));
       cursor: pointer;
       transition: all 0.2s;
     }
 
     .action-menu__button:hover:not(:disabled) {
-      background-color: var(--sortable-table-row-hover-bg, #f5f5f5);
-      border-color: var(--link, #007bff);
+      background-color: var(--sortable-table-row-hover-bg, var(--color-grey-100, #FAFAFA));
+      border-color: var(--link, var(--color-primary, #3d98d3));
     }
 
     .action-menu__button:disabled {
@@ -82,8 +82,8 @@ export class ActionMenu extends LitElement {
       top: 100%;
       margin-top: 4px;
       min-width: 180px;
-      background-color: var(--body-bg, #fff);
-      border: 1px solid var(--border, #ddd);
+      background-color: var(--body-bg, var(--color-white, #FFFFFF));
+      border: 1px solid var(--border, var(--color-border, #D7D7D7));
       border-radius: 4px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
       z-index: 1000;
@@ -118,7 +118,7 @@ export class ActionMenu extends LitElement {
       padding: 0.5rem 1rem;
       border: none;
       background: none;
-      color: var(--body-text, #333);
+      color: var(--body-text, var(--color-text-primary, #212121));
       font-size: 14px;
       text-align: left;
       cursor: pointer;
@@ -126,7 +126,7 @@ export class ActionMenu extends LitElement {
     }
 
     .action-menu__action:hover:not(:disabled) {
-      background-color: var(--sortable-table-row-hover-bg, #f5f5f5);
+      background-color: var(--sortable-table-row-hover-bg, var(--color-grey-100, #FAFAFA));
     }
 
     .action-menu__action:disabled {
@@ -135,23 +135,23 @@ export class ActionMenu extends LitElement {
     }
 
     .action-menu__action--danger {
-      color: var(--error, #dc3545);
+      color: var(--error, var(--color-error, #9F3A3A));
     }
 
     .action-menu__action--danger:hover:not(:disabled) {
-      background-color: rgba(220, 53, 69, 0.1);
+      background-color: rgba(159, 58, 58, 0.1);
     }
 
     .action-menu__divider {
       height: 1px;
       margin: 0.5rem 0;
-      background-color: var(--border, #ddd);
+      background-color: var(--border, var(--color-border, #D7D7D7));
     }
 
     .action-menu__empty {
       padding: 1rem;
       text-align: center;
-      color: var(--muted, #999);
+      color: var(--muted, var(--color-text-muted, #8D8D8D));
       font-size: 13px;
     }
   `;
