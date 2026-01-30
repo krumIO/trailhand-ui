@@ -3,7 +3,7 @@ import { html } from 'lit';
 import './button';
 import { ButtonProps } from './button';
 import '../icon/icon';
-import { expect, fn, within, userEvent } from 'storybook/test';
+import { expect, fn, userEvent } from 'storybook/test';
 
 const meta: Meta<ButtonProps> = {
   title: 'Components/Button',
@@ -172,26 +172,17 @@ export const HandleClick: Story = {
     name: 'clickable-button',
   },
   play: async ({ canvasElement }) => {
-    // Query the web component directly
     const thButton = canvasElement.querySelector('trailhand-button');
-
     if (!thButton) {
       throw new Error('Button not found');
     }
-
     const onClickMock = fn();
     thButton.addEventListener('button-click', onClickMock);
-
-    // Get the actual button inside the shadow DOM
     const button = thButton.shadowRoot?.querySelector('button');
-
     if (!button) {
       throw new Error('Button element not found in shadow DOM');
     }
-
-    // Click the actual button element
     await userEvent.click(button);
-
     await expect(onClickMock).toHaveBeenCalled();
   },
 };
