@@ -7,7 +7,7 @@ import '../components/icon';
 import '../components/toggle-switch';
 
 // Import global styles
-import '../styles/theme.css';
+import '../styles/colors.css';
 
 @customElement('dev-app')
 class DevApp extends LitElement {
@@ -16,8 +16,8 @@ class DevApp extends LitElement {
       display: block;
       padding: 2rem;
       font-family: system-ui;
-      background-color: var(--background-color, #f9f9f9);
-      color: var(--text-color, #111);
+      background-color: var(--color-background, #f9f9f9);
+      color: var(--color-text-primary, #111);
     }
 
     .header {
