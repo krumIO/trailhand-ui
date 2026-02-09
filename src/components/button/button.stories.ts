@@ -186,3 +186,27 @@ export const HandleClick: Story = {
     await expect(onClickMock).toHaveBeenCalled();
   },
 };
+
+export const HandleDisabledClick: Story = {
+  args: {
+    variant: 'primary',
+    size: 'medium',
+    disabled: true,
+    type: 'button',
+    name: 'disabled-button',
+  },
+  play: async ({ canvasElement }) => {
+    const thButton = canvasElement.querySelector('trailhand-button');
+    if (!thButton) {
+      throw new Error('Button not found');
+    }
+    const onClickMock = fn();
+    thButton.addEventListener('button-click', onClickMock);
+    const button = thButton.shadowRoot?.querySelector('button');
+    if (!button) {
+      throw new Error('Button element not found in shadow DOM');
+    }
+    await userEvent.click(button);
+    await expect(onClickMock).not.toHaveBeenCalled();
+  },
+};

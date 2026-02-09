@@ -142,10 +142,6 @@ export class Button extends LitElement {
     }
   `;
 
-  protected override firstUpdated() {
-    this.setAttribute('role', 'button');
-  }
-
   updated() {
     if (this.disabled) {
       this.setAttribute('aria-disabled', 'true');

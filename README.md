@@ -148,6 +148,61 @@ A dropdown menu for row-level actions in tables.
 ></action-menu>
 ```
 
+## Testing
+
+This component library will serve as the foundation for future projects, thus it is important to ensure that these components are well tested. Thankfully, Storybook provides many useful tools to test the components using various methods.
+
+### Render Tests
+
+Render tests (smoke tests), as one might expect, simply tes that the component renders as desired. These tests serve to find any errors that would cause the component to fail on render. Storybook turns each story into a render test. By adding stories to represent the various states of a component, you can confirm that the component will render in that state.
+
+### Interaction Tests
+
+After confirming that a component renders properly, you would likely next want to test that it behaves properly. These interaction tests can be written by adding a new story for the interaction you are testing, and then using the "play" method provided by Storybook to simulate user interactions and make assumptions against expected results. 
+
+### Accessibility Tests
+
+Storybook also provides addons to check components against accessibility rules. This ensures components meet certain standards. The configuration for which rules are applied as well as the result of not meeting said rules can be set in .storybook/preview.js. These properties can also be set at the Component and Story levels in case secific rulesets need to be applied or removed.
+
+### Visual Tests 
+
+Visual tests compare snapshots taken of components to catch unexpected visual changes. The Storybook developers provide a platform to run and manage these tests called Chromatic. 
+
+### Running the tests
+
+Tests can be executed via the Storybook UI or in the command line. 
+
+#### Via Storybook
+
+To run tests via the Storybook UI, first run 
+```bash
+npm run storybook
+```
+
+In the bottom left hand corner of the UI, you can open a menu to run tests and view test results.
+
+![Storybook Testing Menu](/docs/images/image.png)
+
+You can also view test results for specific stories in the playground for that story.
+
+![Interaction Test](/docs/images/image-1.png)
+
+![Visual Tests](/docs/images/image-2.png)
+
+![Accessibility Test](/docs/images/image-3.png)
+
+#### Via the command line
+
+To run render, interaction and accessibility tests via the command line run the following command
+```bash
+npm run test-storybook
+```
+
+To run visual tests via the command line ensure CHROMATIC_PROJECT_TOKEN is added to your env and then run the following command
+```bash
+npm run chromatic
+```
+
 ## Tech Stack
 
 - **Lit Element** 3.x - Web component library
