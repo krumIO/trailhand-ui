@@ -8,7 +8,7 @@ export default {
   title: 'Components/ThTag',
   tags: ['autodocs'],
   render: (args) => {
-    const tag = document.createElement('th-tag');
+    const tag = document.createElement('trailhand-tag');
 
     if (args.label) tag.label = args.label;
     if (args.variant) tag.variant = args.variant;
@@ -33,7 +33,7 @@ export default {
     },
     variant: {
       control: 'select',
-      options: ['default', 'primary', 'success', 'warning', 'error', 'info'],
+      options: ['default', 'success', 'warning', 'error', 'info'],
       description: 'Visual style variant',
       defaultValue: 'default',
     },
@@ -74,7 +74,7 @@ export default {
 A tag/badge component for displaying labels, statuses, or categories.
 
 **Features:**
-- Multiple color variants (default, primary, success, warning, error, info)
+- Multiple color variants (default, success, warning, error, info)
 - Three size options (sm, md, lg)
 - Optional dismiss button with \`tag-dismiss\` event
 - Optional icon support via Iconify
@@ -98,7 +98,7 @@ export const Default = {
   parameters: {
     docs: {
       source: {
-        code: '<th-tag label="Tag"></th-tag>',
+        code: '<trailhand-tag label="Tag"></trailhand-tag>',
       },
     },
   },
@@ -112,10 +112,10 @@ export const Variants = {
     const container = document.createElement('div');
     container.style.cssText = 'display: flex; gap: 8px; flex-wrap: wrap;';
 
-    const variants = ['default', 'primary', 'success', 'warning', 'error', 'info'];
+    const variants = ['default', 'success', 'warning', 'error', 'info'];
 
     variants.forEach((variant) => {
-      const tag = document.createElement('th-tag');
+      const tag = document.createElement('trailhand-tag');
       tag.label = variant;
       tag.variant = variant;
       container.appendChild(tag);
@@ -129,12 +129,11 @@ export const Variants = {
         story: 'All available color variants for different use cases.',
       },
       source: {
-        code: `<th-tag label="default" variant="default"></th-tag>
-<th-tag label="primary" variant="primary"></th-tag>
-<th-tag label="success" variant="success"></th-tag>
-<th-tag label="warning" variant="warning"></th-tag>
-<th-tag label="error" variant="error"></th-tag>
-<th-tag label="info" variant="info"></th-tag>`,
+        code: `<trailhand-tag label="default" variant="default"></trailhand-tag>
+<trailhand-tag label="success" variant="success"></trailhand-tag>
+<trailhand-tag label="warning" variant="warning"></trailhand-tag>
+<trailhand-tag label="error" variant="error"></trailhand-tag>
+<trailhand-tag label="info" variant="info"></trailhand-tag>`,
       },
     },
   },
@@ -148,10 +147,10 @@ export const Outlined = {
     const container = document.createElement('div');
     container.style.cssText = 'display: flex; gap: 8px; flex-wrap: wrap;';
 
-    const variants = ['default', 'primary', 'success', 'warning', 'error', 'info'];
+    const variants = ['default', 'success', 'warning', 'error', 'info'];
 
     variants.forEach((variant) => {
-      const tag = document.createElement('th-tag');
+      const tag = document.createElement('trailhand-tag');
       tag.label = variant;
       tag.variant = variant;
       tag.outlined = true;
@@ -166,12 +165,11 @@ export const Outlined = {
         story: 'Outlined style for a lighter, border-only appearance.',
       },
       source: {
-        code: `<th-tag label="default" variant="default" outlined></th-tag>
-<th-tag label="primary" variant="primary" outlined></th-tag>
-<th-tag label="success" variant="success" outlined></th-tag>
-<th-tag label="warning" variant="warning" outlined></th-tag>
-<th-tag label="error" variant="error" outlined></th-tag>
-<th-tag label="info" variant="info" outlined></th-tag>`,
+        code: `<trailhand-tag label="default" variant="default" outlined></trailhand-tag>
+<trailhand-tag label="success" variant="success" outlined></trailhand-tag>
+<trailhand-tag label="warning" variant="warning" outlined></trailhand-tag>
+<trailhand-tag label="error" variant="error" outlined></trailhand-tag>
+<trailhand-tag label="info" variant="info" outlined></trailhand-tag>`,
       },
     },
   },
@@ -188,9 +186,9 @@ export const Sizes = {
     const sizes = ['sm', 'md', 'lg'];
 
     sizes.forEach((size) => {
-      const tag = document.createElement('th-tag');
+      const tag = document.createElement('trailhand-tag');
       tag.label = size;
-      tag.variant = 'primary';
+      tag.variant = 'info';
       tag.size = size;
       container.appendChild(tag);
     });
@@ -203,9 +201,9 @@ export const Sizes = {
         story: 'Tags come in three sizes to fit different contexts.',
       },
       source: {
-        code: `<th-tag label="sm" size="sm" variant="primary"></th-tag>
-<th-tag label="md" size="md" variant="primary"></th-tag>
-<th-tag label="lg" size="lg" variant="primary"></th-tag>`,
+        code: `<trailhand-tag label="sm" size="sm" variant="info"></trailhand-tag>
+<trailhand-tag label="md" size="md" variant="info"></trailhand-tag>
+<trailhand-tag label="lg" size="lg" variant="info"></trailhand-tag>`,
       },
     },
   },
@@ -222,9 +220,9 @@ export const Dismissible = {
     const tags = ['React', 'Vue', 'Angular', 'Svelte', 'Lit'];
 
     tags.forEach((name) => {
-      const tag = document.createElement('th-tag');
+      const tag = document.createElement('trailhand-tag');
       tag.label = name;
-      tag.variant = 'primary';
+      tag.variant = 'info';
       tag.dismissible = true;
       tag.value = name.toLowerCase();
 
@@ -244,10 +242,10 @@ export const Dismissible = {
         story: 'Tags can be dismissible, useful for filter chips or selected items.',
       },
       source: {
-        code: `<th-tag label="React" variant="primary" dismissible value="react"></th-tag>
+        code: `<trailhand-tag label="React" variant="info" dismissible value="react"></trailhand-tag>
 
 <script>
-  const tag = document.querySelector('th-tag');
+  const tag = document.querySelector('trailhand-tag');
   tag.addEventListener('tag-dismiss', (e) => {
     console.log('Dismissed:', e.detail.value);
     tag.remove();
@@ -274,7 +272,7 @@ export const WithIcons = {
     ];
 
     items.forEach(({ label, icon, variant }) => {
-      const tag = document.createElement('th-tag');
+      const tag = document.createElement('trailhand-tag');
       tag.label = label;
       tag.icon = icon;
       tag.variant = variant;
@@ -289,9 +287,9 @@ export const WithIcons = {
         story: 'Tags can include icons from Iconify for visual context.',
       },
       source: {
-        code: `<th-tag label="Running" icon="heroicons:play-circle" variant="success"></th-tag>
-<th-tag label="Stopped" icon="heroicons:stop-circle" variant="error"></th-tag>
-<th-tag label="Pending" icon="heroicons:clock" variant="warning"></th-tag>`,
+        code: `<trailhand-tag label="Running" icon="heroicons:play-circle" variant="success"></trailhand-tag>
+<trailhand-tag label="Stopped" icon="heroicons:stop-circle" variant="error"></trailhand-tag>
+<trailhand-tag label="Pending" icon="heroicons:clock" variant="warning"></trailhand-tag>`,
       },
     },
   },
@@ -321,7 +319,7 @@ export const StatusIndicators = {
       text.textContent = `User Status: `;
       text.style.minWidth = '120px';
 
-      const tag = document.createElement('th-tag');
+      const tag = document.createElement('trailhand-tag');
       tag.label = label;
       tag.variant = variant;
       tag.size = 'sm';
@@ -339,10 +337,10 @@ export const StatusIndicators = {
         story: 'Common pattern: using tags as status indicators.',
       },
       source: {
-        code: `<th-tag label="Active" variant="success" size="sm"></th-tag>
-<th-tag label="Inactive" variant="default" size="sm"></th-tag>
-<th-tag label="Pending" variant="warning" size="sm"></th-tag>
-<th-tag label="Error" variant="error" size="sm"></th-tag>`,
+        code: `<trailhand-tag label="Active" variant="success" size="sm"></trailhand-tag>
+<trailhand-tag label="Inactive" variant="default" size="sm"></trailhand-tag>
+<trailhand-tag label="Pending" variant="warning" size="sm"></trailhand-tag>
+<trailhand-tag label="Error" variant="error" size="sm"></trailhand-tag>`,
       },
     },
   },
@@ -354,7 +352,7 @@ export const StatusIndicators = {
 export const VersionBadge = {
   args: {
     label: 'v2.0.0',
-    variant: 'primary',
+    variant: 'info',
     size: 'md',
   },
   parameters: {
@@ -363,7 +361,7 @@ export const VersionBadge = {
         story: 'Used as a version badge next to titles.',
       },
       source: {
-        code: '<th-tag label="v2.0.0" variant="primary"></th-tag>',
+        code: '<trailhand-tag label="v2.0.0" variant="info"></trailhand-tag>',
       },
     },
   },
@@ -377,13 +375,13 @@ export const Disabled = {
     const container = document.createElement('div');
     container.style.cssText = 'display: flex; gap: 8px;';
 
-    const tag1 = document.createElement('th-tag');
+    const tag1 = document.createElement('trailhand-tag');
     tag1.label = 'Enabled';
-    tag1.variant = 'primary';
+    tag1.variant = 'info';
 
-    const tag2 = document.createElement('th-tag');
+    const tag2 = document.createElement('trailhand-tag');
     tag2.label = 'Disabled';
-    tag2.variant = 'primary';
+    tag2.variant = 'info';
     tag2.disabled = true;
 
     container.appendChild(tag1);
@@ -397,8 +395,8 @@ export const Disabled = {
         story: 'Tags can be disabled for visual reference without interaction.',
       },
       source: {
-        code: `<th-tag label="Enabled" variant="primary"></th-tag>
-<th-tag label="Disabled" variant="primary" disabled></th-tag>`,
+        code: `<trailhand-tag label="Enabled" variant="info"></trailhand-tag>
+<trailhand-tag label="Disabled" variant="info" disabled></trailhand-tag>`,
       },
     },
   },
@@ -422,7 +420,7 @@ export const FilterChips = {
     const filters = ['Status: Running', 'Namespace: production', 'Type: Service'];
 
     filters.forEach((filter) => {
-      const tag = document.createElement('th-tag');
+      const tag = document.createElement('trailhand-tag');
       tag.label = filter;
       tag.variant = 'default';
       tag.dismissible = true;

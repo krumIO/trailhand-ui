@@ -4,7 +4,7 @@ import { property } from 'lit/decorators.js';
 /**
  * Tag variant types for different visual styles
  */
-export type TagVariant = 'default' | 'primary' | 'success' | 'warning' | 'error' | 'info';
+export type TagVariant = 'default' | 'success' | 'warning' | 'error' | 'info';
 
 /**
  * Tag size options
@@ -86,63 +86,61 @@ export class ThTag extends LitElement {
     }
 
     .tag {
+      padding: 6px 14px;
       display: inline-flex;
       align-items: center;
       gap: 6px;
       border-radius: 9999px;
-      font-weight: 500;
+      font-feature-settings: 'liga' off, 'clig' off;
+      font-family: Poppins;
+      font-size: 10px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: normal;
       white-space: nowrap;
       transition: all 0.15s ease;
     }
 
     /* Size variants */
     .tag--sm {
-      padding: 2px 8px;
-      font-size: 12px;
-      line-height: 16px;
+      font-size: 15px;
+      line-height: 21px;
     }
 
     .tag--md {
-      padding: 4px 12px;
-      font-size: 14px;
-      line-height: 20px;
+      font-size: 18px;
+      line-height: 26px;
     }
 
     .tag--lg {
-      padding: 6px 16px;
-      font-size: 16px;
-      line-height: 24px;
+      font-size: 25px;
+      line-height: 32px;
     }
 
     /* Color variants - soft pastel backgrounds with colored text */
     .tag--default {
-      background-color: var(--th-tag-default-bg, #f3f4f6);
-      color: var(--th-tag-default-text, #4b5563);
-    }
-
-    .tag--primary {
-      background-color: var(--th-tag-primary-bg, #dbeafe);
-      color: var(--th-tag-primary-text, #1d4ed8);
-    }
-
-    .tag--success {
-      background-color: var(--th-tag-success-bg, #dcfce7);
-      color: var(--th-tag-success-text, #15803d);
-    }
-
-    .tag--warning {
-      background-color: var(--th-tag-warning-bg, #fef3c7);
-      color: var(--th-tag-warning-text, #b45309);
-    }
-
-    .tag--error {
-      background-color: var(--th-tag-error-bg, #fee2e2);
-      color: var(--th-tag-error-text, #dc2626);
+      background-color: var(--color-background-hover, var(--color-grey-200, #EBEBEB));
+      color: var(--color-text-secondary, var(--color-grey-600, #636363));
     }
 
     .tag--info {
-      background-color: var(--th-tag-info-bg, #e0f2fe);
-      color: var(--th-tag-info-text, #0284c7);
+      background-color: var(--color-info-fill, var(--color-light-blue, #e6f3ff));
+      color: var(--color-info-outline, var(--color-blue, #0085ff));
+    }
+
+    .tag--success {
+      background-color: var(--color-success-fill, var(--color-light-green, #d2fdd2));
+      color: var(--color-success-outline, var(--color-green, #097409));
+    }
+
+    .tag--warning {
+      background-color: var(--color-warning-fill, var(--color-light-yellow, #fffeb4));
+      color: var(--color-warning-outline, var(--color-yellow, #D3C255));
+    }
+
+    .tag--error {
+      background-color: var(--color-error-fill, var(--color-light-red, #fee2e2));
+      color: var(--color-error-outline, var(--color-red, #9F3A3A));
     }
 
     /* Outlined variants */
@@ -153,33 +151,27 @@ export class ThTag extends LitElement {
 
     .tag--outlined.tag--default {
       background-color: transparent;
-      color: var(--th-tag-default-text, #4b5563);
-      border-color: var(--th-tag-default-border, #d1d5db);
-    }
-
-    .tag--outlined.tag--primary {
-      background-color: transparent;
-      color: var(--th-tag-primary-text, #1d4ed8);
-    }
-
-    .tag--outlined.tag--success {
-      background-color: transparent;
-      color: var(--th-tag-success-text, #15803d);
-    }
-
-    .tag--outlined.tag--warning {
-      background-color: transparent;
-      color: var(--th-tag-warning-text, #b45309);
-    }
-
-    .tag--outlined.tag--error {
-      background-color: transparent;
-      color: var(--th-tag-error-text, #dc2626);
+      color: var(--color-text-secondary, var(--color-grey-600, #4b5563));
     }
 
     .tag--outlined.tag--info {
       background-color: transparent;
-      color: var(--th-tag-info-text, #0284c7);
+      color: var(--color-info-outline, var(--color-blue, #0085ff));
+    }
+
+    .tag--outlined.tag--success {
+      background-color: transparent;
+      color: var(--color-success-outline, var(--color-green, #097409));
+    }
+
+    .tag--outlined.tag--warning {
+      background-color: transparent;
+      color: var(--color-warning-outline, var(--color-yellow, #D3C255));
+    }
+
+    .tag--outlined.tag--error {
+      background-color: transparent;
+      color: var(--color-error-outline, var(--color-red, #9F3A3A));
     }
 
     /* Icon styling */
@@ -310,4 +302,4 @@ export class ThTag extends LitElement {
 }
 
 // Register the element
-customElements.define('th-tag', ThTag);
+customElements.define('trailhand-tag', ThTag);

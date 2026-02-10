@@ -8,7 +8,7 @@ export default {
   title: 'Components/ThCard',
   tags: ['autodocs'],
   render: (args) => {
-    const card = document.createElement('th-card');
+    const card = document.createElement('trailhand-card');
 
     if (args.variant) card.variant = args.variant;
     if (args.dismissible !== undefined) card.dismissible = args.dismissible;
@@ -98,10 +98,10 @@ export const Default = {
   parameters: {
     docs: {
       source: {
-        code: `<th-card
+        code: `<trailhand-card
   card-title="Card Title"
   description="This is a card description.">
-</th-card>`,
+</trailhand-card>`,
       },
     },
   },
@@ -112,7 +112,7 @@ export const Default = {
  */
 export const ResourceCard = {
   render: () => {
-    const card = document.createElement('th-card');
+    const card = document.createElement('trailhand-card');
     card.cardTitle = 'Namespaces';
     card.description = 'Namespaces group your applications, services and other resources.';
     card.iconClass = 'icon-namespace';
@@ -164,7 +164,7 @@ export const ResourceCard = {
  */
 export const InfoCard = {
   render: () => {
-    const card = document.createElement('th-card');
+    const card = document.createElement('trailhand-card');
     card.variant = 'info';
     card.cardTitle = 'Get Started';
     card.subtitle = 'New to Epinio? Get started now!';
@@ -184,14 +184,14 @@ export const InfoCard = {
         story: 'Info cards are compact, horizontal cards perfect for announcements or quick actions.',
       },
       source: {
-        code: `<th-card
+        code: `<trailhand-card
   variant="info"
   card-title="Get Started"
   subtitle="New to Epinio? Get started now!"
   icon-src="icon.png"
   dismissible
   card-id="get-started">
-</th-card>`,
+</trailhand-card>`,
       },
     },
   },
@@ -202,7 +202,7 @@ export const InfoCard = {
  */
 export const ApplicationsCard = {
   render: () => {
-    const card = document.createElement('th-card');
+    const card = document.createElement('trailhand-card');
     card.cardTitle = 'Applications';
     card.description = 'Epinio uses Applications to transition your code, through build, to being deployed.';
     card.iconClass = 'icon-application';
@@ -254,7 +254,7 @@ export const ApplicationsCard = {
  */
 export const ServicesCard = {
   render: () => {
-    const card = document.createElement('th-card');
+    const card = document.createElement('trailhand-card');
     card.cardTitle = 'Services';
     card.description = 'Create instances of your services. Instances can be bound to your Applications to provide data.';
     card.iconClass = 'icon-service';
@@ -318,7 +318,7 @@ export const Loading = {
         story: 'Cards can show a loading spinner while content is being fetched.',
       },
       source: {
-        code: '<th-card loading></th-card>',
+        code: '<trailhand-card loading></trailhand-card>',
       },
     },
   },
@@ -336,9 +336,9 @@ export const Outlined = {
   parameters: {
     docs: {
       source: {
-        code: `<th-card variant="outlined" card-title="Outlined Card">
+        code: `<trailhand-card variant="outlined" card-title="Outlined Card">
   Content here
-</th-card>`,
+</trailhand-card>`,
       },
     },
   },
@@ -351,7 +351,7 @@ export const Dismissible = {
   render: () => {
     const container = document.createElement('div');
 
-    const card = document.createElement('th-card');
+    const card = document.createElement('trailhand-card');
     card.cardTitle = 'Dismissible Card';
     card.description = 'Click the X to dismiss this card.';
     card.dismissible = true;
@@ -379,7 +379,7 @@ export const Dismissible = {
  */
 export const WithIconSlot = {
   render: () => {
-    const card = document.createElement('th-card');
+    const card = document.createElement('trailhand-card');
     card.cardTitle = 'Custom Icon';
     card.description = 'Using a slot for a custom icon.';
 

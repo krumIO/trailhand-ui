@@ -181,8 +181,19 @@ export const AllColors = {
         title: 'Status Colors',
         colors: [
           { name: 'Red', variable: '--color-red', hex: '#9F3A3A', description: 'Error, danger' },
-          { name: 'Green', variable: '--color-green', hex: '#30AC66', description: 'Success, positive' },
+          { name: 'Green', variable: '--color-green', hex: '#097409', description: 'Success, positive' },
           { name: 'Yellow', variable: '--color-yellow', hex: '#D3C255', description: 'Warning, caution' },
+          { name: 'Blue', variable: '--color-blue', hex: '#0085ff', description: 'Info, informational' },
+        ]
+      })}
+
+      ${ColorSection({
+        title: 'Light Status Colors',
+        colors: [
+          { name: 'Light Red', variable: '--color-light-red', hex: '#fee2e2', description: 'Error background' },
+          { name: 'Light Green', variable: '--color-light-green', hex: '#d2fdd2', description: 'Success background' },
+          { name: 'Light Yellow', variable: '--color-light-yellow', hex: '#fffeb4', description: 'Warning background' },
+          { name: 'Light Blue', variable: '--color-light-blue', hex: '#e6f3ff', description: 'Info background' },
         ]
       })}
     </div>
@@ -239,11 +250,28 @@ export const SemanticAliases = {
       })}
 
       ${ColorSection({
-        title: 'State Colors',
+        title: 'State Outline Colors',
         colors: [
-          { name: 'Error', variable: '--color-error', hex: '#9F3A3A', description: 'Error states' },
-          { name: 'Success', variable: '--color-success', hex: '#30AC66', description: 'Success states' },
-          { name: 'Warning', variable: '--color-warning', hex: '#D3C255', description: 'Warning states' },
+          { name: 'Error Outline', variable: '--color-error-outline', hex: '#9F3A3A', description: 'Error text/borders' },
+          { name: 'Success Outline', variable: '--color-success-outline', hex: '#097409', description: 'Success text/borders' },
+          { name: 'Warning Outline', variable: '--color-warning-outline', hex: '#D3C255', description: 'Warning text/borders' },
+          { name: 'Info Outline', variable: '--color-info-outline', hex: '#0085ff', description: 'Info text/borders' },
+        ]
+      })}
+
+      ${ColorSection({
+        title: 'State Fill Colors',
+        colors: [
+          { name: 'Error Fill', variable: '--color-error-fill', hex: '#fee2e2', description: 'Error backgrounds' },
+          { name: 'Success Fill', variable: '--color-success-fill', hex: '#d2fdd2', description: 'Success backgrounds' },
+          { name: 'Warning Fill', variable: '--color-warning-fill', hex: '#fffeb4', description: 'Warning backgrounds' },
+          { name: 'Info Fill', variable: '--color-info-fill', hex: '#e6f3ff', description: 'Info backgrounds' },
+        ]
+      })}
+
+      ${ColorSection({
+        title: 'Interactive Colors',
+        colors: [
           { name: 'Link', variable: '--color-link', hex: '#3d98d3', description: 'Interactive links' },
         ]
       })}
@@ -331,8 +359,15 @@ import './src/styles/colors.css';</code></pre>
   background-color: var(--color-background-hover);
 }
 
-.error-message {
-  color: var(--color-error);
+/* Status tags/badges using fill + outline pattern */
+.tag--error {
+  background-color: var(--color-error-fill);
+  color: var(--color-error-outline);
+}
+
+.tag--success {
+  background-color: var(--color-success-fill);
+  color: var(--color-success-outline);
 }</code></pre>
       </div>
 

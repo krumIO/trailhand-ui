@@ -89,7 +89,7 @@ export class ThCard extends LitElement {
     .card {
       display: flex;
       flex-direction: column;
-      background: var(--th-card-bg, #ffffff);
+      background: var(--th-card-bg, var(--color-background, #ffffff));
       border-radius: var(--th-card-radius, 8px);
       transition: box-shadow 0.2s ease;
       height: 100%;
@@ -97,17 +97,17 @@ export class ThCard extends LitElement {
 
     /* Variant styles */
     .card--default {
-      border: 1px solid var(--th-card-border, #e5e7eb);
+      border: 1px solid var(--th-card-border, var(--color-border-light, #e5e7eb));
       padding: var(--th-card-padding, 20px);
     }
 
     .card--outlined {
-      border: 1px solid var(--th-card-border, #e5e7eb);
+      border: 1px solid var(--th-card-border, var(--color-border-light, #e5e7eb));
       padding: var(--th-card-padding, 20px);
     }
 
     .card--info {
-      border: 1px solid var(--th-card-border, #e5e7eb);
+      border: 1px solid var(--th-card-border, var(--color-border-light, #e5e7eb));
       padding: var(--th-card-padding, 16px 20px);
       flex-direction: row;
       align-items: center;
@@ -115,7 +115,7 @@ export class ThCard extends LitElement {
     }
 
     .card:hover {
-      box-shadow: var(--th-card-hover-shadow, 0 2px 8px rgba(0, 0, 0, 0.08));
+      box-shadow: var(--th-card-hover-shadow, 0 2px 8px var(--color-shadow, rgba(0, 0, 0, 0.08)));
     }
 
     /* Header section */
@@ -147,7 +147,7 @@ export class ThCard extends LitElement {
 
     .card__icon i {
       font-size: 24px;
-      color: var(--th-card-icon-color, #3b82f6);
+      color: var(--th-card-icon-color, var(--color-primary, #3b82f6));
     }
 
     .card--info .card__icon img {
@@ -165,7 +165,7 @@ export class ThCard extends LitElement {
       margin: 0;
       font-size: 18px;
       font-weight: 600;
-      color: var(--th-card-title-color, #111827);
+      color: var(--th-card-title-color, var(--color-text-primary, #111827));
       line-height: 1.3;
     }
 
@@ -175,18 +175,18 @@ export class ThCard extends LitElement {
     }
 
     .card__title a:hover {
-      color: var(--th-primary, #3b82f6);
+      color: var(--th-primary, var(--color-primary, #3b82f6));
     }
 
     .card--info .card__title {
       font-size: 16px;
-      color: var(--th-primary, #3b82f6);
+      color: var(--th-primary, var(--color-primary, #3b82f6));
     }
 
     .card__subtitle {
       margin: 4px 0 0 0;
       font-size: 14px;
-      color: var(--th-card-subtitle-color, #6b7280);
+      color: var(--th-card-subtitle-color, var(--color-text-secondary, #6b7280));
       line-height: 1.4;
     }
 
@@ -195,7 +195,7 @@ export class ThCard extends LitElement {
       flex: 1;
       font-size: 14px;
       line-height: 1.6;
-      color: var(--th-card-text-color, #4b5563);
+      color: var(--th-card-text-color, var(--color-text-secondary, #4b5563));
       margin-bottom: 16px;
     }
 
@@ -224,7 +224,7 @@ export class ThCard extends LitElement {
 
     /* Footer section */
     .card__footer {
-      border-top: 1px solid var(--th-card-border, #e5e7eb);
+      border-top: 1px solid var(--th-card-border, var(--color-border-light, #e5e7eb));
       padding-top: 16px;
       margin-top: auto;
     }
@@ -234,7 +234,7 @@ export class ThCard extends LitElement {
       margin: 0 0 12px 0;
       font-size: 14px;
       font-weight: 600;
-      color: var(--th-card-title-color, #111827);
+      color: var(--th-card-title-color, var(--color-text-primary, #111827));
     }
 
     /* Dismiss button */
@@ -246,7 +246,7 @@ export class ThCard extends LitElement {
       border: none;
       padding: 4px;
       cursor: pointer;
-      color: var(--th-card-dismiss-color, #9ca3af);
+      color: var(--th-card-dismiss-color, var(--color-grey-400, #9ca3af));
       opacity: 0.7;
       transition: opacity 0.15s ease, color 0.15s ease;
       flex-shrink: 0;
@@ -254,7 +254,7 @@ export class ThCard extends LitElement {
 
     .card__dismiss:hover {
       opacity: 1;
-      color: var(--th-card-dismiss-hover-color, #6b7280);
+      color: var(--th-card-dismiss-hover-color, var(--color-text-secondary, #6b7280));
     }
 
     .card__dismiss svg {
@@ -273,8 +273,8 @@ export class ThCard extends LitElement {
     .card__spinner {
       width: 32px;
       height: 32px;
-      border: 3px solid var(--th-card-border, #e5e7eb);
-      border-top-color: var(--th-primary, #3b82f6);
+      border: 3px solid var(--th-card-border, var(--color-border-light, #e5e7eb));
+      border-top-color: var(--th-primary, var(--color-primary, #3b82f6));
       border-radius: 50%;
       animation: spin 0.8s linear infinite;
     }
@@ -452,4 +452,4 @@ export class ThCard extends LitElement {
 }
 
 // Register the element
-customElements.define('th-card', ThCard);
+customElements.define('trailhand-card', ThCard);
