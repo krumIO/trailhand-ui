@@ -1,5 +1,7 @@
 import { LitElement, html, css, TemplateResult, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
+import '../icon/icon';
+import type { IconProps } from '../icon/icon';
 
 /**
  * Tag variant types for different visual styles
@@ -64,10 +66,10 @@ export class ThTag extends LitElement {
   outlined = false;
 
   /**
-   * Optional icon to display before the label (iconify icon name)
+   * Optional icon to display before the label (trailhand-icon name)
    */
   @property({ type: String })
-  icon = '';
+  icon: IconProps['name'] | '' = '';
 
   /**
    * Value passed in the dismiss event (useful for identifying which tag was dismissed)
@@ -206,25 +208,21 @@ export class ThTag extends LitElement {
       opacity: 1;
     }
 
-    .tag__dismiss svg {
-      width: 1em;
-      height: 1em;
+    .tag__dismiss trailhand-icon {
+      font-size: 1em;
     }
 
     /* Size-specific dismiss button adjustments */
-    .tag--sm .tag__dismiss svg {
-      width: 12px;
-      height: 12px;
+    .tag--sm .tag__dismiss trailhand-icon {
+      font-size: 12px;
     }
 
-    .tag--md .tag__dismiss svg {
-      width: 14px;
-      height: 14px;
+    .tag--md .tag__dismiss trailhand-icon {
+      font-size: 14px;
     }
 
-    .tag--lg .tag__dismiss svg {
-      width: 16px;
-      height: 16px;
+    .tag--lg .tag__dismiss trailhand-icon {
+      font-size: 16px;
     }
   `;
 
@@ -243,23 +241,10 @@ export class ThTag extends LitElement {
   }
 
   /**
-   * Render the dismiss button SVG icon
+   * Render the dismiss button icon
    */
   private _renderDismissIcon(): TemplateResult {
-    return html`
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 20 20"
-        fill="currentColor"
-        aria-hidden="true"
-      >
-        <path
-          fill-rule="evenodd"
-          d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-          clip-rule="evenodd"
-        />
-      </svg>
-    `;
+    return html`<trailhand-icon name="close"></trailhand-icon>`;
   }
 
   /**
@@ -277,7 +262,7 @@ export class ThTag extends LitElement {
       <span class=${classes} part="tag">
         ${this.icon
           ? html`<span class="tag__icon" part="icon">
-              <iconify-icon icon=${this.icon}></iconify-icon>
+              <trailhand-icon name=${this.icon}></trailhand-icon>
             </span>`
           : nothing}
         <span class="tag__label" part="label">

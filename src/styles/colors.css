@@ -7,43 +7,56 @@
  */
 
 :root {
+  /* Color Palette */
   /* Primary Blues */
   --color-primary: #3d98d3;           /* Primary brand color */
+  --color-light-primary: #e6f3ff;     /* Light variant for backgrounds */
+  --color-dark-primary: #005cb9;      /* Dark variant for buttons/links */
 
   /* Black + White */
   --color-black: #000000;
-  --color-white: #FFFFFF;
+  --color-white: #ffffff;
 
   /* Greyscale */
-  --color-grey-100: #FAFAFA;
-  --color-grey-200: #EBEBEB;
-  --color-grey-300: #D7D7D7;
-  --color-grey-400: #BABABA;
-  --color-grey-500: #8D8D8D;
+  --color-grey-100: #fafafa;
+  --color-grey-200: #ebebeb;
+  --color-grey-300: #d7d7d7;
+  --color-grey-400: #bababa;
+  --color-grey-500: #8d8d8d;
   --color-grey-600: #636363;
   --color-grey-700: #303131;
   --color-grey-800: #212121;
 
   /* Status Colors */
-  --color-red: #9F3A3A;
-  --color-green: #097409;
-  --color-yellow: #D3C255;
-  --color-blue: #0085ff;
   --color-light-red: #fee2e2;
+  --color-red: #9f3a3a;
+  --color-dark-red: #731616;
+
   --color-light-green: #d2fdd2;
+  --color-green: #30ac66;
+  --color-dark-green: #0f8240;
+
   --color-light-yellow: #fffeb4;
+  --color-yellow: #d3c255;
+  --color-dark-yellow: #a89939;
+
   --color-light-blue: #e6f3ff;
+  --color-blue: #0085ff;
+  --color-dark-blue: #005cb9;
 
   /* Semantic Aliases - for common use cases */
+  /* Text */
   --color-text-primary: var(--color-grey-800);
   --color-text-secondary: var(--color-grey-600);
   --color-text-muted: var(--color-grey-500);
   --color-text-inverse: var(--color-white);
 
+  /* Backgrounds */
   --color-background: var(--color-white);
   --color-background-muted: var(--color-grey-100);
   --color-background-hover: var(--color-grey-200);
 
+  /* Borders */
   --color-border: var(--color-grey-300);
   --color-border-light: var(--color-grey-200);
 
@@ -58,10 +71,62 @@
   --color-info-fill: var(--color-light-blue);
 
   /* Component-specific variables (mapped to palette) */
+  /* Links */
   --color-link: var(--color-primary);
   --color-link-hover: var(--color-primary);
+  /* Buttons */
+  --button-disabled-bg: var(--color-grey-200);
+  --button-disabled-color: var(--color-grey-500);
+
+  --button-primary-bg: var(--color-primary);
+  --button-primary-bg-hover: var(--color-dark-primary);
+  --button-primary-color: var(--color-white);
+
+  --button-secondary-bg: var(--color-white);
+  --button-secondary-bg-hover: var(--color-light-primary);
+  --button-secondary-color: var(--color-primary);
+  --button-secondary-border: var(--color-primary);
+
+  --button-alternate-bg: var(--color-blue);
+  --button-alternate-bg-hover: var(--color-dark-blue);
+  --button-alternate-color: var(--color-white);
+
+  --button-destructive-bg: var(--color-red);
+  --button-destructive-bg-hover: var(--color-dark-red);
+  --button-destructive-color: var(--color-white);
+
+  --button-confirmation-bg: var(--color-green);
+  --button-confirmation-bg-hover: var(--color-dark-green);
+  --button-confirmation-color: var(--color-white);
 
   /* Shadow colors using opacity */
   --color-shadow: rgba(0, 0, 0, 0.1);
   --color-shadow-medium: rgba(0, 0, 0, 0.15);
+}
+
+/* Dark Theme Overrides */
+[data-theme='dark'] {
+  /* Text */
+  --color-text-primary: var(--color-grey-100);
+  --color-text-secondary: var(--color-grey-300);
+  --color-text-muted: var(--color-grey-500);
+
+  /* Backgrounds */
+  --color-background: var(--color-grey-800);
+  --color-background-muted: var(--color-grey-700);
+  --color-background-hover: var(--color-grey-600);
+
+  /* Borders */
+  --color-border: var(--color-grey-700);
+
+  /* Buttons */
+  --button-primary-bg: var(--color-dark-primary);
+  --button-primary-bg-hover: var(--color-primary);
+
+  --button-secondary-bg: var(--color-grey-800);
+  --button-secondary-bg-hover: var(--color-grey-700);
+  --button-secondary-color: var(--color-primary);
+
+  --button-disabled-bg: var(--color-grey-700);
+  --button-disabled-color: var(--color-grey-500);
 }

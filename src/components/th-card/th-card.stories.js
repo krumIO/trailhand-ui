@@ -1,9 +1,6 @@
 import './th-card.ts';
+import '../button/button.ts';
 
-/**
- * The ThCard component is a flexible container for displaying content
- * in a visually distinct box.
- */
 export default {
   title: 'Components/ThCard',
   tags: ['autodocs'],
@@ -12,17 +9,19 @@ export default {
 
     if (args.variant) card.variant = args.variant;
     if (args.dismissible !== undefined) card.dismissible = args.dismissible;
+    if (args.clickable !== undefined) card.clickable = args.clickable;
+    if (args.href) card.href = args.href;
+    if (args.target) card.target = args.target;
     if (args.cardId) card.cardId = args.cardId;
     if (args.cardTitle) card.cardTitle = args.cardTitle;
     if (args.subtitle) card.subtitle = args.subtitle;
     if (args.description) card.description = args.description;
-    if (args.iconClass) card.iconClass = args.iconClass;
     if (args.iconSrc) card.iconSrc = args.iconSrc;
+    if (args.iconName) card.iconName = args.iconName;
     if (args.loading !== undefined) card.loading = args.loading;
 
-    card.addEventListener('card-dismiss', (e) => {
-      console.log('Card dismissed:', e.detail);
-    });
+    card.addEventListener('card-dismiss', (e) => console.log('card-dismiss', e.detail));
+    card.addEventListener('card-click', () => console.log('card-click'));
 
     return card;
   },
@@ -31,12 +30,23 @@ export default {
       control: 'select',
       options: ['default', 'info', 'outlined'],
       description: 'Visual style variant',
-      defaultValue: 'default',
     },
     dismissible: {
       control: 'boolean',
       description: 'Whether the card can be dismissed',
-      defaultValue: false,
+    },
+    clickable: {
+      control: 'boolean',
+      description: 'Makes the card clickable (emits card-click event)',
+    },
+    href: {
+      control: 'text',
+      description: 'URL to navigate to (renders as anchor tag)',
+    },
+    target: {
+      control: 'select',
+      options: ['', '_self', '_blank'],
+      description: 'Anchor target when href is set',
     },
     cardId: {
       control: 'text',
@@ -48,52 +58,49 @@ export default {
     },
     subtitle: {
       control: 'text',
-      description: 'Card subtitle text (info variant)',
+      description: 'Card subtitle text',
     },
     description: {
       control: 'text',
       description: 'Card body/description text',
     },
-    iconClass: {
-      control: 'text',
-      description: 'Icon class name (e.g., "icon-namespace")',
-    },
     iconSrc: {
       control: 'text',
       description: 'Icon image URL',
     },
+    iconName: {
+      control: 'select',
+      options: ['', 'bug', 'error', 'pause', 'play', 'close', 'globe', 'home', 'user'],
+      description: 'Icon name for trailhand-icon',
+    },
     loading: {
       control: 'boolean',
       description: 'Show loading spinner',
-      defaultValue: false,
     },
   },
   parameters: {
     docs: {
       description: {
         component: `
-A flexible card component for displaying content in a contained box.
+A flexible card component for displaying content.
 
 **Features:**
-- Multiple variants (default, info, outlined)
+- Variants: default, info, outlined
 - Dismissible with \`card-dismiss\` event
-- Multiple icon options (class, URL, or slot)
-- Loading state with spinner
-- Slots for title, subtitle, body, action, and footer
-- CSS custom properties for theming
+- Clickable with \`card-click\` event or \`href\` for links
+- Icon options: icon-name, icon-src, or slot
+- Loading state
+- Slots: title, subtitle, description, action, footer
         `.trim(),
       },
     },
   },
 };
 
-/**
- * Default card with basic content
- */
 export const Default = {
   args: {
     cardTitle: 'Card Title',
-    description: 'This is a card description. Cards can contain various types of content.',
+    description: 'This is a card description.',
   },
   parameters: {
     docs: {
@@ -107,35 +114,133 @@ export const Default = {
   },
 };
 
-/**
- * Resource card (like in the dashboard mockup)
- */
+export const InfoCards = {
+  args: {
+    dismissible: true,
+  },
+  argTypes: {
+    dismissible: {
+      control: 'boolean',
+      description: 'Whether the cards can be dismissed',
+    },
+    iconName: {
+      control: 'select',
+      options: ['user', 'bug', 'error', 'pause', 'play', 'close', 'globe', 'home'],
+      description: 'Icon name for the right card',
+    },
+  },
+  render: (args) => {
+    const container = document.createElement('div');
+    container.style.cssText = 'display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;';
+
+    const cardImage = document.createElement('trailhand-card');
+    cardImage.variant = 'info';
+    cardImage.cardTitle = 'Get Started';
+    cardImage.subtitle = 'New to Epinio? Get started now!';
+    cardImage.iconSrc = './stories/assets/accessibility.svg';
+    cardImage.dismissible = args.dismissible;
+    cardImage.cardId = 'get-started';
+
+    const cardIcon = document.createElement('trailhand-card');
+    cardIcon.variant = 'info';
+    cardIcon.cardTitle = 'Welcome Back';
+    cardIcon.subtitle = 'You have 3 new notifications';
+    cardIcon.iconName = args.iconName || 'user';
+    cardIcon.dismissible = args.dismissible;
+    cardIcon.cardId = 'welcome-back';
+
+    container.appendChild(cardImage);
+    container.appendChild(cardIcon);
+
+    return container;
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Info cards using `icon-src` (image) vs `icon-name` (trailhand-icon).',
+      },
+      source: {
+        code: `<trailhand-card
+  variant="info"
+  card-title="Get Started"
+  subtitle="New to Epinio? Get started now!"
+  icon-src="./icon.svg"
+  dismissible
+  card-id="get-started">
+</trailhand-card>
+
+<trailhand-card
+  variant="info"
+  card-title="Welcome Back"
+  subtitle="You have 3 new notifications"
+  icon-name="user"
+  dismissible
+  card-id="welcome-back">
+</trailhand-card>`,
+      },
+    },
+  },
+};
+
+export const Clickable = {
+  args: {
+    cardTitle: 'Clickable Card',
+    description: 'Click anywhere on this card to trigger the card-click event.',
+    clickable: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Cards with `clickable` attribute emit a `card-click` event when clicked.',
+      },
+      source: {
+        code: `<trailhand-card
+  card-title="Clickable Card"
+  description="Click anywhere on this card."
+  clickable>
+</trailhand-card>`,
+      },
+    },
+  },
+};
+
+export const LinkCard = {
+  args: {
+    cardTitle: 'Link Card',
+    description: 'This card navigates to a URL when clicked.',
+    href: 'https://example.com',
+    target: '_blank',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Cards with `href` render as anchor tags and navigate on click.',
+      },
+      source: {
+        code: `<trailhand-card
+  card-title="Link Card"
+  description="This card navigates to a URL."
+  href="https://example.com"
+  target="_blank">
+</trailhand-card>`,
+      },
+    },
+  },
+};
+
 export const ResourceCard = {
   render: () => {
     const card = document.createElement('trailhand-card');
     card.cardTitle = 'Namespaces';
     card.description = 'Namespaces group your applications, services and other resources.';
-    card.iconClass = 'icon-namespace';
+    card.iconName = 'globe';
 
-    // Add action button
-    const actionSlot = document.createElement('a');
+    const actionSlot = document.createElement('trailhand-button');
     actionSlot.slot = 'action';
-    actionSlot.href = '#';
-    actionSlot.className = 'btn-primary';
+    actionSlot.variant = 'primary';
     actionSlot.textContent = 'Create Namespace';
-    actionSlot.style.cssText = `
-      display: inline-flex;
-      align-items: center;
-      padding: 10px 20px;
-      background: #3b82f6;
-      color: white;
-      border-radius: 6px;
-      text-decoration: none;
-      font-weight: 500;
-    `;
     card.appendChild(actionSlot);
 
-    // Add footer content
     const footer = document.createElement('div');
     footer.slot = 'footer';
     footer.innerHTML = `
@@ -153,161 +258,30 @@ export const ResourceCard = {
   parameters: {
     docs: {
       description: {
-        story: 'A resource card like those shown on the Epinio dashboard.',
-      },
-    },
-  },
-};
-
-/**
- * Info card variant (dismissible notification style)
- */
-export const InfoCard = {
-  render: () => {
-    const card = document.createElement('trailhand-card');
-    card.variant = 'info';
-    card.cardTitle = 'Get Started';
-    card.subtitle = 'New to Epinio? Get started now!';
-    card.iconSrc = './stories/assets/accessibility.svg';
-    card.dismissible = true;
-    card.cardId = 'get-started';
-
-    card.addEventListener('card-dismiss', () => {
-      card.remove();
-    });
-
-    return card;
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Info cards are compact, horizontal cards perfect for announcements or quick actions.',
+        story: 'A resource card with action button and footer content.',
       },
       source: {
         code: `<trailhand-card
-  variant="info"
-  card-title="Get Started"
-  subtitle="New to Epinio? Get started now!"
-  icon-src="icon.png"
-  dismissible
-  card-id="get-started">
+  card-title="Namespaces"
+  description="Namespaces group your applications, services and other resources."
+  icon-name="globe">
+  <trailhand-button slot="action" variant="primary">
+    Create Namespace
+  </trailhand-button>
+  <div slot="footer">
+    <h4>New Namespaces</h4>
+    <ul>
+      <li>test-workspace</li>
+      <li>test-workspace-2</li>
+      <li>test-workspace-3</li>
+    </ul>
+  </div>
 </trailhand-card>`,
       },
     },
   },
 };
 
-/**
- * Applications card with progress indicator
- */
-export const ApplicationsCard = {
-  render: () => {
-    const card = document.createElement('trailhand-card');
-    card.cardTitle = 'Applications';
-    card.description = 'Epinio uses Applications to transition your code, through build, to being deployed.';
-    card.iconClass = 'icon-application';
-
-    // Add action button
-    const actionSlot = document.createElement('a');
-    actionSlot.slot = 'action';
-    actionSlot.href = '#';
-    actionSlot.style.cssText = `
-      display: inline-flex;
-      align-items: center;
-      padding: 10px 20px;
-      background: #3b82f6;
-      color: white;
-      border-radius: 6px;
-      text-decoration: none;
-      font-weight: 500;
-    `;
-    actionSlot.textContent = 'Deploy Application';
-    card.appendChild(actionSlot);
-
-    // Add footer with progress bar
-    const footer = document.createElement('div');
-    footer.slot = 'footer';
-    footer.innerHTML = `
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-        <span style="font-weight: 500;">Running</span>
-        <span style="color: #6b7280;">1 of 2 / 50%</span>
-      </div>
-      <div style="height: 8px; background: #e5e7eb; border-radius: 4px; overflow: hidden;">
-        <div style="width: 50%; height: 100%; background: #3b82f6;"></div>
-      </div>
-    `;
-    card.appendChild(footer);
-
-    return card;
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Applications card showing deployment progress.',
-      },
-    },
-  },
-};
-
-/**
- * Services card with quick start links
- */
-export const ServicesCard = {
-  render: () => {
-    const card = document.createElement('trailhand-card');
-    card.cardTitle = 'Services';
-    card.description = 'Create instances of your services. Instances can be bound to your Applications to provide data.';
-    card.iconClass = 'icon-service';
-
-    // Add action button
-    const actionSlot = document.createElement('a');
-    actionSlot.slot = 'action';
-    actionSlot.href = '#';
-    actionSlot.style.cssText = `
-      display: inline-flex;
-      align-items: center;
-      padding: 10px 20px;
-      background: #3b82f6;
-      color: white;
-      border-radius: 6px;
-      text-decoration: none;
-      font-weight: 500;
-    `;
-    actionSlot.textContent = 'Create Instance';
-    card.appendChild(actionSlot);
-
-    // Add footer with service links
-    const footer = document.createElement('div');
-    footer.slot = 'footer';
-    footer.innerHTML = `
-      <h4 style="margin: 0 0 12px 0; font-size: 14px; font-weight: 600;">Quick Start With</h4>
-      <div style="display: flex; flex-direction: column; gap: 8px;">
-        <a href="#" style="display: flex; justify-content: space-between; align-items: center; color: #3b82f6; text-decoration: none; padding: 8px 0; border-bottom: 1px solid #e5e7eb;">
-          test-workspace
-          <span>+</span>
-        </a>
-        <a href="#" style="display: flex; justify-content: space-between; align-items: center; color: #3b82f6; text-decoration: none; padding: 8px 0;">
-          test-workspace-2
-          <span>+</span>
-        </a>
-      </div>
-    `;
-    card.appendChild(footer);
-
-    return card;
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Services card with quick start links.',
-      },
-    },
-  },
-};
-
-/**
- * Loading state
- */
 export const Loading = {
   args: {
     loading: true,
@@ -315,7 +289,7 @@ export const Loading = {
   parameters: {
     docs: {
       description: {
-        story: 'Cards can show a loading spinner while content is being fetched.',
+        story: 'Cards show a spinner when in loading state.',
       },
       source: {
         code: '<trailhand-card loading></trailhand-card>',
@@ -324,9 +298,6 @@ export const Loading = {
   },
 };
 
-/**
- * Outlined variant
- */
 export const Outlined = {
   args: {
     variant: 'outlined',
@@ -336,68 +307,47 @@ export const Outlined = {
   parameters: {
     docs: {
       source: {
-        code: `<trailhand-card variant="outlined" card-title="Outlined Card">
-  Content here
+        code: `<trailhand-card
+  variant="outlined"
+  card-title="Outlined Card"
+  description="This card has a border outline style.">
 </trailhand-card>`,
       },
     },
   },
 };
 
-/**
- * Dismissible card
- */
 export const Dismissible = {
   render: () => {
-    const container = document.createElement('div');
-
     const card = document.createElement('trailhand-card');
     card.cardTitle = 'Dismissible Card';
     card.description = 'Click the X to dismiss this card.';
     card.dismissible = true;
     card.cardId = 'demo-dismiss';
 
-    card.addEventListener('card-dismiss', (e) => {
-      console.log('Dismissed:', e.detail.id);
-      card.remove();
-    });
-
-    container.appendChild(card);
-    return container;
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Default cards can also be dismissible.',
-      },
-    },
-  },
-};
-
-/**
- * With icon slot
- */
-export const WithIconSlot = {
-  render: () => {
-    const card = document.createElement('trailhand-card');
-    card.cardTitle = 'Custom Icon';
-    card.description = 'Using a slot for a custom icon.';
-
-    const iconSlot = document.createElement('span');
-    iconSlot.slot = 'icon';
-    iconSlot.innerHTML = `
-      <svg width="32" height="32" viewBox="0 0 24 24" fill="#3b82f6">
-        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
-      </svg>
-    `;
-    card.appendChild(iconSlot);
+    card.addEventListener('card-dismiss', () => card.remove());
 
     return card;
   },
   parameters: {
     docs: {
       description: {
-        story: 'You can pass a custom icon using the icon slot.',
+        story: 'Cards can be dismissed by clicking the X button.',
+      },
+      source: {
+        code: `<trailhand-card
+  card-title="Dismissible Card"
+  description="Click the X to dismiss this card."
+  dismissible
+  card-id="demo-dismiss">
+</trailhand-card>
+
+<script>
+  document.querySelector('trailhand-card')
+    .addEventListener('card-dismiss', (e) => {
+      e.target.remove();
+    });
+</script>`,
       },
     },
   },

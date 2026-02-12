@@ -59,8 +59,9 @@ export default {
       defaultValue: false,
     },
     icon: {
-      control: 'text',
-      description: 'Iconify icon name to display before label',
+      control: 'select',
+      options: ['', 'bug', 'error', 'pause', 'play', 'close', 'globe', 'home', 'user'],
+      description: 'trailhand-icon name to display before label',
     },
     value: {
       control: 'text',
@@ -77,7 +78,7 @@ A tag/badge component for displaying labels, statuses, or categories.
 - Multiple color variants (default, success, warning, error, info)
 - Three size options (sm, md, lg)
 - Optional dismiss button with \`tag-dismiss\` event
-- Optional icon support via Iconify
+- Optional icon support via trailhand-icon (Font Awesome)
 - CSS custom properties for theming
 - Accessible with proper ARIA attributes
         `.trim(),
@@ -129,11 +130,12 @@ export const Variants = {
         story: 'All available color variants for different use cases.',
       },
       source: {
-        code: `<trailhand-tag label="default" variant="default"></trailhand-tag>
-<trailhand-tag label="success" variant="success"></trailhand-tag>
-<trailhand-tag label="warning" variant="warning"></trailhand-tag>
-<trailhand-tag label="error" variant="error"></trailhand-tag>
-<trailhand-tag label="info" variant="info"></trailhand-tag>`,
+        code: `
+          <trailhand-tag label="default" variant="default"></trailhand-tag>
+          <trailhand-tag label="success" variant="success"></trailhand-tag>
+          <trailhand-tag label="warning" variant="warning"></trailhand-tag>
+          <trailhand-tag label="error" variant="error"></trailhand-tag>
+          <trailhand-tag label="info" variant="info"></trailhand-tag>`,
       },
     },
   },
@@ -165,11 +167,12 @@ export const Outlined = {
         story: 'Outlined style for a lighter, border-only appearance.',
       },
       source: {
-        code: `<trailhand-tag label="default" variant="default" outlined></trailhand-tag>
-<trailhand-tag label="success" variant="success" outlined></trailhand-tag>
-<trailhand-tag label="warning" variant="warning" outlined></trailhand-tag>
-<trailhand-tag label="error" variant="error" outlined></trailhand-tag>
-<trailhand-tag label="info" variant="info" outlined></trailhand-tag>`,
+        code: `
+          <trailhand-tag label="default" variant="default" outlined></trailhand-tag>
+          <trailhand-tag label="success" variant="success" outlined></trailhand-tag>
+          <trailhand-tag label="warning" variant="warning" outlined></trailhand-tag>
+          <trailhand-tag label="error" variant="error" outlined></trailhand-tag>
+          <trailhand-tag label="info" variant="info" outlined></trailhand-tag>`,
       },
     },
   },
@@ -201,9 +204,10 @@ export const Sizes = {
         story: 'Tags come in three sizes to fit different contexts.',
       },
       source: {
-        code: `<trailhand-tag label="sm" size="sm" variant="info"></trailhand-tag>
-<trailhand-tag label="md" size="md" variant="info"></trailhand-tag>
-<trailhand-tag label="lg" size="lg" variant="info"></trailhand-tag>`,
+        code: `
+          <trailhand-tag label="sm" size="sm" variant="info"></trailhand-tag>
+          <trailhand-tag label="md" size="md" variant="info"></trailhand-tag>
+          <trailhand-tag label="lg" size="lg" variant="info"></trailhand-tag>`,
       },
     },
   },
@@ -265,10 +269,11 @@ export const WithIcons = {
     container.style.cssText = 'display: flex; gap: 8px; flex-wrap: wrap;';
 
     const items = [
-      { label: 'Running', icon: 'heroicons:play-circle', variant: 'success' },
-      { label: 'Stopped', icon: 'heroicons:stop-circle', variant: 'error' },
-      { label: 'Pending', icon: 'heroicons:clock', variant: 'warning' },
-      { label: 'Info', icon: 'heroicons:information-circle', variant: 'info' },
+      { label: 'Running', icon: 'play', variant: 'success' },
+      { label: 'Paused', icon: 'pause', variant: 'default' },
+      { label: 'Bug', icon: 'bug', variant: 'error' },
+      { label: 'Warning', icon: 'error', variant: 'warning' },
+      { label: 'Global', icon: 'globe', variant: 'info' },
     ];
 
     items.forEach(({ label, icon, variant }) => {
@@ -284,12 +289,15 @@ export const WithIcons = {
   parameters: {
     docs: {
       description: {
-        story: 'Tags can include icons from Iconify for visual context.',
+        story: 'Tags can include icons using the trailhand-icon component.',
       },
       source: {
-        code: `<trailhand-tag label="Running" icon="heroicons:play-circle" variant="success"></trailhand-tag>
-<trailhand-tag label="Stopped" icon="heroicons:stop-circle" variant="error"></trailhand-tag>
-<trailhand-tag label="Pending" icon="heroicons:clock" variant="warning"></trailhand-tag>`,
+        code: `
+        <trailhand-tag label="Running" icon="play" variant="success"></trailhand-tag>
+        <trailhand-tag label="Paused" icon="pause" variant="default"></trailhand-tag>
+        <trailhand-tag label="Bug" icon="bug" variant="error"></trailhand-tag>
+        <trailhand-tag label="Warning" icon="error" variant="warning"></trailhand-tag>
+        <trailhand-tag label="Global" icon="globe" variant="info"></trailhand-tag>`,
       },
     },
   },
