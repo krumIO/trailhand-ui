@@ -16,6 +16,8 @@ export interface ButtonProps {
 }
 
 export class Button extends LitElement {
+  static formAssociated = true;
+
   @property({ type: String })
   variant:
     | 'primary'
@@ -35,6 +37,13 @@ export class Button extends LitElement {
 
   @property({ type: String })
   type: 'button' | 'submit' | 'reset' = 'button';
+
+  private internals: ElementInternals;
+
+  constructor() {
+    super();
+    this.internals = this.attachInternals();
+  }
 
   static override styles = css`
     :host {
@@ -157,6 +166,20 @@ export class Button extends LitElement {
       return;
     }
 
+    // Handle form submission for type="submit"
+    if (this.type === 'submit') {
+      const form = this.internals.form;
+      if (form) {
+        // Request form submission
+        form.requestSubmit();
+      }
+    } else if (this.type === 'reset') {
+      const form = this.internals.form;
+      if (form) {
+        form.reset();
+      }
+    }
+
     this.dispatchEvent(
       new CustomEvent('button-click', {
         bubbles: true,
@@ -169,15 +192,16 @@ export class Button extends LitElement {
     );
   }
 
-  override render(): TemplateResult {
-    const styles = {};
+  formDisabledCallback(disabled: boolean) {
+    this.disabled = disabled;
+  }
 
+  override render(): TemplateResult {
     return html`
       <button
         type=${this.type}
         class="trailhand-button trailhand-button--${this
           .variant} trailhand-button--${this.size}"
-        style=${styleMap(styles)}
         ?disabled=${this.disabled}
         @click=${this.handleClick}
       >

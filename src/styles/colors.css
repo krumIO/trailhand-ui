@@ -74,6 +74,7 @@
   /* Links */
   --color-link: var(--color-primary);
   --color-link-hover: var(--color-primary);
+
   /* Buttons */
   --button-disabled-bg: var(--color-grey-200);
   --button-disabled-color: var(--color-grey-500);
@@ -98,6 +99,13 @@
   --button-confirmation-bg: var(--color-green);
   --button-confirmation-bg-hover: var(--color-dark-green);
   --button-confirmation-color: var(--color-white);
+
+  /* Checkbox */
+  --checkbox-border: var(--color-grey-300);
+  --checkbox-checked-bg: var(--color-dark-primary);
+  --checkbox-disabled-bg: var(--color-grey-300);
+  --checkbox-disabled-border: var(--color-grey-300);
+  --checkbox-disabled-check: var(--color-grey-500);
 
   /* Shadow colors using opacity */
   --color-shadow: rgba(0, 0, 0, 0.1);
@@ -129,4 +137,11 @@
 
   --button-disabled-bg: var(--color-grey-700);
   --button-disabled-color: var(--color-grey-500);
+
+  /* Checkbox */
+  --checkbox-border: var(--color-grey-600);
+  --checkbox-checked-bg: var(--color-primary);
+  --checkbox-disabled-bg: var(--color-grey-600);
+  --checkbox-disabled-border: var(--color-grey-600);
+  --checkbox-disabled-check: var(--color-grey-300);
 }

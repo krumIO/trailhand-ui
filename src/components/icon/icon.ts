@@ -1,12 +1,20 @@
 import { LitElement, html, css } from 'lit';
 import { property } from 'lit/decorators.js';
 import { library, icon } from '@fortawesome/fontawesome-svg-core';
-import { faGlobe, faHome, faUser } from '@fortawesome/free-solid-svg-icons';
+import {
+  faGlobe,
+  faHome,
+  faUser,
+  faCheck,
+  faMinus,
+} from '@fortawesome/free-solid-svg-icons';
 
 const iconMap = {
   globe: faGlobe,
   home: faHome,
   user: faUser,
+  check: faCheck,
+  minus: faMinus,
 };
 
 export const availableIcons = Object.keys(iconMap) as (keyof typeof iconMap)[];

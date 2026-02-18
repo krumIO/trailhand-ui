@@ -5,6 +5,7 @@ import { customElement } from 'lit/decorators.js';
 import '../components/button';
 import '../components/icon';
 import '../components/toggle-switch';
+import '../components/checkbox';
 
 // Import global styles
 import '../styles/colors.css';
@@ -31,6 +32,19 @@ class DevApp extends LitElement {
       display: flex;
       gap: 1.5rem;
       flex-wrap: wrap;
+    }
+
+    .form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      max-width: 300px;
+    }
+
+    .fieldset {
+      border: 1px solid var(--color-border, #ccc);
+      padding: 1rem;
+      border-radius: 8px;
     }
   `;
 
@@ -140,6 +154,56 @@ class DevApp extends LitElement {
           <trailhand-icon name="globe" slot="icon-right"></trailhand-icon>
         </trailhand-button>
       </div>
+      <h1>Checkboxes</h1>
+      <div class="content">
+        <trailhand-checkbox name="checkbox1" value="1"
+          >Option 1</trailhand-checkbox
+        >
+        <trailhand-checkbox name="checkbox2" value="2" checked
+          >Option 2</trailhand-checkbox
+        >
+        <trailhand-checkbox name="checkbox3" value="3" indeterminate
+          >Option 3</trailhand-checkbox
+        >
+        <trailhand-checkbox name="checkbox4" value="4" disabled
+          >Disabled</trailhand-checkbox
+        >
+        <trailhand-checkbox name="checkbox5" value="5" checked disabled
+          >Checked & Disabled</trailhand-checkbox
+        >
+        <trailhand-checkbox name="checkbox5" value="5" checked indeterminate
+          >Checked & Indeterminate</trailhand-checkbox
+        >
+      </div>
+      <h1>Form Integration</h1>
+      <form
+        class="form"
+        @submit=${(e: Event) => {
+          e.preventDefault();
+          const formData = new FormData(e.target as HTMLFormElement);
+          console.log(
+            'Form submitted with values:',
+            Object.fromEntries(formData),
+          );
+        }}
+      >
+        <fieldset class="fieldset" disabled>
+          <legend>Disabled Fieldset</legend>
+          <trailhand-checkbox name="formCheckbox" value="on"
+            >Form Checkbox</trailhand-checkbox
+          >
+        </fieldset>
+        <fieldset class="fieldset">
+          <legend>Enabled Fieldset</legend>
+          <trailhand-checkbox name="formCheckbox2" value="on"
+            >Form Checkbox 2</trailhand-checkbox
+          >
+        </fieldset>
+        <trailhand-button type="submit">Submit Form</trailhand-button>
+        <trailhand-button type="reset" variant="destructive"
+          >Reset Form</trailhand-button
+        >
+      </form>
     `;
   }
 }
