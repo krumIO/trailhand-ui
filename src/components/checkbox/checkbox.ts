@@ -8,6 +8,7 @@ export interface CheckboxProps {
   indeterminate: boolean;
   name: string;
   value: string;
+  size: 'small' | 'medium' | 'large';
 }
 
 export class Checkbox extends LitElement {
@@ -27,6 +28,9 @@ export class Checkbox extends LitElement {
 
   @property({ type: String })
   value = 'on';
+
+  @property({ type: String })
+  size: 'small' | 'medium' | 'large' = 'medium';
 
   // ElementInternals for form integration
   private internals: ElementInternals;
@@ -48,7 +52,6 @@ export class Checkbox extends LitElement {
       justify-content: flex-start;
       gap: 8px;
       cursor: pointer;
-      font-size: 12px;
       font-weight: 500;
     }
 
@@ -73,17 +76,30 @@ export class Checkbox extends LitElement {
     }
 
     .control trailhand-icon {
-      width: 12px;
-      height: 12px;
       opacity: 0;
     }
 
-    :host([checked]) .control trailhand-icon[name='check'] {
-      opacity: 1;
+    /* Size */
+    :host([size='small']) .control {
+      width: 12px;
+      height: 12px;
     }
-
-    :host([indeterminate]) .control trailhand-icon[name='minus'] {
-      opacity: 1;
+    :host([size='small']) .wrapper {
+      font-size: 12px;
+    }
+    :host([size='medium']) .control {
+      width: 14px;
+      height: 14px;
+    }
+    :host([size='medium']) .wrapper {
+      font-size: 14px;
+    }
+    :host([size='large']) .control {
+      width: 16px;
+      height: 16px;
+    }
+    :host([size='large']) .wrapper {
+      font-size: 16px;
     }
 
     /* Focus */
@@ -98,12 +114,18 @@ export class Checkbox extends LitElement {
       border-color: var(--checkbox-checked-bg, #005cb9);
       color: white;
     }
+    :host([checked]) .control trailhand-icon[name='check'] {
+      opacity: 1;
+    }
 
     /* Indeterminate state */
     :host([indeterminate]) .control {
       background: var(--checkbox-checked-bg, #005cb9);
       border-color: var(--checkbox-checked-bg, #005cb9);
       color: white;
+    }
+    :host([indeterminate]) .control trailhand-icon[name='minus'] {
+      opacity: 1;
     }
 
     /* Disabled */
@@ -120,7 +142,6 @@ export class Checkbox extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
-
     // Check if we're in a disabled fieldset on initial connection
     const fieldset = this.closest('fieldset');
     if (fieldset?.disabled) {

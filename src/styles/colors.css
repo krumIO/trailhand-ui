@@ -107,6 +107,17 @@
   --checkbox-disabled-border: var(--color-grey-300);
   --checkbox-disabled-check: var(--color-grey-500);
 
+  /* Text Input */
+  --input-border: var(--color-grey-300);
+  --input-focus-border: var(--color-dark-primary);
+  --input-border-invalid: var(--color-red);
+  --input-label: var(--color-grey-700);
+  --input-label-disabled: var(--color-grey-500);
+  --input-placeholder: var(--color-grey-400);
+  --input-text: var(--color-black);
+  --input-bg: 'transparent';
+  --input-icon-color: var(--color-grey-400);
+
   /* Shadow colors using opacity */
   --color-shadow: rgba(0, 0, 0, 0.1);
   --color-shadow-medium: rgba(0, 0, 0, 0.15);
@@ -144,4 +155,14 @@
   --checkbox-disabled-bg: var(--color-grey-600);
   --checkbox-disabled-border: var(--color-grey-600);
   --checkbox-disabled-check: var(--color-grey-300);
+
+  /* Text Input */
+  --input-border: var(--color-grey-600);
+  --input-focus-border: var(--color-primary);
+  --input-label: var(--color-white);
+  --input-label-disabled: var(--color-grey-500);
+  --input-placeholder: var(--color-grey-300);
+  --input-text: var(--color-white);
+  --input-bg: var(--color-grey-700);
+  --input-icon-color: var(--color-grey-300);
 }

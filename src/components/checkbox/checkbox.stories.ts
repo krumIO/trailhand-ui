@@ -30,6 +30,11 @@ const meta: Meta<CheckboxProps> = {
       control: { type: 'text' },
       description: 'The value of the checkbox when checked',
     },
+    size: {
+      control: { type: 'select' },
+      options: ['small', 'medium', 'large'],
+      description: 'The size of the checkbox',
+    },
   },
   args: {
     checked: false,
@@ -37,6 +42,7 @@ const meta: Meta<CheckboxProps> = {
     indeterminate: false,
     name: '',
     value: 'on',
+    size: 'medium',
   },
   render: (args) => html`
     <trailhand-checkbox
@@ -45,6 +51,7 @@ const meta: Meta<CheckboxProps> = {
       ?indeterminate=${args.indeterminate}
       name=${args.name}
       value=${args.value}
+      size=${args.size}
     >
       Checkbox Label
     </trailhand-checkbox>
@@ -89,6 +96,24 @@ export const IndeterminateDisabled: Story = {
   args: {
     indeterminate: true,
     disabled: true,
+  },
+};
+
+export const Small: Story = {
+  args: {
+    size: 'small',
+  },
+};
+
+export const Medium: Story = {
+  args: {
+    size: 'medium',
+  },
+};
+
+export const Large: Story = {
+  args: {
+    size: 'large',
   },
 };
 

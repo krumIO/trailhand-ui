@@ -6,6 +6,7 @@ import '../components/button';
 import '../components/icon';
 import '../components/toggle-switch';
 import '../components/checkbox';
+import '../components/text-input';
 
 // Import global styles
 import '../styles/colors.css';
@@ -69,6 +70,7 @@ class DevApp extends LitElement {
           @toggle-change=${this.handleThemeToggle}
         ></toggle-switch>
       </div>
+      <!-------------------------- BUTTONS -------------------------->
       <h1>Buttons</h1>
       <div class="content">
         <trailhand-button
@@ -154,6 +156,7 @@ class DevApp extends LitElement {
           <trailhand-icon name="globe" slot="icon-right"></trailhand-icon>
         </trailhand-button>
       </div>
+      <!-------------------------- CHECKBOXES -------------------------->
       <h1>Checkboxes</h1>
       <div class="content">
         <trailhand-checkbox name="checkbox1" value="1"
@@ -174,13 +177,85 @@ class DevApp extends LitElement {
         <trailhand-checkbox name="checkbox5" value="5" checked indeterminate
           >Checked & Indeterminate</trailhand-checkbox
         >
+        <trailhand-checkbox name="checkbox6" value="6" size="small"
+          >Small</trailhand-checkbox
+        >
+        <trailhand-checkbox name="checkbox7" value="7" size="medium"
+          >Medium</trailhand-checkbox
+        >
+        <trailhand-checkbox name="checkbox8" value="8" size="large"
+          >Large</trailhand-checkbox
+        >
       </div>
+      <!-------------------------- TEXT INPUTS -------------------------->
+      <h1>Text Inputs</h1>
+      <div class="content">
+        <trailhand-text-input value="" placeholder="Placeholder"
+          ><trailhand-icon name="globe" slot="icon"></trailhand-icon
+        ></trailhand-text-input>
+        <trailhand-text-input
+          label="Active"
+          value="Active"
+          placeholder="Placeholder"
+          ><trailhand-icon name="globe" slot="icon"></trailhand-icon
+        ></trailhand-text-input>
+        <trailhand-text-input
+          label="Disabled"
+          value=""
+          placeholder="Placeholder"
+          disabled
+          ><trailhand-icon name="globe" slot="icon"></trailhand-icon
+        ></trailhand-text-input>
+        <trailhand-text-input
+          label="Small"
+          value=""
+          placeholder="Placeholder"
+          required
+          size="small"
+          ><trailhand-icon name="globe" slot="icon"></trailhand-icon
+        ></trailhand-text-input>
+        <trailhand-text-input
+          label="Medium"
+          value=""
+          placeholder="Placeholder"
+          required
+          size="medium"
+          ><trailhand-icon name="globe" slot="icon"></trailhand-icon
+        ></trailhand-text-input>
+        <trailhand-text-input
+          label="Large"
+          value=""
+          placeholder="Placeholder"
+          required
+          size="large"
+          ><trailhand-icon name="globe" slot="icon"></trailhand-icon
+        ></trailhand-text-input>
+        <trailhand-text-input
+          label="Invalid"
+          value=""
+          placeholder="Placeholder"
+          required
+          size="medium"
+          invalid
+          ><trailhand-icon name="globe" slot="icon"></trailhand-icon
+        ></trailhand-text-input>
+      </div>
+      <!-------------------------- FORM INTEGRATION -------------------------->
       <h1>Form Integration</h1>
       <form
         class="form"
-        @submit=${(e: Event) => {
+        @submit=${(e: SubmitEvent) => {
+          const form = e.currentTarget as HTMLFormElement;
+
+          if (!form.checkValidity()) {
+            form.reportValidity();
+            e.preventDefault(); // stop submission
+            return;
+          }
+
+          // Only runs if valid
           e.preventDefault();
-          const formData = new FormData(e.target as HTMLFormElement);
+          const formData = new FormData(form);
           console.log(
             'Form submitted with values:',
             Object.fromEntries(formData),
@@ -192,12 +267,28 @@ class DevApp extends LitElement {
           <trailhand-checkbox name="formCheckbox" value="on"
             >Form Checkbox</trailhand-checkbox
           >
+          <trailhand-text-input
+            label="Form Text Input"
+            name="formTextInput"
+            placeholder="Type something..."
+          ></trailhand-text-input>
         </fieldset>
         <fieldset class="fieldset">
           <legend>Enabled Fieldset</legend>
           <trailhand-checkbox name="formCheckbox2" value="on"
             >Form Checkbox 2</trailhand-checkbox
           >
+          <trailhand-text-input
+            label="Form Text Input 2"
+            name="formTextInput2"
+            placeholder="Type something..."
+          ></trailhand-text-input>
+          <trailhand-text-input
+            label="Form Text Input 3"
+            name="formTextInput3"
+            placeholder="Type something..."
+            required
+          ></trailhand-text-input>
         </fieldset>
         <trailhand-button type="submit">Submit Form</trailhand-button>
         <trailhand-button type="reset" variant="destructive"

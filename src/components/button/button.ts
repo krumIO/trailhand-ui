@@ -1,6 +1,5 @@
 import { LitElement, html, css, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
-import { styleMap } from 'lit/directives/style-map.js';
 
 export interface ButtonProps {
   variant:
