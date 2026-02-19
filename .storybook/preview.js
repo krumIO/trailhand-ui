@@ -1,3 +1,4 @@
+import '../src/styles/colors.css';
 /** @type { import('@storybook/web-components-vite').Preview } */
 const preview = {
   parameters: {
@@ -24,8 +25,8 @@ const preview = {
     },
     controls: {
       matchers: {
-       color: /(background|color)$/i,
-       date: /Date$/i,
+        color: /(background|color)$/i,
+        date: /Date$/i,
       },
     },
   },
@@ -34,7 +35,30 @@ const preview = {
       // Optional flag to prevent the automatic check
       manual: true,
     },
+    theme: 'light',
   },
+  globalTypes: {
+    theme: {
+      name: 'Theme',
+      defaultValue: 'light',
+      toolbar: {
+        icon: 'circlehollow',
+        items: [
+          { value: 'light', icon: 'sun', title: 'Light' },
+          { value: 'dark', icon: 'moon', title: 'Dark' },
+        ],
+        showName: true,
+      },
+    },
+  },
+  decorators: [
+    (Story, context) => {
+      const theme = context.globals.theme || 'light';
+      document.body.setAttribute('data-theme', theme);
+      document.body.style.background = theme === 'dark' ? '#212121' : '#ffffff';
+      return Story();
+    },
+  ],
 };
 
 export default preview;

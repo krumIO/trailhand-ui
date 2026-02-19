@@ -62,6 +62,10 @@ export class Checkbox extends LitElement {
       pointer-events: none;
     }
 
+    .label {
+      color: var(--color-text-primary, #000000);
+    }
+
     /* Custom box */
     .control {
       width: 16px;

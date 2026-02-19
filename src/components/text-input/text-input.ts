@@ -61,6 +61,7 @@ export class TextInput extends LitElement {
 
     label {
       font-size: 11px;
+      color: var(--input-label, #000000);
     }
 
     label .required-indicator {
