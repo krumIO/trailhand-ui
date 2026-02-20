@@ -94,16 +94,19 @@ npm run build-storybook
 ```
 trailhand-ui/
 ├── src/
-│   ├── components/           # Web components (TypeScript)
-│   │   ├── toggle-switch/
-│   │   ├── data-table/
-│   │   └── action-menu/
-│   ├── design-system/        # Design system stories
+│   ├── components/                 # Components
+│   │   ├── button/                 # Component folder
+│   │   │   ├── button.ts           # Web component
+│   │   │   ├── index.ts            # Export file
+│   │   │   ├── button.stories.ts   # Storybook for documentation and testing
+│   │   │   └── button.test.ts      # Unit tests
+│   │   └── more components/
+│   ├── design-system/              # Design system stories
 │   └── styles/
-│       └── colors.css        # Global color variables
-├── stories/                  # Additional Storybook stories
-├── .storybook/               # Storybook configuration
-├── dist/                     # Compiled output
+│       └── colors.css              # Global color variables
+├── stories/                        # Additional Storybook stories
+├── .storybook/                     # Storybook configuration
+├── dist/                           # Compiled output
 └── package.json
 ```
 
@@ -128,8 +131,8 @@ A sortable, paginated data table with search and custom actions.
 
 ```html
 <data-table
-  .columns=${columns}
-  .data=${data}
+  .columns="${columns}"
+  .data="${data}"
   searchable
   paginated
 ></data-table>
@@ -148,6 +151,92 @@ A dropdown menu for row-level actions in tables.
 ></action-menu>
 ```
 
+### Button
+
+A simple button with different variations to handle click events.
+
+```html
+<trailhand-button @click="${handleClick}" variant="primary" size="large">
+  <trailhand-icon name="globe" slot="icon-left"></trailhand-icon>
+  Primary
+  <trailhand-icon name="globe" slot="icon-right"></trailhand-icon>
+</trailhand-button>
+```
+
+## Testing
+
+This component library will serve as the foundation for future projects, thus it is important to ensure that these components are well tested. Thankfully, Storybook provides many useful tools to test the components using various methods.
+
+### Render Tests
+
+Render tests (smoke tests), as one might expect, simply tes that the component renders as desired. These tests serve to find any errors that would cause the component to fail on render. Storybook turns each story into a render test. By adding stories to represent the various states of a component, you can confirm that the component will render in that state.
+
+### Interaction Tests
+
+After confirming that a component renders properly, you would likely next want to test that it behaves properly. These interaction tests can be written by adding a new story for the interaction you are testing, and then using the "play" method provided by Storybook to simulate user interactions and make assumptions against expected results.
+
+### Accessibility Tests
+
+Storybook also provides addons to check components against accessibility rules. This ensures components meet certain standards. The configuration for which rules are applied as well as the result of not meeting said rules can be set in .storybook/preview.js. These properties can also be set at the Component and Story levels in case secific rulesets need to be applied or removed.
+
+### Visual Tests
+
+Visual tests compare snapshots taken of components to catch unexpected visual changes. The Storybook developers provide a platform to run and manage these tests called Chromatic.
+
+### Unit Tests
+
+The testing methods listed above are great for ensuring user-visible behavior. However, there may be things that need to be tested that are not captured in the methods above, and for that we can use Vitest unit tests. Storybook can confirm visible outcomes, however, to truly test the buisness logic in the component or in associated helpers unit tests are required.
+
+### Running the tests
+
+Tests can be executed via the Storybook UI or in the command line.
+
+#### Via Storybook
+
+To run tests via the Storybook UI, first run
+
+```bash
+npm run storybook
+```
+
+In the bottom left hand corner of the UI, you can open a menu to run tests and view test results.
+
+![Storybook Testing Menu](/docs/images/image.png)
+
+You can also view test results for specific stories in the playground for that story.
+
+![Interaction Test](/docs/images/image-1.png)
+
+![Visual Tests](/docs/images/image-2.png)
+
+![Accessibility Test](/docs/images/image-3.png)
+
+#### Via the command line
+
+To run render, interaction and accessibility tests via the command line run the following command
+
+```bash
+npm run test:storybook
+```
+
+To run unit tests via the command line run the following command
+
+```bash
+npm run test:unit
+```
+
+To run both storybook and unit tests via the command line run the following command
+
+```bash
+npm run test
+```
+
+To run visual tests via the command line ensure CHROMATIC_PROJECT_TOKEN is added to your env and then run the following command
+
+```bash
+npm run chromatic
+```
+
 ## Tech Stack
 
 - **Lit Element** 3.x - Web component library
@@ -162,6 +251,7 @@ A dropdown menu for row-level actions in tables.
 This library uses **Lit Element** for building fast, lightweight web components. Web components are framework-agnostic and work with any JavaScript framework or vanilla JS.
 
 ### Benefits
+
 - Framework agnostic
 - Encapsulated styles and functionality
 - Reusable across projects

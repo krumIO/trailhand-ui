@@ -37,14 +37,19 @@
     "access": "public"
   },
   "scripts": {
-    "start": "vite",
+    "dev": "vite",
     "build": "tsc",
     "build:demo": "vite build",
     "typecheck": "tsc --noEmit",
     "typecheck:watch": "tsc --noEmit --watch",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "chromatic": "chromatic --project-token=$CHROMATIC_PROJECT_TOKEN",
+    "test": "vitest",
+    "test:unit": "vitest --project unit",
+    "test:storybook": "vitest --project storybook",
+    "test:run": "vitest run"
   },
   "repository": {
     "type": "git",
@@ -60,22 +65,26 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^7.1.0",
+    "@fortawesome/free-solid-svg-icons": "^7.1.0",
     "@iconify/icons-heroicons": "^1.2.9",
     "iconify-icon": "^3.0.2",
     "lit": "^3.3.1"
   },
   "devDependencies": {
+    "@chromatic-com/storybook": "^5.0.0",
     "@storybook/addon-a11y": "^10.2.0",
     "@storybook/addon-docs": "^10.2.0",
     "@storybook/addon-vitest": "^10.2.0",
     "@storybook/web-components-vite": "^10.2.0",
     "@types/node": "^25.0.3",
+    "@vitest/browser-playwright": "^4.0.17",
+    "@vitest/coverage-v8": "^4.0.17",
+    "chromatic": "^15.0.0",
+    "playwright": "^1.57.0",
     "storybook": "^10.2.0",
     "typescript": "^5.9.3",
     "vite": "^6.4.1",
-    "vitest": "^4.0.17",
-    "playwright": "^1.57.0",
-    "@vitest/browser-playwright": "^4.0.17",
-    "@vitest/coverage-v8": "^4.0.17"
+    "vitest": "^4.0.17"
   }
 }
