@@ -52,9 +52,12 @@
     "typecheck:watch": "tsc --noEmit --watch",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "test-storybook": "vitest --project=storybook",
     "prepublishOnly": "npm run build",
-    "chromatic": "chromatic --project-token=$CHROMATIC_PROJECT_TOKEN"
+    "chromatic": "chromatic --project-token=$CHROMATIC_PROJECT_TOKEN",
+    "test": "vitest",
+    "test:unit": "vitest --project unit",
+    "test:storybook": "vitest --project storybook",
+    "test:run": "vitest run"
   },
   "repository": {
     "type": "git",

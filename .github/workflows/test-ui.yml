@@ -11,18 +11,19 @@ jobs:
       image: mcr.microsoft.com/playwright:v1.57.0-noble
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 22.12.0
-      
+
       - name: Configure Font Awesome Pro
         run: |
           echo "@fortawesome:registry=https://npm.fontawesome.com/" >> .npmrc
           echo "//npm.fontawesome.com/:_authToken=${{ secrets.FONTAWESOME_NPM_AUTH_TOKEN }}" >> .npmrc
+
       - name: Install dependencies
         run: npm ci
-      
+
       - name: Run tests
-        run: npm run test-storybook
+        run: npm run test
