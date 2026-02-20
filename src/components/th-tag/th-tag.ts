@@ -137,7 +137,7 @@ export class ThTag extends LitElement {
 
     .tag--warning {
       background-color: var(--color-warning-fill, var(--color-light-yellow, #fffeb4));
-      color: var(--color-warning-outline, var(--color-yellow, #D3C255));
+      color: var(--color-warning-outline, var(--color-dark-yellow, #a89939));
     }
 
     .tag--error {
@@ -168,7 +168,7 @@ export class ThTag extends LitElement {
 
     .tag--outlined.tag--warning {
       background-color: transparent;
-      color: var(--color-warning-outline, var(--color-yellow, #D3C255));
+      color: var(--color-warning-outline, var(--color-dark-yellow, #a89939));
     }
 
     .tag--outlined.tag--error {

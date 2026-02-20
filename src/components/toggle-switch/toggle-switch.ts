@@ -176,6 +176,7 @@ export class ToggleSwitch extends LitElement {
       <label class="toggle-switch">
         <input
           type="checkbox"
+          aria-label=${this.name || `${this.offLabel} / ${this.onLabel}`}
           .checked=${this.checked}
           @change=${this.handleToggleChange}
         />

@@ -317,6 +317,7 @@ export class ActionMenu extends LitElement {
         @click=${this._toggleMenu}
         aria-haspopup="true"
         aria-expanded=${this._isOpen}
+        aria-label="Actions"
       >
         ${this._renderIcon()}
       </button>
