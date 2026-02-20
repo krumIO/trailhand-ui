@@ -143,10 +143,29 @@ export class TextInput extends LitElement {
     }
   }
 
+  private emitChangeEvent() {
+    // emit native change event for form integration
+    this.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
+    // emit a custom event with the current value of the input
+    this.dispatchEvent(
+      new CustomEvent('text-input-change', {
+        detail: { value: this.value, name: this.name },
+        bubbles: true,
+        composed: true,
+      }),
+    );
+  }
+
   private handleInput(e: Event) {
     const target = e.target as HTMLInputElement;
     this.value = target.value;
-    this.internals.setFormValue(this.value);
+    if (this.value) {
+      this.internals.setFormValue(this.value);
+    } else {
+      this.internals.setFormValue(null);
+    }
+
+    this.emitChangeEvent();
   }
 
   firstUpdated() {

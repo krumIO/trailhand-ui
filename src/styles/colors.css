@@ -118,6 +118,17 @@
   --input-bg: 'transparent';
   --input-icon-color: var(--color-grey-400);
 
+  /* Selector */
+  --selector-border: var(--color-grey-300);
+  --selector-text-color: var(--color-text-primary);
+  --selector-subtext-color: var(--color-primary);
+  --selector-description-color: var(--color-text-secondary);
+  --selector-icon-color: var(--color-dark-primary);
+  --selector-checked-border: var(--color-dark-primary);
+  --selector-checked-bg: var(--color-primary);
+  --selector-disabled-color: var(--color-grey-500);
+  --selector-disabled-bg: transparent;
+
   /* Shadow colors using opacity */
   --color-shadow: rgba(0, 0, 0, 0.1);
   --color-shadow-medium: rgba(0, 0, 0, 0.15);
@@ -165,4 +176,15 @@
   --input-text: var(--color-white);
   --input-bg: var(--color-grey-700);
   --input-icon-color: var(--color-grey-300);
+
+  /* Selector */
+  --selector-border: var(--color-grey-600);
+  --selector-text-color: var(--color-text-primary);
+  --selector-subtext-color: var(--color-primary);
+  --selector-description-color: var(--color-text-secondary);
+  --selector-icon-color: var(--color-primary);
+  --selector-checked-border: var(--color-primary);
+  --selector-checked-bg: var(--color-primary);
+  --selector-disabled-color: var(--color-grey-500);
+  --selector-disabled-bg: var(--color-grey-100);
 }

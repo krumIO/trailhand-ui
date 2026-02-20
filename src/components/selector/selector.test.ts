@@ -1,12 +1,12 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import './checkbox';
-import type { Checkbox } from './checkbox';
+import './selector';
+import type { Selector } from './selector';
 
-describe('Checkbox', () => {
-  let el: Checkbox;
+describe('Selector', () => {
+  let el: Selector;
 
   beforeEach(async () => {
-    el = document.createElement('trailhand-checkbox') as Checkbox;
+    el = document.createElement('trailhand-selector') as Selector;
     document.body.appendChild(el);
     await el.updateComplete;
   });
@@ -34,12 +34,12 @@ describe('Checkbox', () => {
       expect(el.hasAttribute('disabled')).toBe(true);
     });
 
-    it('syncs indeterminate to native input element', async () => {
-      el.indeterminate = true;
+    it('reflects value to native input', async () => {
+      el.value = 'option1';
       await el.updateComplete;
 
       const input = el.shadowRoot!.querySelector('input')!;
-      expect(input.indeterminate).toBe(true);
+      expect(input.value).toBe('option1');
     });
   });
 
@@ -56,81 +56,33 @@ describe('Checkbox', () => {
       const input = el.shadowRoot!.querySelector('input')!;
       expect(input.getAttribute('aria-checked')).toBe('true');
     });
-
-    it('sets aria-checked="mixed" when indeterminate', async () => {
-      el.indeterminate = true;
-      await el.updateComplete;
-
-      const input = el.shadowRoot!.querySelector('input')!;
-      expect(input.getAttribute('aria-checked')).toBe('mixed');
-    });
-
-    it('prioritizes indeterminate over checked for aria-checked', async () => {
-      el.checked = true;
-      el.indeterminate = true;
-      await el.updateComplete;
-
-      const input = el.shadowRoot!.querySelector('input')!;
-      expect(input.getAttribute('aria-checked')).toBe('mixed');
-    });
-  });
-
-  describe('Icon rendering', () => {
-    it('renders check icon when checked', async () => {
-      el.checked = true;
-      await el.updateComplete;
-
-      const icon = el.shadowRoot!.querySelector('trailhand-icon[name="check"]');
-      expect(icon).toBeTruthy();
-    });
-
-    it('renders minus icon when indeterminate', async () => {
-      el.indeterminate = true;
-      await el.updateComplete;
-
-      const icon = el.shadowRoot!.querySelector('trailhand-icon[name="minus"]');
-      expect(icon).toBeTruthy();
-    });
-
-    it('shows minus icon when both checked and indeterminate', async () => {
-      el.checked = true;
-      el.indeterminate = true;
-      await el.updateComplete;
-
-      const checkIcon = el.shadowRoot!.querySelector(
-        'trailhand-icon[name="check"]',
-      );
-      const minusIcon = el.shadowRoot!.querySelector(
-        'trailhand-icon[name="minus"]',
-      );
-
-      expect(checkIcon).toBeNull();
-      expect(minusIcon).toBeTruthy();
-    });
   });
 
   describe('Event bubbling and composition', () => {
-    it('includes name and value in event detail', async () => {
-      el.name = 'test-name';
-      el.value = 'test-value';
+    it('includes name and value in custom event detail', async () => {
+      el.name = 'plan';
+      el.value = 'pro';
       await el.updateComplete;
 
       let eventDetail: any;
-      el.addEventListener('checkbox-change', (e: Event) => {
+
+      el.addEventListener('selector-change', (e: Event) => {
         eventDetail = (e as CustomEvent).detail;
       });
 
       const label = el.shadowRoot!.querySelector('label')!;
       label.click();
 
-      expect(eventDetail.name).toBe('test-name');
-      expect(eventDetail.value).toBe('test-value');
+      expect(eventDetail.name).toBe('plan');
+      expect(eventDetail.value).toBe('pro');
+      expect(eventDetail.checked).toBe(true);
     });
 
-    it('dispatches events that bubble', async () => {
+    it('dispatches custom events that bubble', async () => {
       let bubbled = false;
+
       document.body.addEventListener(
-        'checkbox-change',
+        'selector-change',
         () => {
           bubbled = true;
         },
@@ -143,16 +95,17 @@ describe('Checkbox', () => {
       expect(bubbled).toBe(true);
     });
 
-    it('dispatches events that are composed', async () => {
-      let eventComposed = false;
-      el.addEventListener('checkbox-change', (e: Event) => {
-        eventComposed = (e as CustomEvent).composed;
+    it('dispatches custom events that are composed', async () => {
+      let composed = false;
+
+      el.addEventListener('selector-change', (e: Event) => {
+        composed = (e as CustomEvent).composed;
       });
 
       const label = el.shadowRoot!.querySelector('label')!;
       label.click();
 
-      expect(eventComposed).toBe(true);
+      expect(composed).toBe(true);
     });
 
     it('dispatches native change event', async () => {
@@ -185,7 +138,8 @@ describe('Checkbox', () => {
       await el.updateComplete;
 
       let eventFired = false;
-      el.addEventListener('checkbox-change', () => {
+
+      el.addEventListener('selector-change', () => {
         eventFired = true;
       });
 
@@ -196,8 +150,40 @@ describe('Checkbox', () => {
     });
   });
 
-  describe('keyboard interaction', () => {
-    it('toggles with Space key', async () => {
+  describe('Radio group exclusivity', () => {
+    it('unchecks other selectors with same name', async () => {
+      const el1 = document.createElement('trailhand-selector') as Selector;
+      const el2 = document.createElement('trailhand-selector') as Selector;
+
+      el1.name = 'group';
+      el2.name = 'group';
+
+      document.body.appendChild(el1);
+      document.body.appendChild(el2);
+
+      await el1.updateComplete;
+      await el2.updateComplete;
+
+      const input1 = el1.shadowRoot!.querySelector('input')!;
+      const input2 = el2.shadowRoot!.querySelector('input')!;
+
+      input1.click();
+
+      expect(el1.checked).toBe(true);
+      expect(el2.checked).toBe(false);
+
+      input2.click();
+
+      expect(el1.checked).toBe(false);
+      expect(el2.checked).toBe(true);
+
+      document.body.removeChild(el1);
+      document.body.removeChild(el2);
+    });
+  });
+
+  describe('Keyboard interaction', () => {
+    it('selects with Space key', async () => {
       const input = el.shadowRoot!.querySelector('input')!;
 
       input.dispatchEvent(

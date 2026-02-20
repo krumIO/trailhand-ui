@@ -7,6 +7,7 @@ import '../components/icon';
 import '../components/toggle-switch';
 import '../components/checkbox';
 import '../components/text-input';
+import '../components/selector';
 
 // Import global styles
 import '../styles/colors.css';
@@ -16,10 +17,17 @@ class DevApp extends LitElement {
   static styles = css`
     :host {
       display: block;
+      box-sizing: border-box;
       padding: 2rem;
       font-family: system-ui;
       background-color: var(--color-background, #f9f9f9);
       color: var(--color-text-primary, #111);
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: inherit;
     }
 
     .header {
@@ -35,17 +43,28 @@ class DevApp extends LitElement {
       flex-wrap: wrap;
     }
 
+    .column {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      width: 50%;
+    }
+
     .form {
       display: flex;
       flex-direction: column;
       gap: 1rem;
-      max-width: 300px;
+      width: 50%;
     }
 
     .fieldset {
       border: 1px solid var(--color-border, #ccc);
       padding: 1rem;
       border-radius: 8px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
     }
   `;
 
@@ -240,6 +259,44 @@ class DevApp extends LitElement {
           ><trailhand-icon name="globe" slot="icon"></trailhand-icon
         ></trailhand-text-input>
       </div>
+      <!-------------------------- Selectors -------------------------->
+      <h1>Selectors</h1>
+      <div class="column">
+        <trailhand-selector
+          name="group"
+          value="1"
+          text="Option 1"
+          subtext="Subtext for option 1"
+          description="This is additional text if the above details are not sufficient."
+          ><trailhand-icon name="globe" slot="icon"></trailhand-icon
+        ></trailhand-selector>
+        <trailhand-selector
+          name="group"
+          value="2"
+          checked
+          text="Option 2"
+          subtext="Subtext for option 2"
+          description="This is additional text if the above details are not sufficient."
+          ><trailhand-icon name="globe" slot="icon"></trailhand-icon
+        ></trailhand-selector>
+        <trailhand-selector
+          disabled
+          name="group"
+          value="3"
+          text="Option 3 (Disabled)"
+          subtext="Subtext for option 3"
+          description="This is additional text if the above details are not sufficient."
+          ><trailhand-icon name="globe" slot="icon"></trailhand-icon
+        ></trailhand-selector>
+        <trailhand-selector
+          name="group"
+          value="4"
+          text="Option 4"
+          subtext="Subtext for option 4"
+          description="This is additional text if the above details are not sufficient."
+          ><trailhand-icon name="globe" slot="icon"></trailhand-icon
+        ></trailhand-selector>
+      </div>
       <!-------------------------- FORM INTEGRATION -------------------------->
       <h1>Form Integration</h1>
       <form
@@ -272,6 +329,24 @@ class DevApp extends LitElement {
             name="formTextInput"
             placeholder="Type something..."
           ></trailhand-text-input>
+          <trailhand-selector
+            name="disabledFormSelector"
+            value="option1"
+            text="Form Selector Option 1"
+            subtext="Subtext for option 1"
+            description="This is additional text if the above details are not sufficient."
+          >
+            <trailhand-icon name="globe" slot="icon"></trailhand-icon>
+          </trailhand-selector>
+          <trailhand-selector
+            name="disabledFormSelector"
+            value="option2"
+            text="Form Selector Option 2"
+            subtext="Subtext for option 2"
+            description="This is additional text if the above details are not sufficient."
+          >
+            <trailhand-icon name="globe" slot="icon"></trailhand-icon>
+          </trailhand-selector>
         </fieldset>
         <fieldset class="fieldset">
           <legend>Enabled Fieldset</legend>
@@ -289,6 +364,24 @@ class DevApp extends LitElement {
             placeholder="Type something..."
             required
           ></trailhand-text-input>
+          <trailhand-selector
+            name="formSelector"
+            value="option1"
+            text="Form Selector Option 1"
+            subtext="Subtext for option 1"
+            description="This is additional text if the above details are not sufficient."
+          >
+            <trailhand-icon name="globe" slot="icon"></trailhand-icon>
+          </trailhand-selector>
+          <trailhand-selector
+            name="formSelector"
+            value="option2"
+            text="Form Selector Option 2"
+            subtext="Subtext for option 2"
+            description="This is additional text if the above details are not sufficient."
+          >
+            <trailhand-icon name="globe" slot="icon"></trailhand-icon>
+          </trailhand-selector>
         </fieldset>
         <trailhand-button type="submit">Submit Form</trailhand-button>
         <trailhand-button type="reset" variant="destructive"

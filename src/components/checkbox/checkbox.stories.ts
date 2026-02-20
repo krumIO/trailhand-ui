@@ -118,6 +118,9 @@ export const Large: Story = {
 };
 
 export const HandleChange: Story = {
+  parameters: {
+    chromatic: { disableSnapshot: true },
+  },
   args: {
     checked: false,
     disabled: false,
@@ -149,6 +152,9 @@ export const HandleChange: Story = {
 };
 
 export const HandleDisabledChange: Story = {
+  parameters: {
+    chromatic: { disableSnapshot: true },
+  },
   args: {
     checked: false,
     disabled: true,
@@ -174,6 +180,9 @@ export const HandleDisabledChange: Story = {
 };
 
 export const IndeterminateToChecked: Story = {
+  parameters: {
+    chromatic: { disableSnapshot: true },
+  },
   args: {
     indeterminate: true,
     name: 'indeterminate-checkbox',

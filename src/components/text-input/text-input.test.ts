@@ -62,6 +62,72 @@ describe('TextInput', () => {
     });
   });
 
+  describe('Event bubbling and composition', () => {
+    it('includes value in custom event detail', async () => {
+      el.name = 'username';
+      el.value = 'john';
+      await el.updateComplete;
+
+      let eventDetail: any;
+
+      el.addEventListener('text-input-change', (e: Event) => {
+        eventDetail = (e as CustomEvent).detail;
+      });
+
+      const input = el.shadowRoot!.querySelector('input')!;
+      input.value = 'jane';
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+
+      expect(eventDetail.value).toBe('jane');
+    });
+
+    it('dispatches custom events that bubble', async () => {
+      let bubbled = false;
+
+      document.body.addEventListener(
+        'text-input-change',
+        () => {
+          bubbled = true;
+        },
+        { once: true },
+      );
+
+      const input = el.shadowRoot!.querySelector('input')!;
+      input.value = 'hello';
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+
+      expect(bubbled).toBe(true);
+    });
+
+    it('dispatches custom events that are composed', async () => {
+      let composed = false;
+
+      el.addEventListener('text-input-change', (e: Event) => {
+        composed = (e as CustomEvent).composed;
+      });
+
+      const input = el.shadowRoot!.querySelector('input')!;
+      input.value = 'hello';
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+
+      expect(composed).toBe(true);
+    });
+
+    it('dispatches native change event', async () => {
+      let changeFired = false;
+
+      el.addEventListener('change', () => {
+        changeFired = true;
+      });
+
+      const input = el.shadowRoot!.querySelector('input')!;
+      input.value = 'hello';
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+
+      expect(changeFired).toBe(true);
+    });
+  });
+
   describe('Validation behavior', () => {
     it('sets invalid=true when required and empty', async () => {
       el.required = true;

@@ -153,16 +153,11 @@ export class Checkbox extends LitElement {
     }
   }
 
-  private handleChange(e: Event) {
-    if (this.disabled) return;
-
-    const input = e.target as HTMLInputElement;
-
-    this.checked = input.checked;
-    this.indeterminate = false;
-
-    this.updateFormValue();
-
+  private emitChangeEvent() {
+    // emit native change events for form integration
+    this.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
+    this.dispatchEvent(new Event('input', { bubbles: true, composed: true }));
+    // emit a custom event with the current state of the checkbox
     this.dispatchEvent(
       new CustomEvent('checkbox-change', {
         bubbles: true,
@@ -177,11 +172,24 @@ export class Checkbox extends LitElement {
     );
   }
 
+  private handleChange(e: Event) {
+    if (this.disabled) return;
+
+    const input = e.target as HTMLInputElement;
+
+    this.checked = input.checked;
+    this.indeterminate = false;
+
+    this.updateFormValue();
+
+    this.emitChangeEvent();
+  }
+
   private updateFormValue() {
     if (this.checked) {
       this.internals.setFormValue(this.value);
     } else {
-      this.internals.setFormValue('');
+      this.internals.setFormValue(null);
     }
   }
 

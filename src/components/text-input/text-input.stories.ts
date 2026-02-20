@@ -133,6 +133,9 @@ export const Large: Story = {
 };
 
 export const HandleInput: Story = {
+  parameters: {
+    chromatic: { disableSnapshot: true },
+  },
   play: async ({ canvasElement }) => {
     const inputComponent = canvasElement.querySelector('trailhand-text-input');
     if (!inputComponent) throw new Error('TextInput not found');
