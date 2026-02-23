@@ -104,6 +104,7 @@ trailhand-ui/
 │   ├── design-system/              # Design system stories
 │   └── styles/
 │       └── colors.css              # Global color variables
+├── dev/                            # Playground application for development
 ├── stories/                        # Additional Storybook stories
 ├── .storybook/                     # Storybook configuration
 ├── dist/                           # Compiled output
