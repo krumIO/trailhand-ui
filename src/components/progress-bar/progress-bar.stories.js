@@ -80,6 +80,9 @@ export const Partial = {
       description: {
         story: 'A progress bar with low completion.',
       },
+      source: {
+        code: '<trailhand-progress-bar label="Deployed" value="3" total="20"></trailhand-progress-bar>',
+      },
     },
   },
 };
@@ -97,6 +100,9 @@ export const Complete = {
     docs: {
       description: {
         story: 'A fully filled progress bar at 100%.',
+      },
+      source: {
+        code: '<trailhand-progress-bar label="Complete" value="10" total="10"></trailhand-progress-bar>',
       },
     },
   },
@@ -116,6 +122,9 @@ export const Empty = {
       description: {
         story: 'An empty progress bar with no completion.',
       },
+      source: {
+        code: '<trailhand-progress-bar label="Pending" value="0" total="10"></trailhand-progress-bar>',
+      },
     },
   },
 };
@@ -134,6 +143,9 @@ export const CustomValues = {
       description: {
         story: 'A progress bar with a non-100 total to show fraction display.',
       },
+      source: {
+        code: '<trailhand-progress-bar label="Running" value="7" total="12"></trailhand-progress-bar>',
+      },
     },
   },
 };
@@ -150,6 +162,9 @@ export const WithoutLabel = {
     docs: {
       description: {
         story: 'A progress bar without a label — stats are right-aligned.',
+      },
+      source: {
+        code: '<trailhand-progress-bar value="5" total="10"></trailhand-progress-bar>',
       },
     },
   },

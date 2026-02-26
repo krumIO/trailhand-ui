@@ -456,6 +456,11 @@ export const FilterChips = {
       description: {
         story: 'Dismissible tags work great as filter chips.',
       },
+      source: {
+        code: `<trailhand-tag label="Status: Running" variant="default" dismissible></trailhand-tag>
+<trailhand-tag label="Namespace: production" variant="default" dismissible></trailhand-tag>
+<trailhand-tag label="Type: Service" variant="default" dismissible></trailhand-tag>`,
+      },
     },
   },
 };
