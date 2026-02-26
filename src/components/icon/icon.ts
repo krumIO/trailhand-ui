@@ -6,7 +6,8 @@ import {
   faCircleExclamation,
   faCirclePause,
   faCirclePlay,
-  faCircleXmark
+  faCircleXmark,
+  faGrid2
 } from '@fortawesome/pro-duotone-svg-icons';
 import { faGlobe, faHome, faUser } from '@fortawesome/free-solid-svg-icons';
 
@@ -20,6 +21,7 @@ const iconMap = {
   globe: faGlobe,
   home: faHome,
   user: faUser,
+  grid: faGrid2
 };
 
 export const availableIcons = Object.keys(iconMap) as (keyof typeof iconMap)[];

@@ -7,6 +7,7 @@ import '../src/components/icon';
 import '../src/components/toggle-switch';
 import '../src/components/th-card';
 import '../src/components/th-tag';
+import '../src/components/progress-bar';
 
 // Import global styles
 import '../src/styles/colors.css';
@@ -221,6 +222,25 @@ class DevApp extends LitElement {
               </a>
             </div>
           </div> 
+        </trailhand-card>
+
+        <trailhand-card
+          class="styled-card"
+          card-title="Applications"
+          description="Epinio uses Applications to transition your code, through build, to being deployed."
+          icon-name="grid"
+        >
+          <trailhand-button
+            @click=${() => console.log('deploy')}
+            variant="secondary"
+            size="large"
+            slot="action"
+          >
+            Deploy Application
+          </trailhand-button>
+          <div slot="footer">
+            <trailhand-progress-bar label="Running" value="1" total="2"></trailhand-progress-bar>
+          </div>
         </trailhand-card>
       </div>
     <h1>Tags</h1>

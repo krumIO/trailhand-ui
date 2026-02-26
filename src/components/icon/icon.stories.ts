@@ -31,7 +31,7 @@ A wrapper component for Font Awesome icons.
 - Customizable duotone colors via CSS variables
 
 **Duotone Icons** (two-layer styling):
-- bug, error, pause, play, close
+- bug, error, pause, play, close, grid
 
 **Solid Icons** (single-layer):
 - globe, home, user
@@ -168,7 +168,7 @@ export const DuotoneColors: Story = {
   },
 };
 
-const duotoneIcons = ['bug', 'error', 'pause', 'play', 'close'];
+const duotoneIcons = ['bug', 'error', 'pause', 'play', 'close', 'grid'];
 const solidIcons = ['globe', 'home', 'user'];
 
 export const AllIcons: Story = {

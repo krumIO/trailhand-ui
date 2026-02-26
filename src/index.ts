@@ -6,6 +6,7 @@ export * from './components/button';
 export * from './components/icon';
 export * from './components/th-tag';
 export * from './components/th-card';
+export * from './components/progress-bar';
 
 // Export utilities
 export * from './utils';
