@@ -17,8 +17,7 @@
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
-    "outDir": "./dist",
-    "rootDir": "./src",
+    "noEmit": true,
 
     // Type checking - start lenient, will tighten later
     "strict": true,
@@ -47,7 +46,5 @@
 
     // Skip lib check for faster compilation
     "skipLibCheck": true
-  },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "storybook-static"]
+  }
 }

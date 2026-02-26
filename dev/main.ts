@@ -2,14 +2,14 @@ import { LitElement, html, css } from 'lit';
 import { customElement } from 'lit/decorators.js';
 
 // Import components you want to work on
-import '../components/button';
-import '../components/icon';
-import '../components/toggle-switch';
-import '../components/th-card';
-import '../components/th-tag';
+import '../src/components/button';
+import '../src/components/icon';
+import '../src/components/toggle-switch';
+import '../src/components/th-card';
+import '../src/components/th-tag';
 
 // Import global styles
-import '../styles/colors.css';
+import '../src/styles/colors.css';
 
 @customElement('dev-app')
 class DevApp extends LitElement {
