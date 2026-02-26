@@ -80,6 +80,7 @@ export class ThTag extends LitElement {
   static override styles = css`
     :host {
       display: inline-flex;
+      align-self: center;
     }
 
     :host([disabled]) {
@@ -94,7 +95,7 @@ export class ThTag extends LitElement {
       gap: 6px;
       border-radius: 9999px;
       font-feature-settings: 'liga' off, 'clig' off;
-      font-family: Poppins;
+      font-family: var(--font-family, 'Poppins', sans-serif);
       font-size: 10px;
       font-style: normal;
       font-weight: 600;
@@ -105,18 +106,21 @@ export class ThTag extends LitElement {
 
     /* Size variants */
     .tag--sm {
-      font-size: 15px;
-      line-height: 21px;
+      padding: 3px 9px;
+      font-size: 11px;
+      line-height: 16px;
     }
 
     .tag--md {
-      font-size: 18px;
-      line-height: 26px;
+      padding: 4px 12px;
+      font-size: 13px;
+      line-height: 18px;
     }
 
     .tag--lg {
-      font-size: 25px;
-      line-height: 32px;
+      padding: 6px 16px;
+      font-size: 15px;
+      line-height: 20px;
     }
 
     /* Color variants - soft pastel backgrounds with colored text */

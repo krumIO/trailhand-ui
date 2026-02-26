@@ -1,3 +1,5 @@
+import '../src/styles/colors.css';
+
 /** @type { import('@storybook/web-components-vite').Preview } */
 const preview = {
   parameters: {

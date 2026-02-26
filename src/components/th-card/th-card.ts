@@ -43,6 +43,7 @@ export class ThCard extends LitElement {
     .card {
       display: flex;
       flex-direction: column;
+      font-family: var(--font-family, 'Poppins', sans-serif);
       background: var(--th-card-bg);
       border-radius: var(--th-card-radius, 8px);
       border: 1px solid var(--th-card-border, #e5e7eb);

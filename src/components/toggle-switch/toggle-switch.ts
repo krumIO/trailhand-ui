@@ -36,6 +36,7 @@ export class ToggleSwitch extends LitElement {
       display: flex;
       align-items: center;
       margin-right: 10px;
+      font-family: var(--font-family, 'Poppins', sans-serif);
     }
 
     .toggle-switch {

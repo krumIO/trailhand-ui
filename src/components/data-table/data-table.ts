@@ -105,6 +105,7 @@ export class DataTable extends LitElement {
     :host {
       display: block;
       width: 100%;
+      font-family: var(--font-family, 'Poppins', sans-serif);
     }
 
     .data-table {

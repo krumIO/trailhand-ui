@@ -36,6 +36,7 @@ export class ProgressBar extends LitElement {
   static override styles = css`
     :host {
       display: block;
+      font-family: var(--font-family, 'Poppins', sans-serif);
     }
 
     .progress-bar__header {

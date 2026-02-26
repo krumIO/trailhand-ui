@@ -44,6 +44,7 @@ export class ActionMenu extends LitElement {
     :host {
       display: inline-block;
       position: relative;
+      font-family: var(--font-family, 'Poppins', sans-serif);
     }
 
     .action-menu__button {
