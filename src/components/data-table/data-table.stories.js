@@ -1,5 +1,6 @@
 import './data-table.ts';
-import { dataTableFormatters } from './data-table.ts';
+import '../action-menu/action-menu';
+import { html } from 'lit';
 
 /**
  * The DataTable component is a feature-rich table with sorting, filtering, and pagination.
@@ -19,9 +20,7 @@ export default {
     if (args.paginated !== undefined) table.paginated = args.paginated;
     if (args.loading !== undefined) table.loading = args.loading;
     if (args.keyField) table.keyField = args.keyField;
-    if (args.rowActions !== undefined) table.rowActions = args.rowActions;
-    if (args.rowActionsWidth !== undefined)
-      table.rowActionsWidth = args.rowActionsWidth;
+    if (args.renderActions) table.renderActions = args.renderActions;
     if (args.emptyMessage) table.emptyMessage = args.emptyMessage;
     if (args.noResultsMessage) table.noResultsMessage = args.noResultsMessage;
 
@@ -67,15 +66,10 @@ export default {
       description: 'Field to use as unique key for rows',
       defaultValue: 'id',
     },
-    rowActions: {
-      control: 'boolean',
-      description: 'Show row actions column',
-      defaultValue: true,
-    },
-    rowActionsWidth: {
-      control: 'number',
-      description: 'Width of row actions column in pixels',
-      defaultValue: 40,
+    renderActions: {
+      control: false,
+      description:
+        'Callback function to render custom actions for each row. Receives the row data as an argument.',
     },
   },
   parameters: {
@@ -89,8 +83,8 @@ A feature-rich data table component with sorting, filtering, and pagination.
 - Column sorting (ascending/descending)
 - Pagination with configurable page size
 - Custom cell rendering via slots
-- Built-in formatters (age, date, dateTime)
-- Row actions with ActionMenu integration
+- Formatter support via imported utilities (age, date, dateTime, memory, milliCPUs)
+- Opt-in row actions via renderActions callback
 - Loading state
 - Empty state
 - Nested object support with dot notation
@@ -341,24 +335,14 @@ export const WithoutPagination = {
   },
 };
 
-/**
- * Without row actions
- */
-export const WithoutRowActions = {
-  args: {
-    columns: userColumns,
-    rows: sampleUsers,
-    rowActions: false,
-    rowsPerPage: 5,
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Hide the row actions column.',
-      },
-    },
-  },
-};
+// Generate dates relative to now so the age formatter produces consistent values in visual tests
+const daysAgo = (days) =>
+  new Date(Date.now() - days * 86400000).toISOString();
+
+const formatterSampleUsers = sampleUsers.map((user, i) => ({
+  ...user,
+  createdAt: daysAgo((i + 1) * 30),
+}));
 
 /**
  * Custom formatters
@@ -372,7 +356,7 @@ export const WithFormatters = {
       { field: 'createdAt', label: 'Age', width: '100px', formatter: 'age' },
       { field: 'createdAt', label: 'Date', width: '120px', formatter: 'date' },
     ],
-    rows: sampleUsers,
+    rows: formatterSampleUsers,
     rowsPerPage: 5,
   },
   parameters: {
@@ -489,20 +473,17 @@ export const NestedObjectData = {
 };
 
 /**
- * Custom row actions
+ * With row actions
  */
-export const CustomRowActions = {
+export const WithRowActions = {
   render: () => {
     const table = document.createElement('data-table');
     table.columns = userColumns;
     table.rows = sampleUsers.slice(0, 5);
-    table.rowActions = true;
-
-    // Use Shadow DOM piercing to add custom action menus
-    setTimeout(() => {
-      const actionMenus = table.shadowRoot.querySelectorAll('action-menu');
-      actionMenus.forEach((menu) => {
-        menu.actions = [
+    table.renderActions = (row) => html`
+      <action-menu
+        .resource=${row}
+        .actions=${[
           {
             label: 'View Details',
             action: (resource) => alert(`View: ${resource.name}`),
@@ -511,9 +492,7 @@ export const CustomRowActions = {
             label: 'Edit',
             action: (resource) => alert(`Edit: ${resource.name}`),
           },
-          {
-            divider: true,
-          },
+          { divider: true },
           {
             label: 'Deactivate',
             action: (resource) => alert(`Deactivate: ${resource.name}`),
@@ -524,17 +503,15 @@ export const CustomRowActions = {
             action: (resource) => alert(`Activate: ${resource.name}`),
             visible: (resource) => resource.status === 'Inactive',
           },
-          {
-            divider: true,
-          },
+          { divider: true },
           {
             label: 'Delete',
             action: (resource) => alert(`Delete: ${resource.name}`),
             danger: true,
           },
-        ];
-      });
-    }, 0);
+        ]}
+      ></action-menu>
+    `;
 
     return table;
   },
@@ -542,7 +519,7 @@ export const CustomRowActions = {
     docs: {
       description: {
         story:
-          'Customize row actions by accessing the action-menu elements and setting their actions property.',
+          'Opt-in to row actions by providing a renderActions callback. Use with ActionMenu or any custom element.',
       },
     },
   },
@@ -612,7 +589,6 @@ export const Minimal = {
     searchable: false,
     sortable: false,
     paginated: false,
-    rowActions: false,
   },
   parameters: {
     docs: {

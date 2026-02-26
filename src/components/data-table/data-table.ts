@@ -1,6 +1,6 @@
 import { LitElement, html, css, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
-import '../action-menu/action-menu';
+import { dataTableFormatters } from '../../utils/formatters';
 import 'iconify-icon';
 import { addIcon } from 'iconify-icon';
 import chevronUp from '@iconify/icons-heroicons/chevron-up-20-solid';
@@ -13,11 +13,6 @@ addIcon('heroicons:chevron-up-20-solid', chevronUp);
 addIcon('heroicons:chevron-down-20-solid', chevronDown);
 addIcon('heroicons:chevron-left-20-solid', chevronLeft);
 addIcon('heroicons:chevron-right-20-solid', chevronRight);
-
-/**
- * Type definition for formatter functions
- */
-type FormatterFunction = (value: any) => string;
 
 /**
  * Type definition for sort functions
@@ -56,73 +51,6 @@ export interface DataTableColumn {
 }
 
 /**
- * Data table formatters for common column types
- */
-export const dataTableFormatters: Record<string, FormatterFunction> = {
-  /**
-   * Format a date value as relative time (e.g., "5d", "3h", "15m")
-   */
-  age: (value: any): string => {
-    if (!value) return '-';
-    const date = new Date(value);
-    const now = new Date();
-    const diffMs = now.getTime() - date.getTime();
-    const diffMins = Math.floor(diffMs / 60000);
-    const diffHours = Math.floor(diffMs / 3600000);
-    const diffDays = Math.floor(diffMs / 86400000);
-
-    if (diffDays > 0) return `${diffDays}d`;
-    if (diffHours > 0) return `${diffHours}h`;
-    if (diffMins > 0) return `${diffMins}m`;
-    return 'Just now';
-  },
-
-  /**
-   * Format a date as a localized date string
-   */
-  date: (value: any): string => {
-    if (!value) return '-';
-    return new Date(value).toLocaleDateString();
-  },
-
-  /**
-   * Format a date as a localized date and time string
-   */
-  dateTime: (value: any): string => {
-    if (!value) return '-';
-    return new Date(value).toLocaleString();
-  },
-
-  /**
-   * Format memory bytes to human readable format (B, KB, MB, GB, TB)
-   */
-  memory: (value: any): string => {
-    if (!value || value === 0) return '0 B';
-
-    const units = ['B', 'KB', 'MB', 'GB', 'TB'];
-    let val = Number(value);
-    let unitIndex = 0;
-
-    while (val >= 1024 && unitIndex < units.length - 1) {
-      val = val / 1024;
-      unitIndex++;
-    }
-
-    return `${Math.round(val)} ${units[unitIndex]}`;
-  },
-
-  /**
-   * Format millicpus value
-   */
-  milliCPUs: (value: any): string => {
-    if (!value || value === 0) return '0';
-
-    const formatted = Math.round(Number(value)).toString();
-    return formatted === '0' ? '0' : formatted;
-  },
-};
-
-/**
  * A feature-rich data table component with sorting, filtering, and pagination.
  * Supports custom cell rendering, row actions, and various formatters.
  */
@@ -151,11 +79,8 @@ export class DataTable extends LitElement {
   @property({ type: String, attribute: 'key-field' })
   keyField = 'id';
 
-  @property({ type: Boolean, attribute: 'row-actions' })
-  rowActions = true;
-
-  @property({ type: Number, attribute: 'row-actions-width' })
-  rowActionsWidth = 40;
+  @property({ attribute: false })
+  renderActions?: (row: RowData) => unknown;
 
   @property({ type: String, attribute: 'empty-message' })
   emptyMessage = 'No data available';
@@ -819,11 +744,11 @@ export class DataTable extends LitElement {
                           </th>
                         `,
                       )}
-                      ${this.rowActions
+                      ${this.renderActions
                         ? html`
                             <th
                               class="data-table__th data-table__th--actions"
-                              style="width: ${this.rowActionsWidth}px"
+                              style="width: var(--data-table-actions-width, 40px)"
                             ></th>
                           `
                         : ''}
@@ -835,7 +760,7 @@ export class DataTable extends LitElement {
                           <tr class="data-table__tr">
                             <td
                               class="data-table__td data-table__td--empty"
-                              colspan=${this.rowActions
+                              colspan=${this.renderActions
                                 ? this.columns.length + 1
                                 : this.columns.length}
                             >
@@ -867,16 +792,12 @@ export class DataTable extends LitElement {
                                   </td>
                                 `,
                               )}
-                              ${this.rowActions
+                              ${this.renderActions
                                 ? html`
                                     <td
                                       class="data-table__td data-table__td--actions"
                                     >
-                                      <slot name="actions" .row=${row}>
-                                        <action-menu
-                                          .resource=${row}
-                                        ></action-menu>
-                                      </slot>
+                                      ${this.renderActions(row)}
                                     </td>
                                   `
                                 : ''}
