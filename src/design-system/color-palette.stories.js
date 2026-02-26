@@ -152,7 +152,7 @@ export const AllColors = {
         title: 'Primary',
         colors: [
           { name: 'Light Primary', variable: '--color-light-primary', hex: '#e6f3ff', description: 'Light variant for backgrounds' },
-          { name: 'Primary', variable: '--color-primary', hex: '#3d98d3', description: 'Main brand color' },
+          { name: 'Primary', variable: '--color-primary', hex: '#0086FF', description: 'Main brand color' },
           { name: 'Dark Primary', variable: '--color-dark-primary', hex: '#005cb9', description: 'Dark variant for buttons/links' },
         ]
       })}

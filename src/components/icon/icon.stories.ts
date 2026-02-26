@@ -168,7 +168,7 @@ export const DuotoneColors: Story = {
   },
 };
 
-const duotoneIcons = ['bug', 'error', 'pause', 'play', 'close', 'grid'];
+const duotoneIcons = ['bug', 'error', 'pause', 'play', 'close', 'grid', 'rocket', 'gauge', 'list', 'folderPlus', 'solarSystem', 'shoppingBag', 'info', 'chartLine', 'folderGear', 'database'];
 const solidIcons = ['globe', 'home', 'user'];
 
 export const AllIcons: Story = {
