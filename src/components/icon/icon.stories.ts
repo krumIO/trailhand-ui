@@ -12,11 +12,38 @@ const meta: Meta<IconProps> = {
     name: {
       control: { type: 'select' },
       options: availableIcons,
-      description: 'The FontAwesome icon name (without fa- prefix)',
+      description: 'The Font Awesome duotone icon name',
     },
   },
   args: {
     name: 'globe',
+  },
+  parameters: {
+    docs: {
+      description: {
+        component: `
+A wrapper component for Font Awesome icons.
+
+**Features:**
+- Supports both duotone and solid icon styles
+- Inherits color from parent via \`currentColor\`
+- Scales with \`font-size\`
+- Customizable duotone colors via CSS variables
+
+**Duotone Icons** (two-layer styling):
+- bug, error, pause, play, close, grid
+
+**Solid Icons** (single-layer):
+- globe, home, user
+
+**CSS Variables (duotone only):**
+- \`--fa-primary-color\`: Primary layer color (default: currentColor)
+- \`--fa-secondary-color\`: Secondary layer color (default: currentColor)
+- \`--fa-primary-opacity\`: Primary layer opacity (default: 1)
+- \`--fa-secondary-opacity\`: Secondary layer opacity (default: 0.4)
+        `.trim(),
+      },
+    },
   },
 };
 
@@ -106,4 +133,76 @@ export const WithSizes: Story = {
       ></trailhand-icon>
     </div>
   `,
+};
+
+export const DuotoneColors: Story = {
+  args: {
+    name: 'play',
+  },
+  render: (args) => html`
+    <div style="display: flex; gap: 24px; align-items: center;">
+      <trailhand-icon
+        name=${args.name}
+        style="font-size: 48px; --fa-primary-color: #3b82f6; --fa-secondary-color: #93c5fd;"
+      ></trailhand-icon>
+      <trailhand-icon
+        name=${args.name}
+        style="font-size: 48px; --fa-primary-color: #10b981; --fa-secondary-color: #6ee7b7;"
+      ></trailhand-icon>
+      <trailhand-icon
+        name=${args.name}
+        style="font-size: 48px; --fa-primary-color: #f59e0b; --fa-secondary-color: #fcd34d;"
+      ></trailhand-icon>
+      <trailhand-icon
+        name=${args.name}
+        style="font-size: 48px; --fa-primary-color: #ef4444; --fa-secondary-color: #fca5a5;"
+      ></trailhand-icon>
+    </div>
+  `,
+  parameters: {
+    docs: {
+      description: {
+        story: 'Duotone icons support separate colors for primary and secondary layers via CSS variables.',
+      },
+    },
+  },
+};
+
+const duotoneIcons = ['bug', 'error', 'pause', 'play', 'close', 'grid', 'rocket', 'gauge', 'list', 'folderPlus', 'solarSystem', 'shoppingBag', 'info', 'chartLine', 'folderGear', 'database'];
+const solidIcons = ['globe', 'home', 'user'];
+
+export const AllIcons: Story = {
+  render: () => html`
+    <div>
+      <h3 style="margin: 0 0 16px 0; font-size: 14px; font-weight: 600;">Duotone Icons</h3>
+      <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 24px; margin-bottom: 32px;">
+        ${duotoneIcons.map(
+          (iconName) => html`
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
+              <trailhand-icon name=${iconName} style="font-size: 32px;"></trailhand-icon>
+              <span style="font-size: 12px; color: #6b7280;">${iconName}</span>
+            </div>
+          `
+        )}
+      </div>
+      <h3 style="margin: 0 0 16px 0; font-size: 14px; font-weight: 600;">Solid Icons</h3>
+      <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 24px;">
+        ${solidIcons.map(
+          (iconName) => html`
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
+              <trailhand-icon name=${iconName} style="font-size: 32px;"></trailhand-icon>
+              <span style="font-size: 12px; color: #6b7280;">${iconName}</span>
+            </div>
+          `
+        )}
+      </div>
+    </div>
+  `,
+  parameters: {
+    docs: {
+      description: {
+        story: 'All available icons, grouped by style (duotone vs solid).',
+      },
+    },
+  },
 };

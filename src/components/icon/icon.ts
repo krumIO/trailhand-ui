@@ -1,12 +1,47 @@
 import { LitElement, html, css } from 'lit';
 import { property } from 'lit/decorators.js';
 import { library, icon } from '@fortawesome/fontawesome-svg-core';
+import {
+  faBug,
+  faCircleExclamation,
+  faCirclePause,
+  faCirclePlay,
+  faCircleXmark,
+  faGrid2,
+  faRocket,
+  faGauge,
+  faSquareList,
+  faFolderPlus,
+  faSolarSystem,
+  faBagShopping,
+  faCircleInfo,
+  faChartLine,
+  faFolderGear,
+  faDatabase,
+} from '@fortawesome/pro-duotone-svg-icons';
 import { faGlobe, faHome, faUser } from '@fortawesome/free-solid-svg-icons';
 
+
 const iconMap = {
+  bug: faBug,
+  error: faCircleExclamation,
+  pause: faCirclePause,
+  play: faCirclePlay,
+  close: faCircleXmark,
   globe: faGlobe,
   home: faHome,
   user: faUser,
+  grid: faGrid2,
+  rocket: faRocket,
+  gauge: faGauge,
+  list: faSquareList,
+  folderPlus: faFolderPlus,
+  solarSystem: faSolarSystem,
+  shoppingBag: faBagShopping,
+  info: faCircleInfo,
+  chartLine: faChartLine,
+  folderGear: faFolderGear,
+  database: faDatabase,
 };
 
 export const availableIcons = Object.keys(iconMap) as (keyof typeof iconMap)[];
@@ -31,12 +66,22 @@ export class Icon extends LitElement {
     svg {
       width: 100%;
       height: 100%;
-      fill: currentColor;
+    }
+    /* Duotone icon styling */
+    svg .fa-primary {
+      fill: var(--fa-primary-color, currentColor);
+      opacity: var(--fa-primary-opacity, 1);
+    }
+    svg .fa-secondary {
+      fill: var(--fa-secondary-color, currentColor);
+      opacity: var(--fa-secondary-opacity, 0.4);
     }
   `;
 
   render() {
-    const faIcon = icon({ prefix: 'fas', iconName: this.name });
+    const iconDef = iconMap[this.name];
+    if (!iconDef) return null;
+    const faIcon = icon(iconDef);
     return faIcon ? html`${faIcon.node[0]}` : null;
   }
 }

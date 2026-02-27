@@ -9,9 +9,9 @@
 :root {
   /* Color Palette */
   /* Primary Blues */
-  --color-primary: #3d98d3; /* Primary brand color */
-  --color-light-primary: #e6f3ff; /* Light variant for backgrounds */
-  --color-dark-primary: #005cb9; /* Dark variant for buttons/links */
+  --color-primary: #0086FF;           /* Primary brand color */
+  --color-light-primary: #e6f3ff;     /* Light variant for backgrounds */
+  --color-dark-primary: #005cb9;      /* Dark variant for buttons/links */
 
   /* Black + White */
   --color-black: #000000;
@@ -37,7 +37,7 @@
   --color-dark-green: #0f8240;
 
   --color-light-yellow: #fffeb4;
-  --color-yellow: #d3c255;
+  --color-yellow: #D3C255;
   --color-dark-yellow: #a89939;
 
   --color-light-blue: #e6f3ff;
@@ -99,6 +99,21 @@
   --button-confirmation-bg-hover: var(--color-dark-green);
   --button-confirmation-color: var(--color-white);
 
+  /* Cards */
+  --th-card-bg: var(--color-white);
+  --th-card-border: var(--color-border);
+  --th-card-title-color: var(--color-text-primary);
+  --th-card-subtitle-color: var(--color-text-secondary);
+  --th-card-text-color: var(--color-text-secondary);
+  --th-card-icon-color: var(--color-text-primary);
+  --th-card-dismiss-color: var(--color-text-muted);
+
+  /* Progress Bar */
+  --progress-bar-fill-color: var(--color-primary);
+  --progress-bar-track-color: var(--color-grey-200);
+  --progress-bar-title-color: var(--color-text-primary);
+  --progress-bar-label-color: var(--color-text-secondary);
+
   /* Shadow colors using opacity */
   --color-shadow: rgba(0, 0, 0, 0.1);
   --color-shadow-medium: rgba(0, 0, 0, 0.15);
@@ -129,4 +144,19 @@
 
   --button-disabled-bg: var(--color-grey-700);
   --button-disabled-color: var(--color-grey-500);
+
+  /* Cards */
+  --th-card-bg: var(--color-grey-700);
+  --th-card-border: var(--color-grey-600);
+  --th-card-title-color: var(--color-grey-100);
+  --th-card-subtitle-color: var(--color-grey-300);
+  --th-card-text-color: var(--color-grey-300);
+  --th-card-icon-color: var(--color-grey-100);
+  --th-card-dismiss-color: var(--color-grey-500);
+
+  /* Progress Bar */
+  --progress-bar-fill-color: var(--color-primary);
+  --progress-bar-track-color: var(--color-grey-600);
+  --progress-bar-title-color: var(--color-grey-100);
+  --progress-bar-label-color: var(--color-grey-300);
 }

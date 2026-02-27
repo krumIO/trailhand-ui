@@ -36,6 +36,7 @@ export class ToggleSwitch extends LitElement {
       display: flex;
       align-items: center;
       margin-right: 10px;
+      font-family: var(--font-family, 'Poppins', sans-serif);
     }
 
     .toggle-switch {
@@ -176,6 +177,7 @@ export class ToggleSwitch extends LitElement {
       <label class="toggle-switch">
         <input
           type="checkbox"
+          aria-label=${this.name || `${this.offLabel} / ${this.onLabel}`}
           .checked=${this.checked}
           @change=${this.handleToggleChange}
         />

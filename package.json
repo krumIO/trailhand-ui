@@ -1,6 +1,6 @@
 {
   "name": "@krumio/trailhand-ui",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "type": "module",
   "description": "Reusable web components built with Lit Element",
   "main": "./dist/index.js",
@@ -55,6 +55,7 @@
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^7.1.0",
     "@fortawesome/free-solid-svg-icons": "^7.1.0",
+    "@fortawesome/pro-duotone-svg-icons": "^7.1.0",
     "@iconify/icons-heroicons": "^1.2.9",
     "iconify-icon": "^3.0.2",
     "lit": "^3.3.1"
