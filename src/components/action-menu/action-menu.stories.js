@@ -288,14 +288,14 @@ export const InTableContext = {
   render: () => {
     const container = document.createElement('div');
     container.style.cssText =
-      'border: 1px solid var(--color-border, #D7D7D7); border-radius: 4px; overflow: hidden;';
+      'border: 1px solid var(--th-color-border, #D7D7D7); border-radius: 4px; overflow: hidden;';
 
     const table = document.createElement('table');
     table.style.cssText =
-      'width: 100%; border-collapse: collapse; background: var(--color-white, #FFFFFF);';
+      'width: 100%; border-collapse: collapse; background: var(--th-color-white, #FFFFFF);';
 
     const thead = document.createElement('thead');
-    thead.style.cssText = 'background: var(--color-grey-100, #FAFAFA);';
+    thead.style.cssText = 'background: var(--th-color-grey-100, #FAFAFA);';
     thead.innerHTML = `
       <tr>
         <th style="padding: 12px; text-align: left; font-weight: 600;">Name</th>
@@ -320,7 +320,7 @@ export const InTableContext = {
 
     items.forEach((item, index) => {
       const row = document.createElement('tr');
-      row.style.cssText = 'border-top: 1px solid var(--color-border, #D7D7D7);';
+      row.style.cssText = 'border-top: 1px solid var(--th-color-border, #D7D7D7);';
 
       const nameCell = document.createElement('td');
       nameCell.style.cssText = 'padding: 12px;';

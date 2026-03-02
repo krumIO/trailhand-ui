@@ -3,102 +3,116 @@
  * Based on Figma Design System Color Palette
  *
  * Usage: Import this file in your application root, then use CSS variables
- * Example: color: var(--color-primary);
+ * Example: color: var(--th-color-primary);
  */
 
 :root {
   /* Color Palette */
   /* Primary Blues */
-  --color-primary: #3d98d3; /* Primary brand color */
-  --color-light-primary: #e6f3ff; /* Light variant for backgrounds */
-  --color-dark-primary: #005cb9; /* Dark variant for buttons/links */
+  --th-color-primary: #0086FF;           /* Primary brand color */
+  --th-color-light-primary: #e6f3ff;     /* Light variant for backgrounds */
+  --th-color-dark-primary: #005cb9;      /* Dark variant for buttons/links */
 
   /* Black + White */
-  --color-black: #000000;
-  --color-white: #ffffff;
+  --th-color-black: #000000;
+  --th-color-white: #ffffff;
 
   /* Greyscale */
-  --color-grey-100: #fafafa;
-  --color-grey-200: #ebebeb;
-  --color-grey-300: #d7d7d7;
-  --color-grey-400: #bababa;
-  --color-grey-500: #8d8d8d;
-  --color-grey-600: #636363;
-  --color-grey-700: #303131;
-  --color-grey-800: #212121;
+  --th-color-grey-100: #fafafa;
+  --th-color-grey-200: #ebebeb;
+  --th-color-grey-300: #d7d7d7;
+  --th-color-grey-400: #bababa;
+  --th-color-grey-500: #8d8d8d;
+  --th-color-grey-600: #636363;
+  --th-color-grey-700: #303131;
+  --th-color-grey-800: #212121;
 
   /* Status Colors */
-  --color-light-red: #fee2e2;
-  --color-red: #9f3a3a;
-  --color-dark-red: #731616;
+  --th-color-light-red: #fee2e2;
+  --th-color-red: #9f3a3a;
+  --th-color-dark-red: #731616;
 
-  --color-light-green: #d2fdd2;
-  --color-green: #30ac66;
-  --color-dark-green: #0f8240;
+  --th-color-light-green: #d2fdd2;
+  --th-color-green: #30ac66;
+  --th-color-dark-green: #0f8240;
 
-  --color-light-yellow: #fffeb4;
-  --color-yellow: #d3c255;
-  --color-dark-yellow: #a89939;
+  --th-color-light-yellow: #fffeb4;
+  --th-color-yellow: #D3C255;
+  --th-color-dark-yellow: #a89939;
 
-  --color-light-blue: #e6f3ff;
-  --color-blue: #0085ff;
-  --color-dark-blue: #005cb9;
+  --th-color-light-blue: #e6f3ff;
+  --th-color-blue: #0085ff;
+  --th-color-dark-blue: #005cb9;
 
   /* Semantic Aliases - for common use cases */
   /* Text */
-  --color-text-primary: var(--color-grey-800);
-  --color-text-secondary: var(--color-grey-600);
-  --color-text-muted: var(--color-grey-500);
-  --color-text-inverse: var(--color-white);
+  --th-color-text-primary: var(--th-color-grey-800);
+  --th-color-text-secondary: var(--th-color-grey-600);
+  --th-color-text-muted: var(--th-color-grey-500);
+  --th-color-text-inverse: var(--th-color-white);
 
   /* Backgrounds */
-  --color-background: var(--color-white);
-  --color-background-muted: var(--color-grey-100);
-  --color-background-hover: var(--color-grey-200);
+  --th-color-background: var(--th-color-white);
+  --th-color-background-muted: var(--th-color-grey-100);
+  --th-color-background-hover: var(--th-color-grey-200);
 
   /* Borders */
-  --color-border: var(--color-grey-300);
-  --color-border-light: var(--color-grey-200);
+  --th-color-border: var(--th-color-grey-300);
+  --th-color-border-light: var(--th-color-grey-200);
 
-  --color-error-outline: var(--color-red);
-  --color-success-outline: var(--color-green);
-  --color-warning-outline: var(--color-yellow);
-  --color-info-outline: var(--color-blue);
+  --th-color-error-outline: var(--th-color-red);
+  --th-color-success-outline: var(--th-color-green);
+  --th-color-warning-outline: var(--th-color-yellow);
+  --th-color-info-outline: var(--th-color-blue);
 
-  --color-error-fill: var(--color-light-red);
-  --color-success-fill: var(--color-light-green);
-  --color-warning-fill: var(--color-light-yellow);
-  --color-info-fill: var(--color-light-blue);
+  --th-color-error-fill: var(--th-color-light-red);
+  --th-color-success-fill: var(--th-color-light-green);
+  --th-color-warning-fill: var(--th-color-light-yellow);
+  --th-color-info-fill: var(--th-color-light-blue);
 
   /* Component-specific variables (mapped to palette) */
   /* Links */
-  --color-link: var(--color-primary);
-  --color-link-hover: var(--color-primary);
-
+  --th-color-link: var(--th-color-primary);
+  --th-color-link-hover: var(--th-color-primary);
   /* Buttons */
-  --button-disabled-bg: var(--color-grey-200);
-  --button-disabled-color: var(--color-grey-500);
+  --th-button-disabled-bg: var(--th-color-grey-200);
+  --th-button-disabled-color: var(--th-color-grey-500);
 
-  --button-primary-bg: var(--color-primary);
-  --button-primary-bg-hover: var(--color-dark-primary);
-  --button-primary-color: var(--color-white);
+  --th-button-primary-bg: var(--th-color-primary);
+  --th-button-primary-bg-hover: var(--th-color-dark-primary);
+  --th-button-primary-color: var(--th-color-white);
 
-  --button-secondary-bg: var(--color-white);
-  --button-secondary-bg-hover: var(--color-light-primary);
-  --button-secondary-color: var(--color-primary);
-  --button-secondary-border: var(--color-primary);
+  --th-button-secondary-bg: var(--th-color-white);
+  --th-button-secondary-bg-hover: var(--th-color-light-primary);
+  --th-button-secondary-color: var(--th-color-primary);
+  --th-button-secondary-border: var(--th-color-primary);
 
-  --button-alternate-bg: var(--color-blue);
-  --button-alternate-bg-hover: var(--color-dark-blue);
-  --button-alternate-color: var(--color-white);
+  --th-button-alternate-bg: var(--th-color-blue);
+  --th-button-alternate-bg-hover: var(--th-color-dark-blue);
+  --th-button-alternate-color: var(--th-color-white);
 
-  --button-destructive-bg: var(--color-red);
-  --button-destructive-bg-hover: var(--color-dark-red);
-  --button-destructive-color: var(--color-white);
+  --th-button-destructive-bg: var(--th-color-red);
+  --th-button-destructive-bg-hover: var(--th-color-dark-red);
+  --th-button-destructive-color: var(--th-color-white);
 
-  --button-confirmation-bg: var(--color-green);
-  --button-confirmation-bg-hover: var(--color-dark-green);
-  --button-confirmation-color: var(--color-white);
+  --th-button-confirmation-bg: var(--th-color-green);
+  --th-button-confirmation-bg-hover: var(--th-color-dark-green);
+  --th-button-confirmation-color: var(--th-color-white);
+
+  /* Cards */
+  --th-card-bg: var(--th-color-white);
+  --th-card-border: var(--th-color-border);
+  --th-card-title-color: var(--th-color-text-primary);
+  --th-card-subtitle-color: var(--th-color-text-secondary);
+  --th-card-text-color: var(--th-color-text-secondary);
+  --th-card-icon-color: var(--th-color-text-primary);
+  --th-card-dismiss-color: var(--th-color-text-muted);
+
+  /* Progress Bar */
+  --th-progress-bar-fill-color: var(--th-color-primary);
+  --th-progress-bar-track-color: var(--th-color-grey-200);
+  --th-progress-bar-title-color: var(--th-color-text-primary);
+  --th-progress-bar-label-color: var(--th-color-text-secondary);
 
   /* Checkbox */
   --checkbox-border: var(--color-grey-300);
@@ -130,35 +144,37 @@
   --selector-disabled-bg: transparent;
 
   /* Shadow colors using opacity */
-  --color-shadow: rgba(0, 0, 0, 0.1);
-  --color-shadow-medium: rgba(0, 0, 0, 0.15);
+  --th-color-shadow: rgba(0, 0, 0, 0.1);
+  --th-color-shadow-medium: rgba(0, 0, 0, 0.15);
 }
 
 /* Dark Theme Overrides */
 [data-theme='dark'] {
   /* Text */
-  --color-text-primary: var(--color-grey-100);
-  --color-text-secondary: var(--color-grey-300);
-  --color-text-muted: var(--color-grey-500);
+  --th-color-text-primary: var(--th-color-grey-100);
+  --th-color-text-secondary: var(--th-color-grey-300);
+  --th-color-text-muted: var(--th-color-grey-500);
 
   /* Backgrounds */
-  --color-background: var(--color-grey-800);
-  --color-background-muted: var(--color-grey-700);
-  --color-background-hover: var(--color-grey-600);
+  --th-color-background: var(--th-color-grey-800);
+  --th-color-background-muted: var(--th-color-grey-700);
+  --th-color-background-hover: var(--th-color-grey-600);
 
   /* Borders */
-  --color-border: var(--color-grey-700);
+  --th-color-border: var(--th-color-grey-700);
 
   /* Buttons */
-  --button-primary-bg: var(--color-dark-primary);
-  --button-primary-bg-hover: var(--color-primary);
+  --th-button-primary-bg: var(--th-color-dark-primary);
+  --th-button-primary-bg-hover: var(--th-color-primary);
 
-  --button-secondary-bg: var(--color-grey-800);
-  --button-secondary-bg-hover: var(--color-grey-700);
-  --button-secondary-color: var(--color-primary);
+  --th-button-secondary-bg: var(--th-color-grey-800);
+  --th-button-secondary-bg-hover: var(--th-color-grey-700);
+  --th-button-secondary-color: var(--th-color-primary);
 
   --button-disabled-bg: var(--color-grey-700);
   --button-disabled-color: var(--color-grey-500);
+  --th-button-disabled-bg: var(--th-color-grey-700);
+  --th-button-disabled-color: var(--th-color-grey-500);
 
   /* Checkbox */
   --checkbox-border: var(--color-grey-600);
@@ -187,4 +203,19 @@
   --selector-checked-bg: var(--color-primary);
   --selector-disabled-color: var(--color-grey-500);
   --selector-disabled-bg: var(--color-grey-100);
+
+  /* Cards */
+  --th-card-bg: var(--th-color-grey-700);
+  --th-card-border: var(--th-color-grey-600);
+  --th-card-title-color: var(--th-color-grey-100);
+  --th-card-subtitle-color: var(--th-color-grey-300);
+  --th-card-text-color: var(--th-color-grey-300);
+  --th-card-icon-color: var(--th-color-grey-100);
+  --th-card-dismiss-color: var(--th-color-grey-500);
+
+  /* Progress Bar */
+  --th-progress-bar-fill-color: var(--th-color-primary);
+  --th-progress-bar-track-color: var(--th-color-grey-600);
+  --th-progress-bar-title-color: var(--th-color-grey-100);
+  --th-progress-bar-label-color: var(--th-color-grey-300);
 }

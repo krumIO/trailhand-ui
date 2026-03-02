@@ -14,8 +14,11 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: 24.13.0
+      - name: Configure Font Awesome Pro
+        run: |
+          echo "@fortawesome:registry=https://npm.fontawesome.com/" >> .npmrc
+          echo "//npm.fontawesome.com/:_authToken=${{ secrets.FONTAWESOME_NPM_AUTH_TOKEN }}" >> .npmrc
       - name: Install dependencies
-        # ⚠️ See your package manager's documentation for the correct command to install dependencies in a CI environment.
         run: npm ci
       - name: Run Chromatic
         uses: chromaui/action@latest

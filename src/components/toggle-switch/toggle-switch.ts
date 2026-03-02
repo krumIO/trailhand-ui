@@ -36,6 +36,7 @@ export class ToggleSwitch extends LitElement {
       display: flex;
       align-items: center;
       margin-right: 10px;
+      font-family: var(--font-family, 'Poppins', sans-serif);
     }
 
     .toggle-switch {
@@ -59,7 +60,7 @@ export class ToggleSwitch extends LitElement {
       left: 0;
       right: 0;
       bottom: 0;
-      background-color: var(--color-grey-500, #8D8D8D);
+      background-color: var(--th-color-grey-500, #8D8D8D);
       transition: 0.3s;
       border-radius: 24px;
     }
@@ -71,13 +72,13 @@ export class ToggleSwitch extends LitElement {
       width: 18px;
       left: 3px;
       bottom: 3px;
-      background-color: var(--color-white, #FFFFFF);
+      background-color: var(--th-color-white, #FFFFFF);
       transition: 0.3s;
       border-radius: 50%;
     }
 
     input:checked + .slider {
-      background-color: var(--color-primary, #3d98d3);
+      background-color: var(--th-color-primary, #3d98d3);
     }
 
     input:checked + .slider:before {
@@ -176,6 +177,7 @@ export class ToggleSwitch extends LitElement {
       <label class="toggle-switch">
         <input
           type="checkbox"
+          aria-label=${this.name || `${this.offLabel} / ${this.onLabel}`}
           .checked=${this.checked}
           @change=${this.handleToggleChange}
         />

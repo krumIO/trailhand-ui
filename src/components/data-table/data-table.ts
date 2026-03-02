@@ -1,6 +1,6 @@
 import { LitElement, html, css, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
-import '../action-menu/action-menu';
+import { dataTableFormatters } from '../../utils/formatters';
 import 'iconify-icon';
 import { addIcon } from 'iconify-icon';
 import chevronUp from '@iconify/icons-heroicons/chevron-up-20-solid';
@@ -13,11 +13,6 @@ addIcon('heroicons:chevron-up-20-solid', chevronUp);
 addIcon('heroicons:chevron-down-20-solid', chevronDown);
 addIcon('heroicons:chevron-left-20-solid', chevronLeft);
 addIcon('heroicons:chevron-right-20-solid', chevronRight);
-
-/**
- * Type definition for formatter functions
- */
-type FormatterFunction = (value: any) => string;
 
 /**
  * Type definition for sort functions
@@ -56,73 +51,6 @@ export interface DataTableColumn {
 }
 
 /**
- * Data table formatters for common column types
- */
-export const dataTableFormatters: Record<string, FormatterFunction> = {
-  /**
-   * Format a date value as relative time (e.g., "5d", "3h", "15m")
-   */
-  age: (value: any): string => {
-    if (!value) return '-';
-    const date = new Date(value);
-    const now = new Date();
-    const diffMs = now.getTime() - date.getTime();
-    const diffMins = Math.floor(diffMs / 60000);
-    const diffHours = Math.floor(diffMs / 3600000);
-    const diffDays = Math.floor(diffMs / 86400000);
-
-    if (diffDays > 0) return `${diffDays}d`;
-    if (diffHours > 0) return `${diffHours}h`;
-    if (diffMins > 0) return `${diffMins}m`;
-    return 'Just now';
-  },
-
-  /**
-   * Format a date as a localized date string
-   */
-  date: (value: any): string => {
-    if (!value) return '-';
-    return new Date(value).toLocaleDateString();
-  },
-
-  /**
-   * Format a date as a localized date and time string
-   */
-  dateTime: (value: any): string => {
-    if (!value) return '-';
-    return new Date(value).toLocaleString();
-  },
-
-  /**
-   * Format memory bytes to human readable format (B, KB, MB, GB, TB)
-   */
-  memory: (value: any): string => {
-    if (!value || value === 0) return '0 B';
-
-    const units = ['B', 'KB', 'MB', 'GB', 'TB'];
-    let val = Number(value);
-    let unitIndex = 0;
-
-    while (val >= 1024 && unitIndex < units.length - 1) {
-      val = val / 1024;
-      unitIndex++;
-    }
-
-    return `${Math.round(val)} ${units[unitIndex]}`;
-  },
-
-  /**
-   * Format millicpus value
-   */
-  milliCPUs: (value: any): string => {
-    if (!value || value === 0) return '0';
-
-    const formatted = Math.round(Number(value)).toString();
-    return formatted === '0' ? '0' : formatted;
-  },
-};
-
-/**
  * A feature-rich data table component with sorting, filtering, and pagination.
  * Supports custom cell rendering, row actions, and various formatters.
  */
@@ -151,11 +79,8 @@ export class DataTable extends LitElement {
   @property({ type: String, attribute: 'key-field' })
   keyField = 'id';
 
-  @property({ type: Boolean, attribute: 'row-actions' })
-  rowActions = true;
-
-  @property({ type: Number, attribute: 'row-actions-width' })
-  rowActionsWidth = 40;
+  @property({ attribute: false })
+  renderActions?: (row: RowData) => unknown;
 
   @property({ type: String, attribute: 'empty-message' })
   emptyMessage = 'No data available';
@@ -180,6 +105,7 @@ export class DataTable extends LitElement {
     :host {
       display: block;
       width: 100%;
+      font-family: var(--font-family, 'Poppins', sans-serif);
     }
 
     .data-table {
@@ -199,20 +125,20 @@ export class DataTable extends LitElement {
       width: 100%;
       max-width: 300px;
       padding: 0.5rem 1rem;
-      border: 1px solid var(--border, var(--color-border, #D7D7D7));
+      border: 1px solid var(--border, var(--th-color-border, #D7D7D7));
       border-radius: 4px;
-      background-color: var(--input-bg, var(--color-white, #FFFFFF));
-      color: var(--input-text, var(--color-text-primary, #212121));
+      background-color: var(--input-bg, var(--th-color-white, #FFFFFF));
+      color: var(--input-text, var(--th-color-text-primary, #212121));
       font-size: 14px;
     }
 
     .data-table__search-input:focus {
       outline: none;
-      border-color: var(--primary, var(--color-primary, #3d98d3));
+      border-color: var(--primary, var(--th-color-primary, #3d98d3));
     }
 
     .data-table__search-input::placeholder {
-      color: var(--input-placeholder, var(--color-text-muted, #8D8D8D));
+      color: var(--input-placeholder, var(--th-color-text-muted, #8D8D8D));
     }
 
     .data-table__loading {
@@ -222,14 +148,14 @@ export class DataTable extends LitElement {
       justify-content: center;
       padding: 3rem;
       gap: 1rem;
-      color: var(--body-text, var(--color-text-primary, #212121));
+      color: var(--body-text, var(--th-color-text-primary, #212121));
     }
 
     .data-table__spinner {
       width: 40px;
       height: 40px;
-      border: 4px solid var(--border, var(--color-border, #D7D7D7));
-      border-top-color: var(--primary, var(--color-primary, #3d98d3));
+      border: 4px solid var(--border, var(--th-color-border, #D7D7D7));
+      border-top-color: var(--primary, var(--th-color-primary, #3d98d3));
       border-radius: 50%;
       animation: spin 1s linear infinite;
     }
@@ -241,28 +167,28 @@ export class DataTable extends LitElement {
     }
 
     .data-table__wrapper {
-      border: 1px solid var(--border, var(--color-border, #D7D7D7));
+      border: 1px solid var(--border, var(--th-color-border, #D7D7D7));
       border-radius: 4px;
     }
 
     .data-table__table {
       width: 100%;
       border-collapse: collapse;
-      background-color: var(--body-bg, var(--color-white, #FFFFFF));
+      background-color: var(--body-bg, var(--th-color-white, #FFFFFF));
     }
 
     .data-table__thead {
-      background-color: var(--sortable-table-header-bg, var(--color-grey-100, #FAFAFA));
-      border-bottom: 1px solid var(--border, var(--color-border, #D7D7D7));
+      background-color: var(--sortable-table-header-bg, var(--th-color-grey-100, #FAFAFA));
+      border-bottom: 1px solid var(--border, var(--th-color-border, #D7D7D7));
     }
 
     .data-table__th {
       padding: 0.75rem 1rem;
       text-align: left;
       font-weight: 600;
-      color: var(--body-text, var(--color-text-primary, #212121));
+      color: var(--body-text, var(--th-color-text-primary, #212121));
       white-space: nowrap;
-      border-bottom: 1px solid var(--border, var(--color-border, #D7D7D7));
+      border-bottom: 1px solid var(--border, var(--th-color-border, #D7D7D7));
     }
 
     .data-table__th--sortable {
@@ -271,11 +197,11 @@ export class DataTable extends LitElement {
     }
 
     .data-table__th--sortable:hover {
-      background-color: var(--sortable-table-header-hover-bg, var(--color-grey-200, #EBEBEB));
+      background-color: var(--sortable-table-header-hover-bg, var(--th-color-grey-200, #EBEBEB));
     }
 
     .data-table__th--sorted {
-      background-color: var(--sortable-table-header-sorted-bg, var(--color-grey-200, #EBEBEB));
+      background-color: var(--sortable-table-header-sorted-bg, var(--th-color-grey-200, #EBEBEB));
     }
 
     .data-table__th--actions {
@@ -292,22 +218,22 @@ export class DataTable extends LitElement {
     .data-table__sort-icon {
       display: inline-flex;
       align-items: center;
-      color: var(--muted, var(--color-text-muted, #8D8D8D));
+      color: var(--muted, var(--th-color-text-muted, #8D8D8D));
       width: 16px;
       height: 16px;
       font-size: 16px;
     }
 
     .data-table__tbody {
-      background-color: var(--body-bg, var(--color-white, #FFFFFF));
+      background-color: var(--body-bg, var(--th-color-white, #FFFFFF));
     }
 
     .data-table__tr {
-      border-bottom: 1px solid var(--border, var(--color-border, #D7D7D7));
+      border-bottom: 1px solid var(--border, var(--th-color-border, #D7D7D7));
     }
 
     .data-table__tr:hover {
-      background-color: var(--sortable-table-row-hover-bg, var(--color-grey-100, #FAFAFA));
+      background-color: var(--sortable-table-row-hover-bg, var(--th-color-grey-100, #FAFAFA));
     }
 
     .data-table__tr:last-child {
@@ -316,11 +242,11 @@ export class DataTable extends LitElement {
 
     .data-table__td {
       padding: 0.75rem 1rem;
-      color: var(--body-text, var(--color-text-primary, #212121));
+      color: var(--body-text, var(--th-color-text-primary, #212121));
     }
 
     .data-table__td a {
-      color: var(--link, var(--color-primary, #3d98d3));
+      color: var(--link, var(--th-color-primary, #3d98d3));
       text-decoration: none;
     }
 
@@ -331,7 +257,7 @@ export class DataTable extends LitElement {
     .data-table__td--empty {
       text-align: center;
       padding: 2rem;
-      color: var(--muted, var(--color-text-muted, #8D8D8D));
+      color: var(--muted, var(--th-color-text-muted, #8D8D8D));
     }
 
     .data-table__td--actions {
@@ -351,7 +277,7 @@ export class DataTable extends LitElement {
     }
 
     .data-table__pagination-info {
-      color: var(--muted, var(--color-text-muted, #8D8D8D));
+      color: var(--muted, var(--th-color-text-muted, #8D8D8D));
       font-size: 13px;
     }
 
@@ -362,7 +288,7 @@ export class DataTable extends LitElement {
     }
 
     .data-table__pagination-current {
-      color: var(--body-text, var(--color-text-primary, #212121));
+      color: var(--body-text, var(--th-color-text-primary, #212121));
       font-size: 13px;
       min-width: 60px;
       text-align: center;
@@ -375,17 +301,17 @@ export class DataTable extends LitElement {
       width: 32px;
       height: 32px;
       padding: 0;
-      border: 1px solid var(--border, var(--color-border, #D7D7D7));
+      border: 1px solid var(--border, var(--th-color-border, #D7D7D7));
       border-radius: 4px;
-      background-color: var(--body-bg, var(--color-white, #FFFFFF));
-      color: var(--body-text, var(--color-text-primary, #212121));
+      background-color: var(--body-bg, var(--th-color-white, #FFFFFF));
+      color: var(--body-text, var(--th-color-text-primary, #212121));
       cursor: pointer;
       transition: all 0.2s;
     }
 
     .data-table__pagination-btn:hover:not(:disabled) {
-      background-color: var(--sortable-table-row-hover-bg, var(--color-grey-100, #FAFAFA));
-      border-color: var(--link, var(--color-primary, #3d98d3));
+      background-color: var(--sortable-table-row-hover-bg, var(--th-color-grey-100, #FAFAFA));
+      border-color: var(--link, var(--th-color-primary, #3d98d3));
     }
 
     .data-table__pagination-btn:disabled {
@@ -819,11 +745,11 @@ export class DataTable extends LitElement {
                           </th>
                         `,
                       )}
-                      ${this.rowActions
+                      ${this.renderActions
                         ? html`
                             <th
                               class="data-table__th data-table__th--actions"
-                              style="width: ${this.rowActionsWidth}px"
+                              style="width: var(--data-table-actions-width, 40px)"
                             ></th>
                           `
                         : ''}
@@ -835,7 +761,7 @@ export class DataTable extends LitElement {
                           <tr class="data-table__tr">
                             <td
                               class="data-table__td data-table__td--empty"
-                              colspan=${this.rowActions
+                              colspan=${this.renderActions
                                 ? this.columns.length + 1
                                 : this.columns.length}
                             >
@@ -867,16 +793,12 @@ export class DataTable extends LitElement {
                                   </td>
                                 `,
                               )}
-                              ${this.rowActions
+                              ${this.renderActions
                                 ? html`
                                     <td
                                       class="data-table__td data-table__td--actions"
                                     >
-                                      <slot name="actions" .row=${row}>
-                                        <action-menu
-                                          .resource=${row}
-                                        ></action-menu>
-                                      </slot>
+                                      ${this.renderActions(row)}
                                     </td>
                                   `
                                 : ''}

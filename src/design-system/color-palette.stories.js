@@ -34,12 +34,12 @@ const hexToRgb = (hex) => {
  */
 const getContrastText = (hex) => {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  if (!result) return 'var(--color-black)';
+  if (!result) return 'var(--th-color-black)';
   const r = parseInt(result[1], 16);
   const g = parseInt(result[2], 16);
   const b = parseInt(result[3], 16);
   const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-  return luminance > 0.5 ? 'var(--color-text-primary)' : 'var(--color-white)';
+  return luminance > 0.5 ? 'var(--th-color-text-primary)' : 'var(--th-color-white)';
 };
 
 /**
@@ -53,10 +53,10 @@ const ColorSwatch = ({ name, variable, hex, description = '' }) => {
     <div style="
       display: flex;
       flex-direction: column;
-      border: 1px solid var(--color-grey-200);
+      border: 1px solid var(--th-color-grey-200);
       border-radius: 8px;
       overflow: hidden;
-      background: var(--color-white);
+      background: var(--th-color-white);
     ">
       <div style="
         background-color: var(${variable});
@@ -77,22 +77,22 @@ const ColorSwatch = ({ name, variable, hex, description = '' }) => {
       ">
         <div style="
           font-weight: 600;
-          color: var(--color-text-primary);
+          color: var(--th-color-text-primary);
           margin-bottom: 4px;
         ">${variable}</div>
         <div style="
-          color: var(--color-text-secondary);
+          color: var(--th-color-text-secondary);
           font-family: monospace;
           font-size: 12px;
         ">${hex}</div>
         <div style="
-          color: var(--color-text-muted);
+          color: var(--th-color-text-muted);
           font-family: monospace;
           font-size: 11px;
           margin-top: 2px;
         ">${rgb}</div>
         ${description ? html`<div style="
-          color: var(--color-text-muted);
+          color: var(--th-color-text-muted);
           font-size: 11px;
           margin-top: 6px;
           font-style: italic;
@@ -111,10 +111,10 @@ const ColorSection = ({ title, colors }) => html`
       font-family: 'Nunito Sans', system-ui, sans-serif;
       font-size: 18px;
       font-weight: 700;
-      color: var(--color-text-primary);
+      color: var(--th-color-text-primary);
       margin: 0 0 16px 0;
       padding-bottom: 8px;
-      border-bottom: 2px solid var(--color-grey-200);
+      border-bottom: 2px solid var(--th-color-grey-200);
     ">${title}</h3>
     <div style="
       display: grid;
@@ -134,16 +134,16 @@ export const AllColors = {
     <div style="
       font-family: 'Nunito Sans', system-ui, sans-serif;
       padding: 20px;
-      background: var(--color-grey-100);
+      background: var(--th-color-grey-100);
     ">
       <h2 style="
         font-size: 24px;
         font-weight: 700;
-        color: var(--color-text-primary);
+        color: var(--th-color-text-primary);
         margin: 0 0 8px 0;
       ">TrailHand UI Color Palette</h2>
       <p style="
-        color: var(--color-text-secondary);
+        color: var(--th-color-text-secondary);
         font-size: 14px;
         margin: 0 0 32px 0;
       ">Global color variables for consistent design across all components.</p>
@@ -151,38 +151,61 @@ export const AllColors = {
       ${ColorSection({
         title: 'Primary',
         colors: [
-          { name: 'Primary', variable: '--color-primary', hex: '#3d98d3', description: 'Main brand color' },
+          { name: 'Light Primary', variable: '--th-color-light-primary', hex: '#e6f3ff', description: 'Light variant for backgrounds' },
+          { name: 'Primary', variable: '--th-color-primary', hex: '#0086FF', description: 'Main brand color' },
+          { name: 'Dark Primary', variable: '--th-color-dark-primary', hex: '#005cb9', description: 'Dark variant for buttons/links' },
         ]
       })}
 
       ${ColorSection({
         title: 'Black + White',
         colors: [
-          { name: 'Black', variable: '--color-black', hex: '#000000' },
-          { name: 'White', variable: '--color-white', hex: '#FFFFFF' },
+          { name: 'Black', variable: '--th-color-black', hex: '#000000' },
+          { name: 'White', variable: '--th-color-white', hex: '#FFFFFF' },
         ]
       })}
 
       ${ColorSection({
         title: 'Greyscale',
         colors: [
-          { name: 'Grey 100', variable: '--color-grey-100', hex: '#FAFAFA' },
-          { name: 'Grey 200', variable: '--color-grey-200', hex: '#EBEBEB' },
-          { name: 'Grey 300', variable: '--color-grey-300', hex: '#D7D7D7' },
-          { name: 'Grey 400', variable: '--color-grey-400', hex: '#BABABA' },
-          { name: 'Grey 500', variable: '--color-grey-500', hex: '#8D8D8D' },
-          { name: 'Grey 600', variable: '--color-grey-600', hex: '#636363' },
-          { name: 'Grey 700', variable: '--color-grey-700', hex: '#303131' },
-          { name: 'Grey 800', variable: '--color-grey-800', hex: '#212121' },
+          { name: 'Grey 100', variable: '--th-color-grey-100', hex: '#FAFAFA' },
+          { name: 'Grey 200', variable: '--th-color-grey-200', hex: '#EBEBEB' },
+          { name: 'Grey 300', variable: '--th-color-grey-300', hex: '#D7D7D7' },
+          { name: 'Grey 400', variable: '--th-color-grey-400', hex: '#BABABA' },
+          { name: 'Grey 500', variable: '--th-color-grey-500', hex: '#8D8D8D' },
+          { name: 'Grey 600', variable: '--th-color-grey-600', hex: '#636363' },
+          { name: 'Grey 700', variable: '--th-color-grey-700', hex: '#303131' },
+          { name: 'Grey 800', variable: '--th-color-grey-800', hex: '#212121' },
         ]
       })}
 
       ${ColorSection({
         title: 'Status Colors',
         colors: [
-          { name: 'Red', variable: '--color-red', hex: '#9F3A3A', description: 'Error, danger' },
-          { name: 'Green', variable: '--color-green', hex: '#30AC66', description: 'Success, positive' },
-          { name: 'Yellow', variable: '--color-yellow', hex: '#D3C255', description: 'Warning, caution' },
+          { name: 'Red', variable: '--th-color-red', hex: '#9f3a3a', description: 'Error, danger' },
+          { name: 'Green', variable: '--th-color-green', hex: '#30ac66', description: 'Success, positive' },
+          { name: 'Yellow', variable: '--th-color-yellow', hex: '#d3c255', description: 'Warning, caution' },
+          { name: 'Blue', variable: '--th-color-blue', hex: '#0085ff', description: 'Info, informational' },
+        ]
+      })}
+
+      ${ColorSection({
+        title: 'Light Status Colors',
+        colors: [
+          { name: 'Light Red', variable: '--th-color-light-red', hex: '#fee2e2', description: 'Error background' },
+          { name: 'Light Green', variable: '--th-color-light-green', hex: '#d2fdd2', description: 'Success background' },
+          { name: 'Light Yellow', variable: '--th-color-light-yellow', hex: '#fffeb4', description: 'Warning background' },
+          { name: 'Light Blue', variable: '--th-color-light-blue', hex: '#e6f3ff', description: 'Info background' },
+        ]
+      })}
+
+      ${ColorSection({
+        title: 'Dark Status Colors',
+        colors: [
+          { name: 'Dark Red', variable: '--th-color-dark-red', hex: '#731616', description: 'Error hover/active' },
+          { name: 'Dark Green', variable: '--th-color-dark-green', hex: '#0f8240', description: 'Success hover/active' },
+          { name: 'Dark Yellow', variable: '--th-color-dark-yellow', hex: '#a89939', description: 'Warning hover/active' },
+          { name: 'Dark Blue', variable: '--th-color-dark-blue', hex: '#005cb9', description: 'Info hover/active' },
         ]
       })}
     </div>
@@ -197,16 +220,16 @@ export const SemanticAliases = {
     <div style="
       font-family: 'Nunito Sans', system-ui, sans-serif;
       padding: 20px;
-      background: var(--color-grey-100);
+      background: var(--th-color-grey-100);
     ">
       <h2 style="
         font-size: 24px;
         font-weight: 700;
-        color: var(--color-text-primary);
+        color: var(--th-color-text-primary);
         margin: 0 0 8px 0;
       ">Semantic Color Aliases</h2>
       <p style="
-        color: var(--color-text-secondary);
+        color: var(--th-color-text-secondary);
         font-size: 14px;
         margin: 0 0 32px 0;
       ">Context-specific color variables that reference the base palette.</p>
@@ -214,37 +237,54 @@ export const SemanticAliases = {
       ${ColorSection({
         title: 'Text Colors',
         colors: [
-          { name: 'Primary Text', variable: '--color-text-primary', hex: '#212121', description: 'Main body text' },
-          { name: 'Secondary Text', variable: '--color-text-secondary', hex: '#636363', description: 'Supporting text' },
-          { name: 'Muted Text', variable: '--color-text-muted', hex: '#8D8D8D', description: 'Disabled, placeholder' },
-          { name: 'Inverse Text', variable: '--color-text-inverse', hex: '#FFFFFF', description: 'Text on dark backgrounds' },
+          { name: 'Primary Text', variable: '--th-color-text-primary', hex: '#212121', description: 'Main body text' },
+          { name: 'Secondary Text', variable: '--th-color-text-secondary', hex: '#636363', description: 'Supporting text' },
+          { name: 'Muted Text', variable: '--th-color-text-muted', hex: '#8D8D8D', description: 'Disabled, placeholder' },
+          { name: 'Inverse Text', variable: '--th-color-text-inverse', hex: '#FFFFFF', description: 'Text on dark backgrounds' },
         ]
       })}
 
       ${ColorSection({
         title: 'Background Colors',
         colors: [
-          { name: 'Background', variable: '--color-background', hex: '#FFFFFF', description: 'Default background' },
-          { name: 'Muted Background', variable: '--color-background-muted', hex: '#FAFAFA', description: 'Subtle background' },
-          { name: 'Hover Background', variable: '--color-background-hover', hex: '#EBEBEB', description: 'Interactive hover state' },
+          { name: 'Background', variable: '--th-color-background', hex: '#FFFFFF', description: 'Default background' },
+          { name: 'Muted Background', variable: '--th-color-background-muted', hex: '#FAFAFA', description: 'Subtle background' },
+          { name: 'Hover Background', variable: '--th-color-background-hover', hex: '#EBEBEB', description: 'Interactive hover state' },
         ]
       })}
 
       ${ColorSection({
         title: 'Border Colors',
         colors: [
-          { name: 'Border', variable: '--color-border', hex: '#D7D7D7', description: 'Default borders' },
-          { name: 'Light Border', variable: '--color-border-light', hex: '#EBEBEB', description: 'Subtle borders' },
+          { name: 'Border', variable: '--th-color-border', hex: '#D7D7D7', description: 'Default borders' },
+          { name: 'Light Border', variable: '--th-color-border-light', hex: '#EBEBEB', description: 'Subtle borders' },
         ]
       })}
 
       ${ColorSection({
-        title: 'State Colors',
+        title: 'State Outline Colors',
         colors: [
-          { name: 'Error', variable: '--color-error', hex: '#9F3A3A', description: 'Error states' },
-          { name: 'Success', variable: '--color-success', hex: '#30AC66', description: 'Success states' },
-          { name: 'Warning', variable: '--color-warning', hex: '#D3C255', description: 'Warning states' },
-          { name: 'Link', variable: '--color-link', hex: '#3d98d3', description: 'Interactive links' },
+          { name: 'Error Outline', variable: '--th-color-error-outline', hex: '#9f3a3a', description: 'Error text/borders' },
+          { name: 'Success Outline', variable: '--th-color-success-outline', hex: '#30ac66', description: 'Success text/borders' },
+          { name: 'Warning Outline', variable: '--th-color-warning-outline', hex: '#d3c255', description: 'Warning text/borders' },
+          { name: 'Info Outline', variable: '--th-color-info-outline', hex: '#0085ff', description: 'Info text/borders' },
+        ]
+      })}
+
+      ${ColorSection({
+        title: 'State Fill Colors',
+        colors: [
+          { name: 'Error Fill', variable: '--th-color-error-fill', hex: '#fee2e2', description: 'Error backgrounds' },
+          { name: 'Success Fill', variable: '--th-color-success-fill', hex: '#d2fdd2', description: 'Success backgrounds' },
+          { name: 'Warning Fill', variable: '--th-color-warning-fill', hex: '#fffeb4', description: 'Warning backgrounds' },
+          { name: 'Info Fill', variable: '--th-color-info-fill', hex: '#e6f3ff', description: 'Info backgrounds' },
+        ]
+      })}
+
+      ${ColorSection({
+        title: 'Interactive Colors',
+        colors: [
+          { name: 'Link', variable: '--th-color-link', hex: '#3d98d3', description: 'Interactive links' },
         ]
       })}
     </div>
@@ -259,23 +299,23 @@ export const UsageExamples = {
     <div style="
       font-family: 'Nunito Sans', system-ui, sans-serif;
       padding: 20px;
-      background: var(--color-grey-100);
+      background: var(--th-color-grey-100);
     ">
       <h2 style="
         font-size: 24px;
         font-weight: 700;
-        color: var(--color-text-primary);
+        color: var(--th-color-text-primary);
         margin: 0 0 8px 0;
       ">Usage Examples</h2>
       <p style="
-        color: var(--color-text-secondary);
+        color: var(--th-color-text-secondary);
         font-size: 14px;
         margin: 0 0 32px 0;
       ">How to use color variables in your CSS and components.</p>
 
       <div style="
-        background: var(--color-white);
-        border: 1px solid var(--color-grey-200);
+        background: var(--th-color-white);
+        border: 1px solid var(--th-color-grey-200);
         border-radius: 8px;
         padding: 24px;
         margin-bottom: 24px;
@@ -283,12 +323,12 @@ export const UsageExamples = {
         <h3 style="
           font-size: 16px;
           font-weight: 700;
-          color: var(--color-text-primary);
+          color: var(--th-color-text-primary);
           margin: 0 0 16px 0;
         ">Import the stylesheet</h3>
         <pre style="
-          background: var(--color-grey-800);
-          color: var(--color-grey-100);
+          background: var(--th-color-grey-800);
+          color: var(--th-color-grey-100);
           padding: 16px;
           border-radius: 4px;
           overflow-x: auto;
@@ -301,8 +341,8 @@ import './src/styles/colors.css';</code></pre>
       </div>
 
       <div style="
-        background: var(--color-white);
-        border: 1px solid var(--color-grey-200);
+        background: var(--th-color-white);
+        border: 1px solid var(--th-color-grey-200);
         border-radius: 8px;
         padding: 24px;
         margin-bottom: 24px;
@@ -310,47 +350,54 @@ import './src/styles/colors.css';</code></pre>
         <h3 style="
           font-size: 16px;
           font-weight: 700;
-          color: var(--color-text-primary);
+          color: var(--th-color-text-primary);
           margin: 0 0 16px 0;
         ">Use in CSS</h3>
         <pre style="
-          background: var(--color-grey-800);
-          color: var(--color-grey-100);
+          background: var(--th-color-grey-800);
+          color: var(--th-color-grey-100);
           padding: 16px;
           border-radius: 4px;
           overflow-x: auto;
           font-size: 13px;
           margin: 0;
         "><code>.my-button {
-  background-color: var(--color-primary);
-  color: var(--color-text-inverse);
-  border: 1px solid var(--color-border);
+  background-color: var(--th-color-primary);
+  color: var(--th-color-text-inverse);
+  border: 1px solid var(--th-color-border);
 }
 
 .my-button:hover {
-  background-color: var(--color-background-hover);
+  background-color: var(--th-color-background-hover);
 }
 
-.error-message {
-  color: var(--color-error);
+/* Status tags/badges using fill + outline pattern */
+.tag--error {
+  background-color: var(--th-color-error-fill);
+  color: var(--th-color-error-outline);
+}
+
+.tag--success {
+  background-color: var(--th-color-success-fill);
+  color: var(--th-color-success-outline);
 }</code></pre>
       </div>
 
       <div style="
-        background: var(--color-white);
-        border: 1px solid var(--color-grey-200);
+        background: var(--th-color-white);
+        border: 1px solid var(--th-color-grey-200);
         border-radius: 8px;
         padding: 24px;
       ">
         <h3 style="
           font-size: 16px;
           font-weight: 700;
-          color: var(--color-text-primary);
+          color: var(--th-color-text-primary);
           margin: 0 0 16px 0;
         ">With fallback values</h3>
         <pre style="
-          background: var(--color-grey-800);
-          color: var(--color-grey-100);
+          background: var(--th-color-grey-800);
+          color: var(--th-color-grey-100);
           padding: 16px;
           border-radius: 4px;
           overflow-x: auto;
@@ -358,8 +405,8 @@ import './src/styles/colors.css';</code></pre>
           margin: 0;
         "><code>/* Always provide fallbacks for robustness */
 .my-component {
-  color: var(--color-text-primary, #212121);
-  background: var(--color-background, #FFFFFF);
+  color: var(--th-color-text-primary, #212121);
+  background: var(--th-color-background, #FFFFFF);
 }</code></pre>
       </div>
     </div>

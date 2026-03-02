@@ -8,36 +8,36 @@
     <style>
       /* Default light mode colors */
       :root {
-        --background-color: var(--color-white, #FFFFFF);
-        --text-color: var(--color-text-primary, #212121);
-        --card-bg: var(--color-grey-100, #FAFAFA);
-        --border-color: var(--color-grey-200, #EBEBEB);
+        --background-color: var(--th-color-white, #FFFFFF);
+        --text-color: var(--th-color-text-primary, #212121);
+        --card-bg: var(--th-color-grey-100, #FAFAFA);
+        --border-color: var(--th-color-grey-200, #EBEBEB);
       }
 
       /* System dark mode preference */
       @media (prefers-color-scheme: dark) {
         :root {
-          --background-color: var(--color-grey-800, #212121);
-          --text-color: var(--color-grey-200, #EBEBEB);
-          --card-bg: var(--color-grey-700, #303131);
-          --border-color: var(--color-grey-600, #636363);
+          --background-color: var(--th-color-grey-800, #212121);
+          --text-color: var(--th-color-grey-200, #EBEBEB);
+          --card-bg: var(--th-color-grey-700, #303131);
+          --border-color: var(--th-color-grey-600, #636363);
         }
       }
 
       /* User override: explicitly chose light theme */
       body.theme-light {
-        --background-color: var(--color-white, #FFFFFF);
-        --text-color: var(--color-text-primary, #212121);
-        --card-bg: var(--color-grey-100, #FAFAFA);
-        --border-color: var(--color-grey-200, #EBEBEB);
+        --background-color: var(--th-color-white, #FFFFFF);
+        --text-color: var(--th-color-text-primary, #212121);
+        --card-bg: var(--th-color-grey-100, #FAFAFA);
+        --border-color: var(--th-color-grey-200, #EBEBEB);
       }
 
       /* User override: explicitly chose dark theme */
       body.theme-dark {
-        --background-color: var(--color-grey-800, #212121);
-        --text-color: var(--color-grey-200, #EBEBEB);
-        --card-bg: var(--color-grey-700, #303131);
-        --border-color: var(--color-grey-600, #636363);
+        --background-color: var(--th-color-grey-800, #212121);
+        --text-color: var(--th-color-grey-200, #EBEBEB);
+        --card-bg: var(--th-color-grey-700, #303131);
+        --border-color: var(--th-color-grey-600, #636363);
       }
 
       body {
