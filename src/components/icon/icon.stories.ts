@@ -169,7 +169,7 @@ export const DuotoneColors: Story = {
 };
 
 const duotoneIcons = ['bug', 'error', 'pause', 'play', 'close', 'grid', 'rocket', 'gauge', 'list', 'folderPlus', 'solarSystem', 'shoppingBag', 'info', 'chartLine', 'folderGear', 'database'];
-const solidIcons = ['globe', 'home', 'user'];
+const solidIcons = ['globe', 'home', 'user', 'check', 'minus'];
 
 export const AllIcons: Story = {
   render: () => html`
