@@ -61,11 +61,11 @@ export class TextInput extends LitElement {
 
     label {
       font-size: 11px;
-      color: var(--input-label, #000000);
+      color: var(--th-input-label, #000000);
     }
 
     label .required-indicator {
-      color: var(--color-red, #bf1e1e);
+      color: var(--th-color-red, #bf1e1e);
     }
 
     .input-wrapper {
@@ -79,31 +79,31 @@ export class TextInput extends LitElement {
       width: 100%;
       padding: 0.75em 3em 0.75em 16px;
       border-radius: 8px;
-      border: 1px solid var(--input-border, #d7d7d7);
+      border: 1px solid var(--th-input-border, #d7d7d7);
       outline: none;
       background: transparent;
       transition: 0.2s ease;
       font-size: 14px;
-      color: var(--input-text, #333);
+      color: var(--th-input-text, #333);
     }
 
     input:disabled {
-      background-color: var(--input-bg, transparent);
+      background-color: var(--th-input-bg, transparent);
     }
 
     input::placeholder {
-      color: var(--input-placeholder, #d7d7d7);
+      color: var(--th-input-placeholder, #d7d7d7);
     }
 
     input:focus {
-      border-color: var(--input-focus-border, #005cb9);
+      border-color: var(--th-input-focus-border, #005cb9);
     }
 
     .icon {
       position: absolute;
       right: 1em;
       pointer-events: none;
-      color: var(--input-icon-color, #d7d7d7);
+      color: var(--th-input-icon-color, #d7d7d7);
     }
 
     /* Sizes */
@@ -125,12 +125,12 @@ export class TextInput extends LitElement {
       cursor: not-allowed;
     }
     :host([disabled]) label {
-      color: var(--input-label-disabled, #999);
+      color: var(--th-input-label-disabled, #999);
     }
 
     /* Invalid */
     :host([invalid]) input {
-      border-color: var(--input-border-invalid, #9f3a3a);
+      border-color: var(--th-input-border-invalid, #9f3a3a);
     }
   `;
 

@@ -63,7 +63,7 @@ export class Checkbox extends LitElement {
     }
 
     .label {
-      color: var(--color-text-primary, #000000);
+      color: var(--th-color-text-primary, #000000);
     }
 
     /* Custom box */
@@ -71,7 +71,7 @@ export class Checkbox extends LitElement {
       width: 16px;
       height: 16px;
       border-radius: 4px;
-      border: 1.5px solid var(--checkbox-border, #d7d7d7);
+      border: 1.5px solid var(--th-checkbox-border, #d7d7d7);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -108,14 +108,14 @@ export class Checkbox extends LitElement {
 
     /* Focus */
     input:focus-visible + .control {
-      outline: 2px solid var(--checkbox-checked-bg, #005cb9);
+      outline: 2px solid var(--th-checkbox-checked-bg, #005cb9);
       outline-offset: 2px;
     }
 
     /* Checked state */
     :host([checked]) .control {
-      background: var(--checkbox-checked-bg, #005cb9);
-      border-color: var(--checkbox-checked-bg, #005cb9);
+      background: var(--th-checkbox-checked-bg, #005cb9);
+      border-color: var(--th-checkbox-checked-bg, #005cb9);
       color: white;
     }
     :host([checked]) .control trailhand-icon[name='check'] {
@@ -124,8 +124,8 @@ export class Checkbox extends LitElement {
 
     /* Indeterminate state */
     :host([indeterminate]) .control {
-      background: var(--checkbox-checked-bg, #005cb9);
-      border-color: var(--checkbox-checked-bg, #005cb9);
+      background: var(--th-checkbox-checked-bg, #005cb9);
+      border-color: var(--th-checkbox-checked-bg, #005cb9);
       color: white;
     }
     :host([indeterminate]) .control trailhand-icon[name='minus'] {
@@ -134,12 +134,12 @@ export class Checkbox extends LitElement {
 
     /* Disabled */
     :host([disabled]) .control {
-      background: var(--checkbox-disabled-bg, #e0e0e0);
-      border-color: var(--checkbox-disabled-border, #c0c0c0);
-      color: var(--checkbox-disabled-check, #8d8d8d);
+      background: var(--th-checkbox-disabled-bg, #e0e0e0);
+      border-color: var(--th-checkbox-disabled-border, #c0c0c0);
+      color: var(--th-checkbox-disabled-check, #8d8d8d);
     }
     :host([disabled]) .wrapper {
-      color: var(--checkbox-disabled-check, #8d8d8d);
+      color: var(--th-checkbox-disabled-check, #8d8d8d);
       cursor: not-allowed;
     }
   `;

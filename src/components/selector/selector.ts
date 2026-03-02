@@ -67,7 +67,7 @@ export class Selector extends LitElement {
     .control {
       border-radius: 8px;
       padding: 16px;
-      border: 1px solid var(--selector-border, #d7d7d7);
+      border: 1px solid var(--th-selector-border, #d7d7d7);
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -78,7 +78,7 @@ export class Selector extends LitElement {
 
     .text {
       font-size: 14px;
-      color: var(--selector-text-color, #000000);
+      color: var(--th-selector-text-color, #000000);
       font-weight: 500;
       display: flex;
       align-items: baseline;
@@ -89,23 +89,23 @@ export class Selector extends LitElement {
     .subtext {
       font-size: 11px;
       font-weight: 600;
-      color: var(--selector-subtext-color, #666666);
+      color: var(--th-selector-subtext-color, #666666);
     }
 
     .description {
       font-size: 12px;
-      color: var(--selector-description-color, #666666);
+      color: var(--th-selector-description-color, #666666);
       font-weight: 500;
       margin: 0;
     }
 
     .icon {
-      color: var(--selector-icon-color, #333333);
+      color: var(--th-selector-icon-color, #333333);
     }
 
     /* Focus */
     input:focus-visible + .control {
-      outline: 2px solid var(--selector-checked-bg, #005cb9);
+      outline: 2px solid var(--th-selector-checked-bg, #005cb9);
       outline-offset: 2px;
     }
 
@@ -113,19 +113,19 @@ export class Selector extends LitElement {
     :host([checked]) .control {
       background-color: color-mix(
         in srgb,
-        var(--selector-checked-bg, #005cb9) 10%,
+        var(--th-selector-checked-bg, #005cb9) 10%,
         transparent
       );
-      border-color: var(--selector-checked-bg, #005cb9);
+      border-color: var(--th-selector-checked-bg, #005cb9);
     }
 
     /* Disabled */
     :host([disabled]) .control {
-      color: var(--selector-disabled-color);
+      color: var(--th-selector-disabled-color);
       opacity: 0.6;
       background-color: color-mix(
         in srgb,
-        var(--selector-disabled-bg, #d7d7d7) 10%,
+        var(--th-selector-disabled-bg, #d7d7d7) 10%,
         transparent
       );
     }
@@ -133,7 +133,7 @@ export class Selector extends LitElement {
     :host([disabled]) .subtext,
     :host([disabled]) .description,
     :host([disabled]) .icon {
-      color: var(--selector-disabled-color);
+      color: var(--th-selector-disabled-color);
     }
     :host([disabled]) .wrapper {
       cursor: not-allowed;
