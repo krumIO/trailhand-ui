@@ -125,20 +125,20 @@ export class DataTable extends LitElement {
       width: 100%;
       max-width: 300px;
       padding: 0.5rem 1rem;
-      border: 1px solid var(--border, var(--color-border, #D7D7D7));
+      border: 1px solid var(--border, var(--th-color-border, #D7D7D7));
       border-radius: 4px;
-      background-color: var(--input-bg, var(--color-white, #FFFFFF));
-      color: var(--input-text, var(--color-text-primary, #212121));
+      background-color: var(--input-bg, var(--th-color-white, #FFFFFF));
+      color: var(--input-text, var(--th-color-text-primary, #212121));
       font-size: 14px;
     }
 
     .data-table__search-input:focus {
       outline: none;
-      border-color: var(--primary, var(--color-primary, #3d98d3));
+      border-color: var(--primary, var(--th-color-primary, #3d98d3));
     }
 
     .data-table__search-input::placeholder {
-      color: var(--input-placeholder, var(--color-text-muted, #8D8D8D));
+      color: var(--input-placeholder, var(--th-color-text-muted, #8D8D8D));
     }
 
     .data-table__loading {
@@ -148,14 +148,14 @@ export class DataTable extends LitElement {
       justify-content: center;
       padding: 3rem;
       gap: 1rem;
-      color: var(--body-text, var(--color-text-primary, #212121));
+      color: var(--body-text, var(--th-color-text-primary, #212121));
     }
 
     .data-table__spinner {
       width: 40px;
       height: 40px;
-      border: 4px solid var(--border, var(--color-border, #D7D7D7));
-      border-top-color: var(--primary, var(--color-primary, #3d98d3));
+      border: 4px solid var(--border, var(--th-color-border, #D7D7D7));
+      border-top-color: var(--primary, var(--th-color-primary, #3d98d3));
       border-radius: 50%;
       animation: spin 1s linear infinite;
     }
@@ -167,28 +167,28 @@ export class DataTable extends LitElement {
     }
 
     .data-table__wrapper {
-      border: 1px solid var(--border, var(--color-border, #D7D7D7));
+      border: 1px solid var(--border, var(--th-color-border, #D7D7D7));
       border-radius: 4px;
     }
 
     .data-table__table {
       width: 100%;
       border-collapse: collapse;
-      background-color: var(--body-bg, var(--color-white, #FFFFFF));
+      background-color: var(--body-bg, var(--th-color-white, #FFFFFF));
     }
 
     .data-table__thead {
-      background-color: var(--sortable-table-header-bg, var(--color-grey-100, #FAFAFA));
-      border-bottom: 1px solid var(--border, var(--color-border, #D7D7D7));
+      background-color: var(--sortable-table-header-bg, var(--th-color-grey-100, #FAFAFA));
+      border-bottom: 1px solid var(--border, var(--th-color-border, #D7D7D7));
     }
 
     .data-table__th {
       padding: 0.75rem 1rem;
       text-align: left;
       font-weight: 600;
-      color: var(--body-text, var(--color-text-primary, #212121));
+      color: var(--body-text, var(--th-color-text-primary, #212121));
       white-space: nowrap;
-      border-bottom: 1px solid var(--border, var(--color-border, #D7D7D7));
+      border-bottom: 1px solid var(--border, var(--th-color-border, #D7D7D7));
     }
 
     .data-table__th--sortable {
@@ -197,11 +197,11 @@ export class DataTable extends LitElement {
     }
 
     .data-table__th--sortable:hover {
-      background-color: var(--sortable-table-header-hover-bg, var(--color-grey-200, #EBEBEB));
+      background-color: var(--sortable-table-header-hover-bg, var(--th-color-grey-200, #EBEBEB));
     }
 
     .data-table__th--sorted {
-      background-color: var(--sortable-table-header-sorted-bg, var(--color-grey-200, #EBEBEB));
+      background-color: var(--sortable-table-header-sorted-bg, var(--th-color-grey-200, #EBEBEB));
     }
 
     .data-table__th--actions {
@@ -218,22 +218,22 @@ export class DataTable extends LitElement {
     .data-table__sort-icon {
       display: inline-flex;
       align-items: center;
-      color: var(--muted, var(--color-text-muted, #8D8D8D));
+      color: var(--muted, var(--th-color-text-muted, #8D8D8D));
       width: 16px;
       height: 16px;
       font-size: 16px;
     }
 
     .data-table__tbody {
-      background-color: var(--body-bg, var(--color-white, #FFFFFF));
+      background-color: var(--body-bg, var(--th-color-white, #FFFFFF));
     }
 
     .data-table__tr {
-      border-bottom: 1px solid var(--border, var(--color-border, #D7D7D7));
+      border-bottom: 1px solid var(--border, var(--th-color-border, #D7D7D7));
     }
 
     .data-table__tr:hover {
-      background-color: var(--sortable-table-row-hover-bg, var(--color-grey-100, #FAFAFA));
+      background-color: var(--sortable-table-row-hover-bg, var(--th-color-grey-100, #FAFAFA));
     }
 
     .data-table__tr:last-child {
@@ -242,11 +242,11 @@ export class DataTable extends LitElement {
 
     .data-table__td {
       padding: 0.75rem 1rem;
-      color: var(--body-text, var(--color-text-primary, #212121));
+      color: var(--body-text, var(--th-color-text-primary, #212121));
     }
 
     .data-table__td a {
-      color: var(--link, var(--color-primary, #3d98d3));
+      color: var(--link, var(--th-color-primary, #3d98d3));
       text-decoration: none;
     }
 
@@ -257,7 +257,7 @@ export class DataTable extends LitElement {
     .data-table__td--empty {
       text-align: center;
       padding: 2rem;
-      color: var(--muted, var(--color-text-muted, #8D8D8D));
+      color: var(--muted, var(--th-color-text-muted, #8D8D8D));
     }
 
     .data-table__td--actions {
@@ -277,7 +277,7 @@ export class DataTable extends LitElement {
     }
 
     .data-table__pagination-info {
-      color: var(--muted, var(--color-text-muted, #8D8D8D));
+      color: var(--muted, var(--th-color-text-muted, #8D8D8D));
       font-size: 13px;
     }
 
@@ -288,7 +288,7 @@ export class DataTable extends LitElement {
     }
 
     .data-table__pagination-current {
-      color: var(--body-text, var(--color-text-primary, #212121));
+      color: var(--body-text, var(--th-color-text-primary, #212121));
       font-size: 13px;
       min-width: 60px;
       text-align: center;
@@ -301,17 +301,17 @@ export class DataTable extends LitElement {
       width: 32px;
       height: 32px;
       padding: 0;
-      border: 1px solid var(--border, var(--color-border, #D7D7D7));
+      border: 1px solid var(--border, var(--th-color-border, #D7D7D7));
       border-radius: 4px;
-      background-color: var(--body-bg, var(--color-white, #FFFFFF));
-      color: var(--body-text, var(--color-text-primary, #212121));
+      background-color: var(--body-bg, var(--th-color-white, #FFFFFF));
+      color: var(--body-text, var(--th-color-text-primary, #212121));
       cursor: pointer;
       transition: all 0.2s;
     }
 
     .data-table__pagination-btn:hover:not(:disabled) {
-      background-color: var(--sortable-table-row-hover-bg, var(--color-grey-100, #FAFAFA));
-      border-color: var(--link, var(--color-primary, #3d98d3));
+      background-color: var(--sortable-table-row-hover-bg, var(--th-color-grey-100, #FAFAFA));
+      border-color: var(--link, var(--th-color-primary, #3d98d3));
     }
 
     .data-table__pagination-btn:disabled {

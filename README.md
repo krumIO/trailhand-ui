@@ -31,22 +31,22 @@ Trailhand UI includes a design system with CSS custom properties. Import `colors
 
 ```css
 /* Available variables */
---color-primary: #3d98d3;
---color-white: #FFFFFF;
---color-black: #000000;
+--th-color-primary: #3d98d3;
+--th-color-white: #FFFFFF;
+--th-color-black: #000000;
 
 /* Greyscale */
---color-grey-100 through --color-grey-800
+--th-color-grey-100 through --th-color-grey-800
 
 /* Semantic aliases */
---color-text-primary: #212121;
---color-text-secondary: #636363;
---color-text-muted: #8D8D8D;
---color-background: #FFFFFF;
---color-border: #D7D7D7;
---color-error: #9F3A3A;
---color-success: #30AC66;
---color-warning: #D3C255;
+--th-color-text-primary: #212121;
+--th-color-text-secondary: #636363;
+--th-color-text-muted: #8D8D8D;
+--th-color-background: #FFFFFF;
+--th-color-border: #D7D7D7;
+--th-color-error: #9F3A3A;
+--th-color-success: #30AC66;
+--th-color-warning: #D3C255;
 ```
 
 ### Theming
@@ -55,7 +55,7 @@ Override any variable to customize the look:
 
 ```css
 :root {
-  --color-primary: #your-brand-color;
+  --th-color-primary: #your-brand-color;
 }
 ```
 

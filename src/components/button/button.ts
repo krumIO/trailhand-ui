@@ -57,55 +57,55 @@ export class Button extends LitElement {
 
     .trailhand-button:disabled {
       cursor: not-allowed;
-      background-color: var(--button-disabled-bg, #e0e0e0);
-      color: var(--button-disabled-color, #a8a8a8);
+      background-color: var(--th-button-disabled-bg, #e0e0e0);
+      color: var(--th-button-disabled-color, #a8a8a8);
       border: none;
     }
 
     .trailhand-button--primary {
-      color: var(--button-primary-color, #fff);
-      background-color: var(--button-primary-bg, #005cb9);
+      color: var(--th-button-primary-color, #fff);
+      background-color: var(--th-button-primary-bg, #005cb9);
     }
 
     .trailhand-button--primary:not(:disabled):hover {
-      background-color: var(--button-primary-bg-hover, #00478e);
+      background-color: var(--th-button-primary-bg-hover, #00478e);
     }
 
     .trailhand-button--secondary {
-      color: var(--button-secondary-color, #005cb9);
-      background-color: var(--button-secondary-bg, #ffffff);
-      border: 1px solid var(--button-secondary-border, #005cb9);
+      color: var(--th-button-secondary-color, #005cb9);
+      background-color: var(--th-button-secondary-bg, #ffffff);
+      border: 1px solid var(--th-button-secondary-border, #005cb9);
     }
 
     .trailhand-button--secondary:not(:disabled):hover {
-      background-color: var(--button-secondary-bg-hover, #f5faff);
+      background-color: var(--th-button-secondary-bg-hover, #f5faff);
     }
 
     .trailhand-button--alternate {
-      color: var(--button-alternate-color, #ffffff);
-      background-color: var(--button-alternate-bg, #3492f1);
+      color: var(--th-button-alternate-color, #ffffff);
+      background-color: var(--th-button-alternate-bg, #3492f1);
     }
 
     .trailhand-button--alternate:not(:disabled):hover {
-      background-color: var(--button-alternate-bg-hover, #156ec8);
+      background-color: var(--th-button-alternate-bg-hover, #156ec8);
     }
 
     .trailhand-button--destructive {
-      color: var(--button-destructive-color, #fff);
-      background-color: var(--button-destructive-bg, #9f3a3a);
+      color: var(--th-button-destructive-color, #fff);
+      background-color: var(--th-button-destructive-bg, #9f3a3a);
     }
 
     .trailhand-button--destructive:not(:disabled):hover {
-      background-color: var(--button-destructive-bg-hover, #731616);
+      background-color: var(--th-button-destructive-bg-hover, #731616);
     }
 
     .trailhand-button--confirmation {
-      color: var(--button-confirmation-color, #fff);
-      background-color: var(--button-confirmation-bg, #30ac66);
+      color: var(--th-button-confirmation-color, #fff);
+      background-color: var(--th-button-confirmation-bg, #30ac66);
     }
 
     .trailhand-button--confirmation:not(:disabled):hover {
-      background-color: var(--button-confirmation-bg-hover, #0f8240);
+      background-color: var(--th-button-confirmation-bg-hover, #0f8240);
     }
 
     .trailhand-button--small {
