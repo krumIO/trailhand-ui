@@ -19,8 +19,8 @@ class DevApp extends LitElement {
       display: block;
       padding: 2rem;
       font-family: system-ui;
-      background-color: var(--color-background, #f9f9f9);
-      color: var(--color-text-primary, #111);
+      background-color: var(--th-color-background, #f9f9f9);
+      color: var(--th-color-text-primary, #111);
     }
 
     .header {
@@ -65,8 +65,8 @@ class DevApp extends LitElement {
       --th-card-title-color: #FFFFFF;
       --th-card-text-color: #cbd5e1;
       /* Button variables cascade through shadow DOM */
-      --button-secondary-bg: #404040;
-      --button-secondary-bg-hover: rgba(56, 189, 248, 0.1);
+      --th-button-secondary-bg: #404040;
+      --th-button-secondary-bg-hover: rgba(56, 189, 248, 0.1);
     }
 
   `;

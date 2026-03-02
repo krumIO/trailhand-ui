@@ -125,28 +125,28 @@ export class ThTag extends LitElement {
 
     /* Color variants - soft pastel backgrounds with colored text */
     .tag--default {
-      background-color: var(--color-background-hover, var(--color-grey-200, #EBEBEB));
-      color: var(--color-text-secondary, var(--color-grey-600, #636363));
+      background-color: var(--th-color-background-hover, var(--th-color-grey-200, #EBEBEB));
+      color: var(--th-color-text-secondary, var(--th-color-grey-600, #636363));
     }
 
     .tag--info {
-      background-color: var(--color-info-fill, var(--color-light-blue, #e6f3ff));
-      color: var(--color-info-outline, var(--color-blue, #0085ff));
+      background-color: var(--th-color-info-fill, var(--th-color-light-blue, #e6f3ff));
+      color: var(--th-color-info-outline, var(--th-color-blue, #0085ff));
     }
 
     .tag--success {
-      background-color: var(--color-success-fill, var(--color-light-green, #d2fdd2));
-      color: var(--color-success-outline, var(--color-green, #097409));
+      background-color: var(--th-color-success-fill, var(--th-color-light-green, #d2fdd2));
+      color: var(--th-color-success-outline, var(--th-color-green, #097409));
     }
 
     .tag--warning {
-      background-color: var(--color-warning-fill, var(--color-light-yellow, #fffeb4));
-      color: var(--color-warning-outline, var(--color-dark-yellow, #a89939));
+      background-color: var(--th-color-warning-fill, var(--th-color-light-yellow, #fffeb4));
+      color: var(--th-color-warning-outline, var(--th-color-dark-yellow, #a89939));
     }
 
     .tag--error {
-      background-color: var(--color-error-fill, var(--color-light-red, #fee2e2));
-      color: var(--color-error-outline, var(--color-red, #9F3A3A));
+      background-color: var(--th-color-error-fill, var(--th-color-light-red, #fee2e2));
+      color: var(--th-color-error-outline, var(--th-color-red, #9F3A3A));
     }
 
     /* Outlined variants */
@@ -157,27 +157,27 @@ export class ThTag extends LitElement {
 
     .tag--outlined.tag--default {
       background-color: transparent;
-      color: var(--color-text-secondary, var(--color-grey-600, #4b5563));
+      color: var(--th-color-text-secondary, var(--th-color-grey-600, #4b5563));
     }
 
     .tag--outlined.tag--info {
       background-color: transparent;
-      color: var(--color-info-outline, var(--color-blue, #0085ff));
+      color: var(--th-color-info-outline, var(--th-color-blue, #0085ff));
     }
 
     .tag--outlined.tag--success {
       background-color: transparent;
-      color: var(--color-success-outline, var(--color-green, #097409));
+      color: var(--th-color-success-outline, var(--th-color-green, #097409));
     }
 
     .tag--outlined.tag--warning {
       background-color: transparent;
-      color: var(--color-warning-outline, var(--color-dark-yellow, #a89939));
+      color: var(--th-color-warning-outline, var(--th-color-dark-yellow, #a89939));
     }
 
     .tag--outlined.tag--error {
       background-color: transparent;
-      color: var(--color-error-outline, var(--color-red, #9F3A3A));
+      color: var(--th-color-error-outline, var(--th-color-red, #9F3A3A));
     }
 
     /* Icon styling */

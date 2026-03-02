@@ -44,42 +44,42 @@ export class ProgressBar extends LitElement {
       align-items: center;
       justify-content: space-between;
       margin-bottom: 8px;
-      font-size: var(--progress-bar-font-size, 14px);
+      font-size: var(--th-progress-bar-font-size, 14px);
     }
 
     .progress-bar__title {
       font-weight: 600;
       color: var(
-        --progress-bar-title-color,
-        var(--color-text-primary, #212121)
+        --th-progress-bar-title-color,
+        var(--th-color-text-primary, #212121)
       );
     }
 
     .progress-bar__stats {
       color: var(
-        --progress-bar-label-color,
-        var(--color-text-secondary, #636363)
+        --th-progress-bar-label-color,
+        var(--th-color-text-secondary, #636363)
       );
     }
 
     .progress-bar__track {
       width: 100%;
-      height: var(--progress-bar-height, 8px);
+      height: var(--th-progress-bar-height, 8px);
       background-color: var(
-        --progress-bar-track-color,
-        var(--color-grey-200, #ebebeb)
+        --th-progress-bar-track-color,
+        var(--th-color-grey-200, #ebebeb)
       );
-      border-radius: var(--progress-bar-border-radius, 4px);
+      border-radius: var(--th-progress-bar-border-radius, 4px);
       overflow: hidden;
     }
 
     .progress-bar__fill {
       height: 100%;
       background-color: var(
-        --progress-bar-fill-color,
-        var(--color-primary, #3d98d3)
+        --th-progress-bar-fill-color,
+        var(--th-color-primary, #3d98d3)
       );
-      border-radius: var(--progress-bar-border-radius, 4px);
+      border-radius: var(--th-progress-bar-border-radius, 4px);
       transition: width 0.3s ease;
     }
   `;
