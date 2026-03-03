@@ -70,15 +70,6 @@ export class Icon extends LitElement {
       width: 100%;
       height: 100%;
     }
-    /* Duotone icon styling */
-    svg .fa-primary {
-      fill: var(--fa-primary-color, currentColor);
-      opacity: var(--fa-primary-opacity, 1);
-    }
-    svg .fa-secondary {
-      fill: var(--fa-secondary-color, currentColor);
-      opacity: var(--fa-secondary-opacity, 0.4);
-    }
   `;
 
   render() {
