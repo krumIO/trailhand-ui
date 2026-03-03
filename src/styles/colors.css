@@ -114,6 +114,35 @@
   --th-progress-bar-title-color: var(--th-color-text-primary);
   --th-progress-bar-label-color: var(--th-color-text-secondary);
 
+  /* Checkbox */
+  --th-checkbox-border: var(--th-color-grey-300);
+  --th-checkbox-checked-bg: var(--th-color-dark-primary);
+  --th-checkbox-disabled-bg: var(--th-color-grey-300);
+  --th-checkbox-disabled-border: var(--th-color-grey-300);
+  --th-checkbox-disabled-check: var(--th-color-grey-500);
+
+  /* Text Input */
+  --th-input-border: var(--th-color-grey-300);
+  --th-input-focus-border: var(--th-color-dark-primary);
+  --th-input-border-invalid: var(--th-color-red);
+  --th-input-label: var(--th-color-grey-700);
+  --th-input-label-disabled: var(--th-color-grey-500);
+  --th-input-placeholder: var(--th-color-grey-400);
+  --th-input-text: var(--th-color-black);
+  --th-input-bg: 'transparent';
+  --th-input-icon-color: var(--th-color-grey-400);
+
+  /* Selector */
+  --th-selector-border: var(--th-color-grey-300);
+  --th-selector-text-color: var(--th-color-text-primary);
+  --th-selector-subtext-color: var(--th-color-primary);
+  --th-selector-description-color: var(--th-color-text-secondary);
+  --th-selector-icon-color: var(--th-color-dark-primary);
+  --th-selector-checked-border: var(--th-color-dark-primary);
+  --th-selector-checked-bg: var(--th-color-primary);
+  --th-selector-disabled-color: var(--th-color-grey-500);
+  --th-selector-disabled-bg: transparent;
+
   /* Shadow colors using opacity */
   --th-color-shadow: rgba(0, 0, 0, 0.1);
   --th-color-shadow-medium: rgba(0, 0, 0, 0.15);
@@ -144,6 +173,34 @@
 
   --th-button-disabled-bg: var(--th-color-grey-700);
   --th-button-disabled-color: var(--th-color-grey-500);
+
+  /* Checkbox */
+  --th-checkbox-border: var(--th-color-grey-600);
+  --th-checkbox-checked-bg: var(--th-color-primary);
+  --th-checkbox-disabled-bg: var(--th-color-grey-600);
+  --th-checkbox-disabled-border: var(--th-color-grey-600);
+  --th-checkbox-disabled-check: var(--th-color-grey-300);
+
+  /* Text Input */
+  --th-input-border: var(--th-color-grey-600);
+  --th-input-focus-border: var(--th-color-primary);
+  --th-input-label: var(--th-color-white);
+  --th-input-label-disabled: var(--th-color-grey-500);
+  --th-input-placeholder: var(--th-color-grey-300);
+  --th-input-text: var(--th-color-white);
+  --th-input-bg: var(--th-color-grey-700);
+  --th-input-icon-color: var(--th-color-grey-300);
+
+  /* Selector */
+  --th-selector-border: var(--th-color-grey-600);
+  --th-selector-text-color: var(--th-color-text-primary);
+  --th-selector-subtext-color: var(--th-color-primary);
+  --th-selector-description-color: var(--th-color-text-secondary);
+  --th-selector-icon-color: var(--th-color-primary);
+  --th-selector-checked-border: var(--th-color-primary);
+  --th-selector-checked-bg: var(--th-color-primary);
+  --th-selector-disabled-color: var(--th-color-grey-500);
+  --th-selector-disabled-bg: var(--th-color-grey-100);
 
   /* Cards */
   --th-card-bg: var(--th-color-grey-700);

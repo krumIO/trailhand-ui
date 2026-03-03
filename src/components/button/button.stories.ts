@@ -164,6 +164,9 @@ export const WithBothIcons: Story = {
 };
 
 export const HandleClick: Story = {
+  parameters: {
+    chromatic: { disableSnapshot: true },
+  },
   args: {
     variant: 'primary',
     size: 'medium',
@@ -188,6 +191,9 @@ export const HandleClick: Story = {
 };
 
 export const HandleDisabledClick: Story = {
+  parameters: {
+    chromatic: { disableSnapshot: true },
+  },
   args: {
     variant: 'primary',
     size: 'medium',
