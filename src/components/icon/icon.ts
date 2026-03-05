@@ -22,6 +22,12 @@ import {
   faChartLine,
   faSliders,
   faDatabase,
+  faCircleCheck,
+  faTriangleExclamation,
+  faScrewdriverWrench,
+  faBan,
+  faSpinner,
+  faGear,
 } from '@fortawesome/free-solid-svg-icons';
 
 
@@ -45,6 +51,12 @@ const iconMap = {
   chartLine: faChartLine,
   sliders: faSliders,
   database: faDatabase,
+  circleCheck: faCircleCheck,
+  warning: faTriangleExclamation,
+  tools: faScrewdriverWrench,
+  cancel: faBan,
+  loading: faSpinner,
+  gear: faGear,
 };
 
 export const availableIcons = Object.keys(iconMap) as (keyof typeof iconMap)[];
