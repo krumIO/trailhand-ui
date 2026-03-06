@@ -10,7 +10,7 @@ export default {
   title: 'Components/DataTable',
   tags: ['autodocs'],
   render: (args) => {
-    const table = document.createElement('data-table');
+    const table = document.createElement('trailhand-table');
 
     if (args.columns) table.columns = args.columns;
     if (args.rows) table.rows = args.rows;
@@ -220,10 +220,10 @@ export const Default = {
   parameters: {
     docs: {
       source: {
-        code: `<data-table></data-table>
+        code: `<trailhand-table></trailhand-table>
 
 <script>
-  const table = document.querySelector('data-table');
+  const table = document.querySelector('trailhand-table');
 
   table.columns = [
     { field: 'name', label: 'Name', width: '200px' },
@@ -477,11 +477,11 @@ export const NestedObjectData = {
  */
 export const WithRowActions = {
   render: () => {
-    const table = document.createElement('data-table');
+    const table = document.createElement('trailhand-table');
     table.columns = userColumns;
     table.rows = sampleUsers.slice(0, 5);
     table.renderActions = (row) => html`
-      <action-menu
+      <trailhand-action-menu
         .resource=${row}
         .actions=${[
           {
@@ -510,7 +510,7 @@ export const WithRowActions = {
             danger: true,
           },
         ]}
-      ></action-menu>
+      ></trailhand-action-menu>
     `;
 
     return table;
