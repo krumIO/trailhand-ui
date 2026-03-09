@@ -189,4 +189,4 @@ export class ToggleSwitch extends LitElement {
 }
 
 // Register the element
-customElements.define('toggle-switch', ToggleSwitch);
+customElements.define('trailhand-toggle-switch', ToggleSwitch);

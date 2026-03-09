@@ -8,7 +8,7 @@ export default {
   title: 'Components/ActionMenu',
   tags: ['autodocs'],
   render: (args) => {
-    const menu = document.createElement('action-menu');
+    const menu = document.createElement('trailhand-action-menu');
 
     if (args.actions) menu.actions = args.actions;
     if (args.resource) menu.resource = args.resource;
@@ -80,10 +80,10 @@ export const Default = {
   parameters: {
     docs: {
       source: {
-        code: `<action-menu></action-menu>
+        code: `<trailhand-action-menu></trailhand-action-menu>
 
 <script>
-  const menu = document.querySelector('action-menu');
+  const menu = document.querySelector('trailhand-action-menu');
   menu.actions = [
     { label: 'Edit', action: (resource) => console.log('Edit:', resource) },
     { label: 'Duplicate', action: (resource) => console.log('Duplicate:', resource) },
@@ -337,7 +337,7 @@ export const InTableContext = {
       const actionCell = document.createElement('td');
       actionCell.style.cssText = 'padding: 8px; text-align: center;';
 
-      const menu = document.createElement('action-menu');
+      const menu = document.createElement('trailhand-action-menu');
       menu.resource = item;
       menu.actions = [
         {
