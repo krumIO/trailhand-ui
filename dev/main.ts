@@ -119,12 +119,12 @@ class DevApp extends LitElement {
     return html`
       <div class="header">
         <h1>Trailhand UI – Dev</h1>
-        <toggle-switch
+        <trailhand-toggle-switch
           on-label="🌙 Dark"
           off-label="☀️ Light"
           .checked=${this.getAttribute('data-theme') === 'dark'}
           @toggle-change=${this.handleThemeToggle}
-        ></toggle-switch>
+        ></trailhand-toggle-switch>
       </div>
       <h1>Buttons</h1>
       <!-------------------------- BUTTONS -------------------------->
@@ -291,7 +291,7 @@ class DevApp extends LitElement {
         <trailhand-tag label="Running" icon="play" variant="success"></trailhand-tag>
         <trailhand-tag variant="warning">Warning</trailhand-tag>
         <trailhand-tag label="Warning" variant="warning" outlined></trailhand-tag>
-        <trailhand-tag variant="error">Error</trailhand-tag>
+        <trailhand-tag label="Error" icon="error" variant="error"></trailhand-tag>
         <trailhand-tag label="Bug" icon="bug" variant="error"></trailhand-tag>
         <trailhand-tag label="small" size="sm" variant="info"></trailhand-tag>
         <trailhand-tag label="medium" size="md" variant="info"></trailhand-tag>

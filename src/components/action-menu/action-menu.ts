@@ -366,4 +366,4 @@ export class ActionMenu extends LitElement {
 }
 
 // Register the element
-customElements.define('action-menu', ActionMenu);
+customElements.define('trailhand-action-menu', ActionMenu);

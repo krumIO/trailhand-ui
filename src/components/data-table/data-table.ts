@@ -851,4 +851,4 @@ export class DataTable extends LitElement {
 }
 
 // Register the element
-customElements.define('data-table', DataTable);
+customElements.define('trailhand-table', DataTable);
