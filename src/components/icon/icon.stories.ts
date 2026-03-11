@@ -121,20 +121,56 @@ export const WithSizes: Story = {
   `,
 };
 
-const solidIcons = ['globe', 'home', 'user', 'bug', 'error', 'pause', 'play', 'close', 'table', 'rocket', 'gauge', 'list', 'folderPlus', 'gears', 'shoppingBag', 'info', 'chartLine', 'sliders', 'database', 'circleCheck', 'warning', 'tools', 'cancel', 'loading', 'gear'];
+const solidIcons = [
+  'globe',
+  'home',
+  'user',
+  'bug',
+  'error',
+  'pause',
+  'play',
+  'close',
+  'table',
+  'rocket',
+  'gauge',
+  'list',
+  'folderPlus',
+  'gears',
+  'shoppingBag',
+  'info',
+  'chartLine',
+  'sliders',
+  'database',
+  'circleCheck',
+  'warning',
+  'tools',
+  'cancel',
+  'loading',
+  'gear',
+  'x',
+];
 
 export const AllIcons: Story = {
   render: () => html`
     <div>
-      <h3 style="margin: 0 0 16px 0; font-size: 14px; font-weight: 600;">Solid Icons</h3>
-      <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 24px;">
+      <h3 style="margin: 0 0 16px 0; font-size: 14px; font-weight: 600;">
+        Solid Icons
+      </h3>
+      <div
+        style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 24px;"
+      >
         ${solidIcons.map(
           (iconName) => html`
-            <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
-              <trailhand-icon name=${iconName} style="font-size: 32px;"></trailhand-icon>
+            <div
+              style="display: flex; flex-direction: column; align-items: center; gap: 8px;"
+            >
+              <trailhand-icon
+                name=${iconName}
+                style="font-size: 32px;"
+              ></trailhand-icon>
               <span style="font-size: 12px; color: #6b7280;">${iconName}</span>
             </div>
-          `
+          `,
         )}
       </div>
     </div>

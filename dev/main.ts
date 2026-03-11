@@ -1,5 +1,5 @@
 import { LitElement, html, css } from 'lit';
-import { customElement } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 
 // Import components you want to work on
 import '../src/components/button';
@@ -11,12 +11,15 @@ import '../src/components/progress-bar';
 import '../src/components/checkbox';
 import '../src/components/text-input';
 import '../src/components/selector';
+import '../src/components/modal';
 
 // Import global styles
 import '../src/styles/colors.css';
 
 @customElement('dev-app')
 class DevApp extends LitElement {
+  @property({ type: Boolean }) modalOpen = false;
+
   static styles = css`
     :host {
       display: block;
@@ -63,8 +66,8 @@ class DevApp extends LitElement {
 
     /* Card theming */
     .styled-card {
-      --th-card-bg: #FBFBFB;
-      --th-card-border: #E4E4E4;
+      --th-card-bg: #fbfbfb;
+      --th-card-border: #e4e4e4;
       --th-card-title-color: #141419;
       --th-card-text-color: #475569;
     }
@@ -72,7 +75,7 @@ class DevApp extends LitElement {
     :host([data-theme='dark']) .styled-card {
       --th-card-bg: #404040;
       --th-card-border: #636363;
-      --th-card-title-color: #FFFFFF;
+      --th-card-title-color: #ffffff;
       --th-card-text-color: #cbd5e1;
       /* Button variables cascade through shadow DOM */
       --th-button-secondary-bg: #404040;
@@ -102,7 +105,6 @@ class DevApp extends LitElement {
       flex-direction: column;
       gap: 1rem;
     }
-
   `;
 
   private handleThemeToggle(e: CustomEvent<{ checked: boolean }>) {
@@ -237,7 +239,7 @@ class DevApp extends LitElement {
           description="This card has custom colors via CSS variables."
           icon-name="bug"
         >
-          <trailhand-button 
+          <trailhand-button
             @click=${() => console.log('clicked')}
             variant="secondary"
             size="large"
@@ -246,18 +248,26 @@ class DevApp extends LitElement {
             Create Namespace
           </trailhand-button>
           <div slot="footer">
-            <h4 style="margin: 0 0 12px 0; font-size: 14px; font-weight: 600;">Quick Start With</h4>
+            <h4 style="margin: 0 0 12px 0; font-size: 14px; font-weight: 600;">
+              Quick Start With
+            </h4>
             <div style="display: flex; flex-direction: column; gap: 8px;">
-              <a href="#" style="display: flex; justify-content: space-between; align-items: center; color: #3b82f6; text-decoration: none; padding: 8px 0; border-bottom: 1px solid var(--th-card-border, inherit);">
+              <a
+                href="#"
+                style="display: flex; justify-content: space-between; align-items: center; color: #3b82f6; text-decoration: none; padding: 8px 0; border-bottom: 1px solid var(--th-card-border, inherit);"
+              >
                 test-workspace
                 <span>+</span>
               </a>
-              <a href="#" style="display: flex; justify-content: space-between; align-items: center; color: #3b82f6; text-decoration: none; padding: 8px 0;">
+              <a
+                href="#"
+                style="display: flex; justify-content: space-between; align-items: center; color: #3b82f6; text-decoration: none; padding: 8px 0;"
+              >
                 test-workspace-2
                 <span>+</span>
               </a>
             </div>
-          </div> 
+          </div>
         </trailhand-card>
 
         <trailhand-card
@@ -275,23 +285,50 @@ class DevApp extends LitElement {
             Deploy Application
           </trailhand-button>
           <div slot="footer">
-            <trailhand-progress-bar label="Running" value="1" total="2"></trailhand-progress-bar>
+            <trailhand-progress-bar
+              label="Running"
+              value="1"
+              total="2"
+            ></trailhand-progress-bar>
           </div>
         </trailhand-card>
       </div>
 
-    <!-------------------------- Tags -------------------------->
-    <h1>Tags</h1>
+      <!-------------------------- Tags -------------------------->
+      <h1>Tags</h1>
       <div class="content">
         <trailhand-tag variant="default">Default</trailhand-tag>
-        <trailhand-tag label="React" variant="default" dismissible value="react"></trailhand-tag>
+        <trailhand-tag
+          label="React"
+          variant="default"
+          dismissible
+          value="react"
+        ></trailhand-tag>
         <trailhand-tag variant="info">Info</trailhand-tag>
-        <trailhand-tag label="React" icon="globe" variant="info" dismissible value="react"></trailhand-tag>
+        <trailhand-tag
+          label="React"
+          icon="globe"
+          variant="info"
+          dismissible
+          value="react"
+        ></trailhand-tag>
         <trailhand-tag variant="success">Success</trailhand-tag>
-        <trailhand-tag label="Running" icon="play" variant="success"></trailhand-tag>
+        <trailhand-tag
+          label="Running"
+          icon="play"
+          variant="success"
+        ></trailhand-tag>
         <trailhand-tag variant="warning">Warning</trailhand-tag>
-        <trailhand-tag label="Warning" variant="warning" outlined></trailhand-tag>
-        <trailhand-tag label="Error" icon="error" variant="error"></trailhand-tag>
+        <trailhand-tag
+          label="Warning"
+          variant="warning"
+          outlined
+        ></trailhand-tag>
+        <trailhand-tag
+          label="Error"
+          icon="error"
+          variant="error"
+        ></trailhand-tag>
         <trailhand-tag label="Bug" icon="bug" variant="error"></trailhand-tag>
         <trailhand-tag label="small" size="sm" variant="info"></trailhand-tag>
         <trailhand-tag label="medium" size="md" variant="info"></trailhand-tag>
@@ -419,6 +456,35 @@ class DevApp extends LitElement {
           ><trailhand-icon name="globe" slot="icon"></trailhand-icon
         ></trailhand-selector>
       </div>
+      <!-------------------------- MODAL -------------------------->
+      <h1>Modal</h1>
+      <trailhand-button
+        @click=${() => (this.modalOpen = true)}
+        variant="primary"
+        size="large"
+      >
+        Open Modal
+      </trailhand-button>
+      <trailhand-modal
+        title="Modal Heading"
+        subtitle="Subtitle"
+        .open=${this.modalOpen}
+        @modal-close=${() => (this.modalOpen = false)}
+      >
+        <div
+          style="display: flex; flex-direction: column; gap: 1rem; width: 500px;"
+        >
+          <trailhand-text-input
+            label="Modal Text Input"
+            placeholder="Type something..."
+          ></trailhand-text-input>
+        </div>
+        <div slot="footer">
+          <trailhand-button @click=${() => (this.modalOpen = false)}
+            >Close</trailhand-button
+          >
+        </div>
+      </trailhand-modal>
       <!-------------------------- FORM INTEGRATION -------------------------->
       <h1>Form Integration</h1>
       <form

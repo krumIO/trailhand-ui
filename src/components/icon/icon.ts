@@ -2,9 +2,9 @@ import { LitElement, html, css } from 'lit';
 import { property } from 'lit/decorators.js';
 import { library, icon } from '@fortawesome/fontawesome-svg-core';
 
-import { 
+import {
   faGlobe,
-  faHome, 
+  faHome,
   faUser,
   faBug,
   faCircleExclamation,
@@ -28,8 +28,8 @@ import {
   faBan,
   faSpinner,
   faGear,
+  faXmark,
 } from '@fortawesome/free-solid-svg-icons';
-
 
 const iconMap = {
   bug: faBug,
@@ -57,6 +57,7 @@ const iconMap = {
   cancel: faBan,
   loading: faSpinner,
   gear: faGear,
+  x: faXmark,
 };
 
 export const availableIcons = Object.keys(iconMap) as (keyof typeof iconMap)[];
