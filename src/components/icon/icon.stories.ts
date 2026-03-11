@@ -121,7 +121,7 @@ export const WithSizes: Story = {
   `,
 };
 
-const solidIcons = ['globe', 'home', 'user', 'bug', 'error', 'pause', 'play', 'close', 'table', 'rocket', 'gauge', 'list', 'folderPlus', 'gears', 'shoppingBag', 'info', 'chartLine', 'sliders', 'database', 'circleCheck', 'warning', 'tools', 'cancel', 'loading', 'gear'];
+const solidIcons = ['globe', 'home', 'user', 'bug', 'error', 'pause', 'play', 'close', 'table', 'rocket', 'gauge', 'list', 'folderPlus', 'gears', 'shoppingBag', 'info', 'chartLine', 'sliders', 'database', 'circleCheck', 'warning', 'tools', 'cancel', 'loading', 'gear', 'xmark'];
 
 export const AllIcons: Story = {
   render: () => html`

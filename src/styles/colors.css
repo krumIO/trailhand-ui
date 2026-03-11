@@ -146,6 +146,9 @@
   /* Shadow colors using opacity */
   --th-color-shadow: rgba(0, 0, 0, 0.1);
   --th-color-shadow-medium: rgba(0, 0, 0, 0.15);
+
+  /* Form Card */
+  --th-form-card-badge-color: var(--th-color-primary);
 }
 
 /* Dark Theme Overrides */
