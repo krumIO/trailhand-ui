@@ -1,5 +1,5 @@
 import { LitElement, html, css } from 'lit';
-import { customElement } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 
 // Import components you want to work on
 import '../src/components/button';
@@ -11,12 +11,19 @@ import '../src/components/progress-bar';
 import '../src/components/checkbox';
 import '../src/components/text-input';
 import '../src/components/selector';
+import '../src/components/modal';
+import '../src/components/th-form-card';
 
 // Import global styles
 import '../src/styles/colors.css';
 
 @customElement('dev-app')
 class DevApp extends LitElement {
+  @property({ type: Boolean }) modalOpen = false;
+  @property({ type: Boolean }) configModalOpen = false;
+  @property({ type: Boolean }) instancesCatalogModalOpen = false;
+  @property({ type: Boolean }) instancesConfigDataModalOpen = false;
+
   static styles = css`
     :host {
       display: block;
@@ -63,8 +70,8 @@ class DevApp extends LitElement {
 
     /* Card theming */
     .styled-card {
-      --th-card-bg: #FBFBFB;
-      --th-card-border: #E4E4E4;
+      --th-card-bg: #fbfbfb;
+      --th-card-border: #e4e4e4;
       --th-card-title-color: #141419;
       --th-card-text-color: #475569;
     }
@@ -72,7 +79,7 @@ class DevApp extends LitElement {
     :host([data-theme='dark']) .styled-card {
       --th-card-bg: #404040;
       --th-card-border: #636363;
-      --th-card-title-color: #FFFFFF;
+      --th-card-title-color: #ffffff;
       --th-card-text-color: #cbd5e1;
       /* Button variables cascade through shadow DOM */
       --th-button-secondary-bg: #404040;
@@ -102,7 +109,6 @@ class DevApp extends LitElement {
       flex-direction: column;
       gap: 1rem;
     }
-
   `;
 
   private handleThemeToggle(e: CustomEvent<{ checked: boolean }>) {
@@ -237,7 +243,7 @@ class DevApp extends LitElement {
           description="This card has custom colors via CSS variables."
           icon-name="bug"
         >
-          <trailhand-button 
+          <trailhand-button
             @click=${() => console.log('clicked')}
             variant="secondary"
             size="large"
@@ -246,18 +252,26 @@ class DevApp extends LitElement {
             Create Namespace
           </trailhand-button>
           <div slot="footer">
-            <h4 style="margin: 0 0 12px 0; font-size: 14px; font-weight: 600;">Quick Start With</h4>
+            <h4 style="margin: 0 0 12px 0; font-size: 14px; font-weight: 600;">
+              Quick Start With
+            </h4>
             <div style="display: flex; flex-direction: column; gap: 8px;">
-              <a href="#" style="display: flex; justify-content: space-between; align-items: center; color: #3b82f6; text-decoration: none; padding: 8px 0; border-bottom: 1px solid var(--th-card-border, inherit);">
+              <a
+                href="#"
+                style="display: flex; justify-content: space-between; align-items: center; color: #3b82f6; text-decoration: none; padding: 8px 0; border-bottom: 1px solid var(--th-card-border, inherit);"
+              >
                 test-workspace
                 <span>+</span>
               </a>
-              <a href="#" style="display: flex; justify-content: space-between; align-items: center; color: #3b82f6; text-decoration: none; padding: 8px 0;">
+              <a
+                href="#"
+                style="display: flex; justify-content: space-between; align-items: center; color: #3b82f6; text-decoration: none; padding: 8px 0;"
+              >
                 test-workspace-2
                 <span>+</span>
               </a>
             </div>
-          </div> 
+          </div>
         </trailhand-card>
 
         <trailhand-card
@@ -275,23 +289,50 @@ class DevApp extends LitElement {
             Deploy Application
           </trailhand-button>
           <div slot="footer">
-            <trailhand-progress-bar label="Running" value="1" total="2"></trailhand-progress-bar>
+            <trailhand-progress-bar
+              label="Running"
+              value="1"
+              total="2"
+            ></trailhand-progress-bar>
           </div>
         </trailhand-card>
       </div>
 
-    <!-------------------------- Tags -------------------------->
-    <h1>Tags</h1>
+      <!-------------------------- Tags -------------------------->
+      <h1>Tags</h1>
       <div class="content">
         <trailhand-tag variant="default">Default</trailhand-tag>
-        <trailhand-tag label="React" variant="default" dismissible value="react"></trailhand-tag>
+        <trailhand-tag
+          label="React"
+          variant="default"
+          dismissible
+          value="react"
+        ></trailhand-tag>
         <trailhand-tag variant="info">Info</trailhand-tag>
-        <trailhand-tag label="React" icon="globe" variant="info" dismissible value="react"></trailhand-tag>
+        <trailhand-tag
+          label="React"
+          icon="globe"
+          variant="info"
+          dismissible
+          value="react"
+        ></trailhand-tag>
         <trailhand-tag variant="success">Success</trailhand-tag>
-        <trailhand-tag label="Running" icon="play" variant="success"></trailhand-tag>
+        <trailhand-tag
+          label="Running"
+          icon="play"
+          variant="success"
+        ></trailhand-tag>
         <trailhand-tag variant="warning">Warning</trailhand-tag>
-        <trailhand-tag label="Warning" variant="warning" outlined></trailhand-tag>
-        <trailhand-tag label="Error" icon="error" variant="error"></trailhand-tag>
+        <trailhand-tag
+          label="Warning"
+          variant="warning"
+          outlined
+        ></trailhand-tag>
+        <trailhand-tag
+          label="Error"
+          icon="error"
+          variant="error"
+        ></trailhand-tag>
         <trailhand-tag label="Bug" icon="bug" variant="error"></trailhand-tag>
         <trailhand-tag label="small" size="sm" variant="info"></trailhand-tag>
         <trailhand-tag label="medium" size="md" variant="info"></trailhand-tag>
@@ -419,6 +460,149 @@ class DevApp extends LitElement {
           ><trailhand-icon name="globe" slot="icon"></trailhand-icon
         ></trailhand-selector>
       </div>
+      <!-------------------------- MODAL -------------------------->
+      <h1>Modal</h1>
+      <trailhand-button
+        @click=${() => (this.modalOpen = true)}
+        variant="primary"
+        size="large"
+      >
+        Open Modal
+      </trailhand-button>
+      <trailhand-modal
+        title="Modal Heading"
+        subtitle="Subtitle"
+        .open=${this.modalOpen}
+        @modal-close=${() => (this.modalOpen = false)}
+      >
+        <div
+          style="display: flex; flex-direction: column; gap: 1rem; width: 500px;"
+        >
+          <trailhand-text-input
+            label="Modal Text Input"
+            placeholder="Type something..."
+          ></trailhand-text-input>
+        </div>
+        <div slot="footer">
+          <trailhand-button @click=${() => (this.modalOpen = false)}
+            >Close</trailhand-button
+          >
+        </div>
+      </trailhand-modal>
+      <!-------------------------- FORM CARDS -------------------------->
+      <h1>Form Cards</h1>
+      <div class="content">
+        <trailhand-button variant="primary" @click=${() => (this.configModalOpen = true)}>
+          Configuration Form
+        </trailhand-button>
+        <trailhand-button variant="primary" @click=${() => (this.instancesCatalogModalOpen = true)}>
+          Instances – Catalog Service
+        </trailhand-button>
+        <trailhand-button variant="primary" @click=${() => (this.instancesConfigDataModalOpen = true)}>
+          Instances – Config Data
+        </trailhand-button>
+      </div>
+
+      <!-- Mockup 1: Configuration modal — tabs + form rows -->
+      <trailhand-modal
+        title="Configuration"
+        subtitle="test-option"
+        .open=${this.configModalOpen}
+        @modal-close=${() => (this.configModalOpen = false)}
+      >
+        <div style="width: 680px;">
+          <!-- Tab bar (tab component not yet built) -->
+          <div style="display: flex; border-bottom: 1px solid #e5e7eb; margin-bottom: 24px;">
+            <button style="background: none; border: none; border-bottom: 2px solid #2563eb; padding: 10px 16px; font-size: 14px; font-weight: 600; color: #2563eb; cursor: pointer; margin-bottom: -1px; font-family: inherit;">Details</button>
+            <button style="background: none; border: none; border-bottom: 2px solid transparent; padding: 10px 16px; font-size: 14px; font-weight: 400; color: #6b7280; cursor: pointer; margin-bottom: -1px; font-family: inherit;">Bindings</button>
+          </div>
+          <trailhand-form-card>
+            <trailhand-form-row columns="3">
+              <trailhand-text-input label="Namespace" placeholder="Create New Namespace" required></trailhand-text-input>
+              <trailhand-text-input label="Name" placeholder="Test" required></trailhand-text-input>
+              <trailhand-text-input label="Instances" placeholder="1" required></trailhand-text-input>
+            </trailhand-form-row>
+            <trailhand-form-row title="Routes">
+              <trailhand-text-input placeholder="test.epinio.krum-dev.cloud.krum.io"></trailhand-text-input>
+            </trailhand-form-row>
+            <trailhand-form-row title="Application Variables">
+              <trailhand-text-input placeholder="app.listeningport"></trailhand-text-input>
+            </trailhand-form-row>
+            <trailhand-form-row title="Environment Variables">
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px 16px;">
+                <span style="font-size: 13px; font-weight: 500; color: #6b7280;">Name</span>
+                <span style="font-size: 13px; font-weight: 500; color: #6b7280;">Value</span>
+                <span style="font-size: 13px;">--</span>
+                <span style="font-size: 13px;">--</span>
+              </div>
+            </trailhand-form-row>
+          </trailhand-form-card>
+        </div>
+      </trailhand-modal>
+
+      <!-- Mockup 2: Instances – Catalog Service -->
+      <trailhand-modal
+        title="Instances"
+        subtitle="Create New"
+        .open=${this.instancesCatalogModalOpen}
+        @modal-close=${() => (this.instancesCatalogModalOpen = false)}
+      >
+        <div style="width: 560px;">
+          <trailhand-form-card>
+            <trailhand-form-row columns="2">
+              <trailhand-text-input label="Namespace" placeholder="Create New Namespace" required></trailhand-text-input>
+              <trailhand-text-input label="Name" placeholder="A Unique Name" required></trailhand-text-input>
+            </trailhand-form-row>
+            <trailhand-form-row>
+              <trailhand-text-input label="Catalog Service" placeholder="Select the type of service to create" required></trailhand-text-input>
+            </trailhand-form-row>
+            <trailhand-form-row>
+              <trailhand-text-input label="Bind to Application (Optional)" placeholder="Select Application"></trailhand-text-input>
+            </trailhand-form-row>
+          </trailhand-form-card>
+        </div>
+        <div slot="footer" style="display: flex; gap: 12px;">
+          <trailhand-button variant="secondary" @button-click=${() => (this.instancesCatalogModalOpen = false)}>Cancel</trailhand-button>
+          <trailhand-button variant="primary">Create</trailhand-button>
+        </div>
+      </trailhand-modal>
+
+      <!-- Mockup 3: Instances – Config Data -->
+      <trailhand-modal
+        title="Instances"
+        subtitle="Create New"
+        .open=${this.instancesConfigDataModalOpen}
+        @modal-close=${() => (this.instancesConfigDataModalOpen = false)}
+      >
+        <div style="width: 560px;">
+          <trailhand-form-card>
+            <trailhand-form-row columns="2">
+              <trailhand-text-input label="Namespace" placeholder="Create New Namespace" required></trailhand-text-input>
+              <trailhand-text-input label="Name" placeholder="A Unique Name" required></trailhand-text-input>
+            </trailhand-form-row>
+            <trailhand-form-row>
+              <trailhand-text-input label="Bind to Application (Optional)" placeholder="Select Application"></trailhand-text-input>
+            </trailhand-form-row>
+            <trailhand-form-row title="Config Data" columns="2">
+              <trailhand-text-input label="Name" placeholder="e.g. foo" required></trailhand-text-input>
+              <div style="display: flex; align-items: flex-end; gap: 8px;">
+                <trailhand-text-input label="Value" required style="flex: 1;"></trailhand-text-input>
+                <a href="#" style="font-size: 13px; color: #2563eb; text-decoration: none; white-space: nowrap; padding-bottom: 10px;">Upload</a>
+                <a href="#" style="font-size: 13px; color: #ef4444; text-decoration: none; white-space: nowrap; padding-bottom: 10px;">Remove</a>
+              </div>
+              <div style="grid-column: span 2; display: flex; gap: 8px;">
+                <trailhand-button variant="secondary" size="small">Add</trailhand-button>
+                <trailhand-button variant="secondary" size="small">Read From File</trailhand-button>
+              </div>
+            </trailhand-form-row>
+          </trailhand-form-card>
+        </div>
+        <div slot="footer" style="display: flex; gap: 12px;">
+          <trailhand-button variant="secondary" @button-click=${() => (this.instancesConfigDataModalOpen = false)}>Cancel</trailhand-button>
+          <trailhand-button variant="primary">Create</trailhand-button>
+        </div>
+      </trailhand-modal>
+
       <!-------------------------- FORM INTEGRATION -------------------------->
       <h1>Form Integration</h1>
       <form
