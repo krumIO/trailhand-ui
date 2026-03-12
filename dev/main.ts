@@ -121,6 +121,14 @@ class DevApp extends LitElement {
     }
   }
 
+  private _handleConfigDataSubmit() {
+    this.instancesConfigDataModalOpen = false;
+  }
+
+  private _handleConfigDataCancel() {
+    this.instancesConfigDataModalOpen = false;
+  }
+
   render() {
     return html`
       <div class="header">
@@ -563,7 +571,7 @@ class DevApp extends LitElement {
         </div>
         <div slot="footer" style="display: flex; gap: 12px;">
           <trailhand-button variant="secondary" @button-click=${() => (this.instancesCatalogModalOpen = false)}>Cancel</trailhand-button>
-          <trailhand-button variant="primary">Create</trailhand-button>
+          <trailhand-button variant="primary" @button-click=${() => (this.instancesCatalogModalOpen = false)}>Create</trailhand-button>
         </div>
       </trailhand-modal>
 
@@ -575,7 +583,7 @@ class DevApp extends LitElement {
         @modal-close=${() => (this.instancesConfigDataModalOpen = false)}
       >
         <div style="width: 560px;">
-          <trailhand-form-card>
+          <trailhand-form-card button-label="Create" button-variant="primary" cancel-label="Cancel" @form-card-submit=${this._handleConfigDataSubmit} @form-card-cancel=${this._handleConfigDataCancel}>
             <trailhand-form-row columns="2">
               <trailhand-text-input label="Namespace" placeholder="Create New Namespace" required></trailhand-text-input>
               <trailhand-text-input label="Name" placeholder="A Unique Name" required></trailhand-text-input>
@@ -596,10 +604,6 @@ class DevApp extends LitElement {
               </div>
             </trailhand-form-row>
           </trailhand-form-card>
-        </div>
-        <div slot="footer" style="display: flex; gap: 12px;">
-          <trailhand-button variant="secondary" @button-click=${() => (this.instancesConfigDataModalOpen = false)}>Cancel</trailhand-button>
-          <trailhand-button variant="primary">Create</trailhand-button>
         </div>
       </trailhand-modal>
 
