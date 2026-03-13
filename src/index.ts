@@ -8,6 +8,7 @@ export * from './components/th-tag';
 export * from './components/th-card';
 export * from './components/th-form-card';
 export * from './components/progress-bar';
+export * from './components/modal';
 
 // Export utilities
 export * from './utils';
