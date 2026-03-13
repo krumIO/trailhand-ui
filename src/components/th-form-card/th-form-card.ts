@@ -51,6 +51,8 @@ export class ThFormCard extends LitElement {
       background: var(--th-form-card-bg, transparent);
       border-radius: var(--th-form-card-radius, 8px);
       border: none;
+      margin: 0;
+      padding: 0;
     }
 
     :host([shadow]) .form-card {
@@ -121,7 +123,7 @@ export class ThFormCard extends LitElement {
     }
 
     return html`
-      <div class="form-card" part="card">
+      <form class="form-card" part="card" @submit=${(e: Event) => e.preventDefault()}>
         <div
           class=${`form-card__content${this.columns > 1 ? ' form-card__content--grid' : ''}`}
           part="content"
@@ -141,7 +143,7 @@ export class ThFormCard extends LitElement {
               </div>
             `
           : nothing}
-      </div>
+      </form>
     `;
   }
 }

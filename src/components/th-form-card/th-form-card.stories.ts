@@ -1,8 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
+import { expect, fn } from 'storybook/test';
 import './th-form-card';
 import '../text-input/text-input';
 import type { FormCardButtonVariant } from './th-form-card';
+import type { ThFormCard } from './th-form-card';
 
 interface ThFormCardProps {
   columns: number;
@@ -122,4 +124,71 @@ export const WithShadow: Story = {
 
 export const Loading: Story = {
   args: { loading: true },
+};
+
+export const DispatchesSubmitEvent: Story = {
+  tags: ['!autodocs'],
+  parameters: {
+    chromatic: { disableSnapshot: true },
+  },
+  args: {
+    buttonLabel: 'Create',
+    cancelLabel: 'Cancel',
+    columns: 2,
+  },
+  play: async ({ canvasElement }) => {
+    const card = canvasElement.querySelector('trailhand-form-card') as ThFormCard;
+    const onSubmitMock = fn();
+    card.addEventListener('form-card-submit', onSubmitMock);
+
+    const submitBtn = card.shadowRoot?.querySelector('trailhand-button[variant="primary"]') as HTMLElement;
+    submitBtn.dispatchEvent(new CustomEvent('button-click', { bubbles: true, composed: true }));
+    await expect(onSubmitMock).toHaveBeenCalled();
+  },
+};
+
+export const DispatchesCancelEvent: Story = {
+  tags: ['!autodocs'],
+  parameters: {
+    chromatic: { disableSnapshot: true },
+  },
+  args: {
+    buttonLabel: 'Create',
+    cancelLabel: 'Cancel',
+    columns: 2,
+  },
+  play: async ({ canvasElement }) => {
+    const card = canvasElement.querySelector('trailhand-form-card') as ThFormCard;
+    const onCancelMock = fn();
+    card.addEventListener('form-card-cancel', onCancelMock);
+
+    const cancelBtn = card.shadowRoot?.querySelector('trailhand-button[variant="secondary"]') as HTMLElement;
+    cancelBtn.dispatchEvent(new CustomEvent('button-click', { bubbles: true, composed: true }));
+    await expect(onCancelMock).toHaveBeenCalled();
+  },
+};
+
+/** Shows the complete submit → loading → done cycle, mirroring real API call usage */
+export const SubmitWithLoadingState: Story = {
+  tags: ['!autodocs'],
+  parameters: {
+    chromatic: { disableSnapshot: true },
+  },
+  args: {
+    buttonLabel: 'Create',
+    cancelLabel: 'Cancel',
+    columns: 2,
+  },
+  play: async ({ canvasElement }) => {
+    const card = canvasElement.querySelector('trailhand-form-card') as ThFormCard;
+    card.addEventListener('form-card-submit', async () => {
+      card.loading = true;
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+      card.loading = false;
+    });
+
+    const submitBtn = card.shadowRoot?.querySelector('trailhand-button[variant="primary"]') as HTMLElement;
+    submitBtn.dispatchEvent(new CustomEvent('button-click', { bubbles: true, composed: true }));
+    await expect(card.loading).toBe(true);
+  },
 };
