@@ -607,6 +607,37 @@ class DevApp extends LitElement {
         </div>
       </trailhand-modal>
 
+      <!-- Native form wrapper example -->
+      <h2 style="margin-top: 32px;">Native Form Wrapper</h2>
+      <p style="font-size: 14px; color: #6b7280; margin-bottom: 16px;">
+        Wrap <code>trailhand-form-card</code> in a native <code>&lt;form&gt;</code> to get
+        <code>FormData</code> collection and native validation. Listen to
+        <code>form-card-submit</code> and call <code>form.requestSubmit()</code> to trigger
+        native validation before the <code>submit</code> event fires.
+      </p>
+      <form
+        @submit=${(e: SubmitEvent) => {
+          e.preventDefault();
+          const data = new FormData(e.currentTarget as HTMLFormElement);
+          alert(`Submitted: ${JSON.stringify(Object.fromEntries(data))}`);
+        }}
+      >
+        <trailhand-form-card
+          button-label="Create"
+          cancel-label="Reset"
+          columns="2"
+          @form-card-submit=${(e: Event) => {
+            (e.currentTarget as HTMLElement).closest('form')?.requestSubmit();
+          }}
+          @form-card-cancel=${(e: Event) => {
+            ((e.currentTarget as HTMLElement).closest('form') as HTMLFormElement)?.reset();
+          }}
+        >
+          <trailhand-text-input name="namespace" label="Namespace" placeholder="my-namespace" required></trailhand-text-input>
+          <trailhand-text-input name="name" label="Name" placeholder="my-app" required></trailhand-text-input>
+        </trailhand-form-card>
+      </form>
+
       <!-------------------------- FORM INTEGRATION -------------------------->
       <h1>Form Integration</h1>
       <form

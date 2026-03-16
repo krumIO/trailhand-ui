@@ -126,6 +126,44 @@ export const Loading: Story = {
   args: { loading: true },
 };
 
+/**
+ * Wrap `trailhand-form-card` in a native `<form>` when you want native form submission,
+ * `FormData` collection, and Enter-to-submit. The `trailhand-text-input` components
+ * implement the Form-Associated Custom Elements spec so their values appear in `FormData`
+ * automatically when they have a `name` attribute.
+ *
+ * Listen to `form-card-submit` to trigger `form.requestSubmit()` — this runs native
+ * validation before dispatching the `submit` event.
+ */
+export const WithNativeFormWrapper: Story = {
+  render: () => {
+    const onSubmit = (e: SubmitEvent) => {
+      e.preventDefault();
+      const data = new FormData(e.currentTarget as HTMLFormElement);
+      alert(`Submitted: ${JSON.stringify(Object.fromEntries(data))}`);
+    };
+
+    const onFormCardSubmit = (e: Event) => {
+      (e.currentTarget as HTMLElement).closest('form')?.requestSubmit();
+    };
+
+    return html`
+      <form @submit=${onSubmit}>
+        <trailhand-form-card
+          button-label="Create"
+          cancel-label="Reset"
+          columns="2"
+          @form-card-submit=${onFormCardSubmit}
+          @form-card-cancel=${(e: Event) => ((e.currentTarget as HTMLElement).closest('form') as HTMLFormElement)?.reset()}
+        >
+          <trailhand-text-input name="namespace" label="Namespace" placeholder="my-namespace" required></trailhand-text-input>
+          <trailhand-text-input name="name" label="Name" placeholder="my-app" required></trailhand-text-input>
+        </trailhand-form-card>
+      </form>
+    `;
+  },
+};
+
 export const DispatchesSubmitEvent: Story = {
   tags: ['!autodocs'],
   parameters: {
