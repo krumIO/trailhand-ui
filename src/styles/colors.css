@@ -146,6 +146,19 @@
   /* Shadow colors using opacity */
   --th-color-shadow: rgba(0, 0, 0, 0.1);
   --th-color-shadow-medium: rgba(0, 0, 0, 0.15);
+
+  /* Form Card */
+  --th-form-card-bg: transparent;
+  --th-form-card-shadow-bg: var(--th-color-white);
+  --th-form-card-radius: 8px;
+  --th-form-card-padding: 24px;
+  --th-form-card-shadow: 0 4px 16px var(--th-color-shadow);
+  --th-form-card-gap: 24px;
+
+  /* Form Row */
+  --th-form-row-title-color: var(--th-color-text-primary);
+  --th-form-row-gap: 8px;
+  --th-form-row-field-gap: 16px;
 }
 
 /* Dark Theme Overrides */
@@ -216,4 +229,11 @@
   --th-progress-bar-track-color: var(--th-color-grey-600);
   --th-progress-bar-title-color: var(--th-color-grey-100);
   --th-progress-bar-label-color: var(--th-color-grey-300);
+
+  /* Form Card */
+  --th-form-card-shadow-bg: var(--th-color-grey-700);
+  --th-form-card-shadow: 0 4px 16px var(--th-color-shadow-medium);
+
+  /* Form Row */
+  --th-form-row-title-color: var(--th-color-grey-100);
 }
