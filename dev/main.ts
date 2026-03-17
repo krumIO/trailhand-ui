@@ -12,6 +12,7 @@ import '../src/components/checkbox';
 import '../src/components/text-input';
 import '../src/components/selector';
 import '../src/components/modal';
+import '../src/components/popover';
 
 // Import global styles
 import '../src/styles/colors.css';
@@ -485,6 +486,54 @@ class DevApp extends LitElement {
           >
         </div>
       </trailhand-modal>
+      <!-------------------------- POPOVER -------------------------->
+      <h1>Popover</h1>
+      <div class="content" style="padding-bottom: 120px;">
+        <trailhand-popover placement="bottom">
+          <trailhand-button slot="trigger" variant="primary">
+            Open Popover (Bottom)
+          </trailhand-button>
+          <div>
+            <p style="margin: 0 0 8px; font-weight: 600;">Popover Content</p>
+            <p style="margin: 0; font-size: 14px; color: var(--th-color-text-secondary);">
+              Any components can go here.
+            </p>
+          </div>
+        </trailhand-popover>
+
+        <trailhand-popover placement="top">
+          <trailhand-button slot="trigger" variant="secondary">
+            Open Popover (Top)
+          </trailhand-button>
+          <div>
+            <p style="margin: 0 0 8px; font-weight: 600;">Above the Trigger</p>
+            <p style="margin: 0; font-size: 14px; color: var(--th-color-text-secondary);">
+              Placement set to top.
+            </p>
+          </div>
+        </trailhand-popover>
+
+        <trailhand-popover placement="top" stay-open title="Filter Options" subtitle="containers">
+          <trailhand-button slot="trigger" variant="alternate">
+            Stay Open Popover
+          </trailhand-button>
+          <div style="display: flex; flex-direction: column; gap: 12px; min-width: 260px;">
+            <trailhand-text-input
+              label="Search"
+              placeholder="e.g., my-container"
+            ></trailhand-text-input>
+            <trailhand-text-input
+              label="Tail (number of lines)"
+              placeholder="e.g., 100"
+            ></trailhand-text-input>
+            <div style="display: flex; gap: 8px;">
+              <trailhand-button size="small">Apply</trailhand-button>
+              <trailhand-button size="small" variant="secondary">Clear</trailhand-button>
+            </div>
+          </div>
+        </trailhand-popover>
+      </div>
+
       <!-------------------------- FORM INTEGRATION -------------------------->
       <h1>Form Integration</h1>
       <form
