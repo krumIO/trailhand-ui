@@ -1,5 +1,6 @@
 import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { createRef, ref } from 'lit/directives/ref.js';
 
 // Import components you want to work on
 import '../src/components/button';
@@ -127,6 +128,12 @@ class DevApp extends LitElement {
 
   private _handleConfigDataCancel() {
     this.instancesConfigDataModalOpen = false;
+  }
+
+  private inputRef = createRef<HTMLDivElement>();
+
+  private handleModalOpen() {
+    this.inputRef.value?.focus();
   }
 
   render() {
@@ -482,11 +489,13 @@ class DevApp extends LitElement {
         subtitle="Subtitle"
         .open=${this.modalOpen}
         @modal-close=${() => (this.modalOpen = false)}
+        @modal-open=${this.handleModalOpen}
       >
         <div
           style="display: flex; flex-direction: column; gap: 1rem; width: 500px;"
         >
           <trailhand-text-input
+            ${ref(this.inputRef)}
             label="Modal Text Input"
             placeholder="Type something..."
           ></trailhand-text-input>
@@ -500,13 +509,22 @@ class DevApp extends LitElement {
       <!-------------------------- FORM CARDS -------------------------->
       <h1>Form Cards</h1>
       <div class="content">
-        <trailhand-button variant="primary" @click=${() => (this.configModalOpen = true)}>
+        <trailhand-button
+          variant="primary"
+          @click=${() => (this.configModalOpen = true)}
+        >
           Configuration Form
         </trailhand-button>
-        <trailhand-button variant="primary" @click=${() => (this.instancesCatalogModalOpen = true)}>
+        <trailhand-button
+          variant="primary"
+          @click=${() => (this.instancesCatalogModalOpen = true)}
+        >
           Instances – Catalog Service
         </trailhand-button>
-        <trailhand-button variant="primary" @click=${() => (this.instancesConfigDataModalOpen = true)}>
+        <trailhand-button
+          variant="primary"
+          @click=${() => (this.instancesConfigDataModalOpen = true)}
+        >
           Instances – Config Data
         </trailhand-button>
       </div>
@@ -520,26 +538,58 @@ class DevApp extends LitElement {
       >
         <div style="width: 680px;">
           <!-- Tab bar (tab component not yet built) -->
-          <div style="display: flex; border-bottom: 1px solid #e5e7eb; margin-bottom: 24px;">
-            <button style="background: none; border: none; border-bottom: 2px solid #2563eb; padding: 10px 16px; font-size: 14px; font-weight: 600; color: #2563eb; cursor: pointer; margin-bottom: -1px; font-family: inherit;">Details</button>
-            <button style="background: none; border: none; border-bottom: 2px solid transparent; padding: 10px 16px; font-size: 14px; font-weight: 400; color: #6b7280; cursor: pointer; margin-bottom: -1px; font-family: inherit;">Bindings</button>
+          <div
+            style="display: flex; border-bottom: 1px solid #e5e7eb; margin-bottom: 24px;"
+          >
+            <button
+              style="background: none; border: none; border-bottom: 2px solid #2563eb; padding: 10px 16px; font-size: 14px; font-weight: 600; color: #2563eb; cursor: pointer; margin-bottom: -1px; font-family: inherit;"
+            >
+              Details
+            </button>
+            <button
+              style="background: none; border: none; border-bottom: 2px solid transparent; padding: 10px 16px; font-size: 14px; font-weight: 400; color: #6b7280; cursor: pointer; margin-bottom: -1px; font-family: inherit;"
+            >
+              Bindings
+            </button>
           </div>
           <trailhand-form-card>
             <trailhand-form-row columns="3">
-              <trailhand-text-input label="Namespace" placeholder="Create New Namespace" required></trailhand-text-input>
-              <trailhand-text-input label="Name" placeholder="Test" required></trailhand-text-input>
-              <trailhand-text-input label="Instances" placeholder="1" required></trailhand-text-input>
+              <trailhand-text-input
+                label="Namespace"
+                placeholder="Create New Namespace"
+                required
+              ></trailhand-text-input>
+              <trailhand-text-input
+                label="Name"
+                placeholder="Test"
+                required
+              ></trailhand-text-input>
+              <trailhand-text-input
+                label="Instances"
+                placeholder="1"
+                required
+              ></trailhand-text-input>
             </trailhand-form-row>
             <trailhand-form-row title="Routes">
-              <trailhand-text-input placeholder="test.epinio.krum-dev.cloud.krum.io"></trailhand-text-input>
+              <trailhand-text-input
+                placeholder="test.epinio.krum-dev.cloud.krum.io"
+              ></trailhand-text-input>
             </trailhand-form-row>
             <trailhand-form-row title="Application Variables">
-              <trailhand-text-input placeholder="app.listeningport"></trailhand-text-input>
+              <trailhand-text-input
+                placeholder="app.listeningport"
+              ></trailhand-text-input>
             </trailhand-form-row>
             <trailhand-form-row title="Environment Variables">
-              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px 16px;">
-                <span style="font-size: 13px; font-weight: 500; color: #6b7280;">Name</span>
-                <span style="font-size: 13px; font-weight: 500; color: #6b7280;">Value</span>
+              <div
+                style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px 16px;"
+              >
+                <span style="font-size: 13px; font-weight: 500; color: #6b7280;"
+                  >Name</span
+                >
+                <span style="font-size: 13px; font-weight: 500; color: #6b7280;"
+                  >Value</span
+                >
                 <span style="font-size: 13px;">--</span>
                 <span style="font-size: 13px;">--</span>
               </div>
@@ -558,20 +608,43 @@ class DevApp extends LitElement {
         <div style="width: 560px;">
           <trailhand-form-card>
             <trailhand-form-row columns="2">
-              <trailhand-text-input label="Namespace" placeholder="Create New Namespace" required></trailhand-text-input>
-              <trailhand-text-input label="Name" placeholder="A Unique Name" required></trailhand-text-input>
+              <trailhand-text-input
+                label="Namespace"
+                placeholder="Create New Namespace"
+                required
+              ></trailhand-text-input>
+              <trailhand-text-input
+                label="Name"
+                placeholder="A Unique Name"
+                required
+              ></trailhand-text-input>
             </trailhand-form-row>
             <trailhand-form-row>
-              <trailhand-text-input label="Catalog Service" placeholder="Select the type of service to create" required></trailhand-text-input>
+              <trailhand-text-input
+                label="Catalog Service"
+                placeholder="Select the type of service to create"
+                required
+              ></trailhand-text-input>
             </trailhand-form-row>
             <trailhand-form-row>
-              <trailhand-text-input label="Bind to Application (Optional)" placeholder="Select Application"></trailhand-text-input>
+              <trailhand-text-input
+                label="Bind to Application (Optional)"
+                placeholder="Select Application"
+              ></trailhand-text-input>
             </trailhand-form-row>
           </trailhand-form-card>
         </div>
         <div slot="footer" style="display: flex; gap: 12px;">
-          <trailhand-button variant="secondary" @button-click=${() => (this.instancesCatalogModalOpen = false)}>Cancel</trailhand-button>
-          <trailhand-button variant="primary" @button-click=${() => (this.instancesCatalogModalOpen = false)}>Create</trailhand-button>
+          <trailhand-button
+            variant="secondary"
+            @button-click=${() => (this.instancesCatalogModalOpen = false)}
+            >Cancel</trailhand-button
+          >
+          <trailhand-button
+            variant="primary"
+            @button-click=${() => (this.instancesCatalogModalOpen = false)}
+            >Create</trailhand-button
+          >
         </div>
       </trailhand-modal>
 
@@ -583,24 +656,61 @@ class DevApp extends LitElement {
         @modal-close=${() => (this.instancesConfigDataModalOpen = false)}
       >
         <div style="width: 560px;">
-          <trailhand-form-card button-label="Create" button-variant="primary" cancel-label="Cancel" @form-card-submit=${this._handleConfigDataSubmit} @form-card-cancel=${this._handleConfigDataCancel}>
+          <trailhand-form-card
+            button-label="Create"
+            button-variant="primary"
+            cancel-label="Cancel"
+            @form-card-submit=${this._handleConfigDataSubmit}
+            @form-card-cancel=${this._handleConfigDataCancel}
+          >
             <trailhand-form-row columns="2">
-              <trailhand-text-input label="Namespace" placeholder="Create New Namespace" required></trailhand-text-input>
-              <trailhand-text-input label="Name" placeholder="A Unique Name" required></trailhand-text-input>
+              <trailhand-text-input
+                label="Namespace"
+                placeholder="Create New Namespace"
+                required
+              ></trailhand-text-input>
+              <trailhand-text-input
+                label="Name"
+                placeholder="A Unique Name"
+                required
+              ></trailhand-text-input>
             </trailhand-form-row>
             <trailhand-form-row>
-              <trailhand-text-input label="Bind to Application (Optional)" placeholder="Select Application"></trailhand-text-input>
+              <trailhand-text-input
+                label="Bind to Application (Optional)"
+                placeholder="Select Application"
+              ></trailhand-text-input>
             </trailhand-form-row>
             <trailhand-form-row title="Config Data" columns="2">
-              <trailhand-text-input label="Name" placeholder="e.g. foo" required></trailhand-text-input>
+              <trailhand-text-input
+                label="Name"
+                placeholder="e.g. foo"
+                required
+              ></trailhand-text-input>
               <div style="display: flex; align-items: flex-end; gap: 8px;">
-                <trailhand-text-input label="Value" required style="flex: 1;"></trailhand-text-input>
-                <a href="#" style="font-size: 13px; color: #2563eb; text-decoration: none; white-space: nowrap; padding-bottom: 10px;">Upload</a>
-                <a href="#" style="font-size: 13px; color: #ef4444; text-decoration: none; white-space: nowrap; padding-bottom: 10px;">Remove</a>
+                <trailhand-text-input
+                  label="Value"
+                  required
+                  style="flex: 1;"
+                ></trailhand-text-input>
+                <a
+                  href="#"
+                  style="font-size: 13px; color: #2563eb; text-decoration: none; white-space: nowrap; padding-bottom: 10px;"
+                  >Upload</a
+                >
+                <a
+                  href="#"
+                  style="font-size: 13px; color: #ef4444; text-decoration: none; white-space: nowrap; padding-bottom: 10px;"
+                  >Remove</a
+                >
               </div>
               <div style="grid-column: span 2; display: flex; gap: 8px;">
-                <trailhand-button variant="secondary" size="small">Add</trailhand-button>
-                <trailhand-button variant="secondary" size="small">Read From File</trailhand-button>
+                <trailhand-button variant="secondary" size="small"
+                  >Add</trailhand-button
+                >
+                <trailhand-button variant="secondary" size="small"
+                  >Read From File</trailhand-button
+                >
               </div>
             </trailhand-form-row>
           </trailhand-form-card>
@@ -610,16 +720,25 @@ class DevApp extends LitElement {
       <!-- Native form wrapper example -->
       <h2 style="margin-top: 32px;">Native Form Wrapper</h2>
       <p style="font-size: 14px; color: #6b7280; margin-bottom: 16px;">
-        Wrap <code>trailhand-form-card</code> in a native <code>&lt;form&gt;</code> to get
-        <code>FormData</code> collection and native validation. Listen to
-        <code>form-card-submit</code> and call <code>form.requestSubmit()</code> to trigger
-        native validation before the <code>submit</code> event fires.
+        Wrap <code>trailhand-form-card</code> in a native
+        <code>&lt;form&gt;</code> to get <code>FormData</code> collection and
+        native validation. Listen to <code>form-card-submit</code> and call
+        <code>form.requestSubmit()</code> to trigger native validation before
+        the <code>submit</code> event fires.
       </p>
       <form
         @submit=${(e: SubmitEvent) => {
+          const form = e.currentTarget as HTMLFormElement;
+
+          if (!form.checkValidity()) {
+            form.reportValidity();
+            e.preventDefault(); // stop submission
+            return;
+          }
+
           e.preventDefault();
-          const data = new FormData(e.currentTarget as HTMLFormElement);
-          alert(`Submitted: ${JSON.stringify(Object.fromEntries(data))}`);
+          const formData = new FormData(form);
+          alert(`Submitted: ${JSON.stringify(Object.fromEntries(formData))}`);
         }}
       >
         <trailhand-form-card
@@ -630,11 +749,25 @@ class DevApp extends LitElement {
             (e.currentTarget as HTMLElement).closest('form')?.requestSubmit();
           }}
           @form-card-cancel=${(e: Event) => {
-            ((e.currentTarget as HTMLElement).closest('form') as HTMLFormElement)?.reset();
+            (
+              (e.currentTarget as HTMLElement).closest(
+                'form',
+              ) as HTMLFormElement
+            )?.reset();
           }}
         >
-          <trailhand-text-input name="namespace" label="Namespace" placeholder="my-namespace" required></trailhand-text-input>
-          <trailhand-text-input name="name" label="Name" placeholder="my-app" required></trailhand-text-input>
+          <trailhand-text-input
+            name="namespace"
+            label="Namespace"
+            placeholder="my-namespace"
+            required
+          ></trailhand-text-input>
+          <trailhand-text-input
+            name="name"
+            label="Name"
+            placeholder="my-app"
+            required
+          ></trailhand-text-input>
         </trailhand-form-card>
       </form>
 
