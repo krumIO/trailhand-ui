@@ -143,6 +143,10 @@ export class TextInput extends LitElement {
     }
   }
 
+  focus() {
+    this._input?.focus();
+  }
+
   private emitChangeEvent() {
     // emit native change event for form integration
     this.dispatchEvent(new Event('change', { bubbles: true, composed: true }));

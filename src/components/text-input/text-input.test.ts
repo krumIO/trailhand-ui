@@ -156,6 +156,21 @@ describe('TextInput', () => {
     });
   });
 
+  describe('Focus behavior', () => {
+    it('delegates focus to internal input', async () => {
+      const input = el.shadowRoot!.querySelector('input')!;
+      let focused = false;
+
+      input.addEventListener('focus', () => {
+        focused = true;
+      });
+
+      el.focus();
+
+      expect(focused).toBe(true);
+    });
+  });
+
   describe('Structure', () => {
     it('renders label text', async () => {
       el.label = 'Test Label';
