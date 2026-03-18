@@ -12,6 +12,7 @@ export * from './components/modal';
 export * from './components/checkbox';
 export * from './components/text-input';
 export * from './components/selector';
+export * from './components/dropdown';
 
 // Export utilities
 export * from './utils';
