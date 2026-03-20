@@ -148,6 +148,8 @@ const solidIcons = [
   'loading',
   'gear',
   'x',
+  'minus',
+  'check',
 ];
 
 export const AllIcons: Story = {
