@@ -446,6 +446,14 @@ class DevApp extends LitElement {
           multiselect
         ></trailhand-dropdown>
         <trailhand-dropdown
+          name="namespaces-multi"
+          label="Multiselect w/ filter"
+          placeholder="Select namespaces..."
+          .options=${this.namespaceOptions}
+          multiselect
+          filterable
+        ></trailhand-dropdown>
+        <trailhand-dropdown
           name="namespaces-preselected"
           label="Multiselect (preselected)"
           placeholder="Select namespaces..."

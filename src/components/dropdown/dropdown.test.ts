@@ -145,9 +145,12 @@ describe('Dropdown', () => {
       await el.updateComplete;
     });
 
-    it('renders inline search input', () => {
-      const input = el.shadowRoot!.querySelector('.inline-search');
-      expect(input).not.toBeNull();
+    it('opens panel on trigger click', async () => {
+      const trigger = el.shadowRoot!.querySelector('.trigger') as HTMLElement;
+      trigger.click();
+      await el.updateComplete;
+      const panel = el.shadowRoot!.querySelector('.dropdown-panel');
+      expect(panel).not.toBeNull();
     });
 
     it('renders tags for pre-selected values', async () => {
@@ -201,6 +204,11 @@ describe('Dropdown', () => {
   });
 
   describe('Filtering', () => {
+    beforeEach(async () => {
+      el.filterable = true;
+      await el.updateComplete;
+    });
+
     it('shows no-options message when filter matches nothing', async () => {
       const trigger = el.shadowRoot!.querySelector('.trigger') as HTMLElement;
       trigger.click();
@@ -228,6 +236,16 @@ describe('Dropdown', () => {
       const opts = el.shadowRoot!.querySelectorAll('.option');
       expect(opts.length).toBe(1);
       expect(opts[0].textContent?.trim()).toContain('Alpha');
+    });
+
+    it('does not render search input when filterable is false', async () => {
+      el.filterable = false;
+      await el.updateComplete;
+      const trigger = el.shadowRoot!.querySelector('.trigger') as HTMLElement;
+      trigger.click();
+      await el.updateComplete;
+      const searchInput = el.shadowRoot!.querySelector('.search-input');
+      expect(searchInput).toBeNull();
     });
   });
 
@@ -267,6 +285,37 @@ describe('Dropdown', () => {
       expect(event).not.toBeNull();
       expect((event as unknown as Event).bubbles).toBe(true);
       expect((event as unknown as Event).composed).toBe(true);
+    });
+  });
+
+  describe('Required validation', () => {
+    it('is invalid when required and no value selected', async () => {
+      el.required = true;
+      await el.updateComplete;
+      expect(el.validity.valueMissing).toBe(true);
+      expect(el.checkValidity()).toBe(false);
+    });
+
+    it('is valid when required and a value is selected', async () => {
+      el.required = true;
+      el.value = 'alpha';
+      await el.updateComplete;
+      expect(el.checkValidity()).toBe(true);
+    });
+
+    it('clears invalid state after selection', async () => {
+      el.required = true;
+      await el.updateComplete;
+      expect(el.checkValidity()).toBe(false);
+
+      const trigger = el.shadowRoot!.querySelector('.trigger') as HTMLElement;
+      trigger.click();
+      await el.updateComplete;
+      const opt = el.shadowRoot!.querySelector<HTMLElement>('.option:not(.disabled)');
+      opt!.click();
+      await el.updateComplete;
+
+      expect(el.checkValidity()).toBe(true);
     });
   });
 

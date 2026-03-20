@@ -1,4 +1,4 @@
-import { LitElement, html, css, TemplateResult } from 'lit';
+import { LitElement, html, css, nothing, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import '../icon/icon';
 import '../th-tag/th-tag';
@@ -29,6 +29,7 @@ export interface DropdownProps {
   placeholder: string;
   disabled: boolean;
   multiselect: boolean;
+  filterable?: boolean;
   label?: string;
   required?: boolean;
   invalid?: boolean;
@@ -67,6 +68,9 @@ export class Dropdown extends LitElement {
 
   @property({ type: Boolean, reflect: true })
   invalid = false;
+
+  @property({ type: Boolean })
+  filterable = false;
 
   @property({ type: String, reflect: true })
   size: 'small' | 'medium' | 'large' = 'medium';
@@ -111,7 +115,7 @@ export class Dropdown extends LitElement {
     if (this.disabled || this._open) return;
     this._open = true;
     this._filter = '';
-    if (!this.multiselect) {
+    if (this.filterable) {
       this.updateComplete.then(() => {
         this.shadowRoot?.querySelector<HTMLInputElement>('.search-input')?.focus();
       });
@@ -187,7 +191,7 @@ export class Dropdown extends LitElement {
 
   private _clearFilter() {
     this._filter = '';
-    this.shadowRoot?.querySelector<HTMLInputElement>('.search-input, .inline-search')?.focus();
+    this.shadowRoot?.querySelector<HTMLInputElement>('.search-input')?.focus();
   }
 
   private _updateFormValue() {
@@ -201,6 +205,19 @@ export class Dropdown extends LitElement {
       }
     } else {
       this.internals.setFormValue(this.value || null);
+    }
+    this._updateValidity();
+  }
+
+  private _updateValidity() {
+    const hasValue = this.multiselect ? this.values.length > 0 : !!this.value;
+    if (this.required && !hasValue) {
+      const anchor = this.shadowRoot?.querySelector<HTMLElement>('.trigger') ?? undefined;
+      this.internals.setValidity({ valueMissing: true }, 'Please select an option', anchor);
+      this.invalid = true;
+    } else {
+      this.internals.setValidity({});
+      this.invalid = false;
     }
   }
 
@@ -238,9 +255,9 @@ export class Dropdown extends LitElement {
       this._focusOption(index + 1);
     } else if (e.key === 'ArrowUp') {
       e.preventDefault();
-      if (index === 0) {
+      if (index === 0 && this.filterable) {
         this._focusSearch();
-      } else {
+      } else if (index > 0) {
         this._focusOption(index - 1);
       }
     } else if (e.key === 'Enter' || e.key === ' ') {
@@ -270,7 +287,29 @@ export class Dropdown extends LitElement {
   }
 
   private _focusSearch() {
-    this.shadowRoot?.querySelector<HTMLInputElement>('.search-input, .inline-search')?.focus();
+    this.shadowRoot?.querySelector<HTMLInputElement>('.search-input')?.focus();
+  }
+
+  get validity() {
+    return this.internals.validity;
+  }
+
+  checkValidity() {
+    return this.internals.checkValidity();
+  }
+
+  reportValidity() {
+    return this.internals.reportValidity();
+  }
+
+  updated(changedProperties: Map<string, unknown>) {
+    if (
+      changedProperties.has('required') ||
+      changedProperties.has('value') ||
+      changedProperties.has('values')
+    ) {
+      this._updateValidity();
+    }
   }
 
   formResetCallback() {
@@ -352,28 +391,6 @@ export class Dropdown extends LitElement {
 
     .trigger-text.placeholder {
       color: var(--th-input-placeholder, #d7d7d7);
-    }
-
-    /* Inline search input (multiselect) */
-    .inline-search {
-      border: none;
-      outline: none;
-      background: transparent;
-      font-family: inherit;
-      font-size: 14px;
-      color: var(--th-input-text, #333);
-      min-width: 60px;
-      flex: 1;
-      padding: 0;
-      cursor: text;
-    }
-
-    .inline-search::placeholder {
-      color: var(--th-input-placeholder, #d7d7d7);
-    }
-
-    .inline-search:disabled {
-      cursor: not-allowed;
     }
 
     /* Chevron + clear row */
@@ -486,6 +503,10 @@ export class Dropdown extends LitElement {
       max-height: 240px;
       overflow-y: auto;
       padding: 4px 0;
+      border-radius: 8px;
+    }
+
+    .search-wrapper + .options-list {
       border-radius: 0 0 8px 8px;
     }
 
@@ -545,7 +566,6 @@ export class Dropdown extends LitElement {
       padding: 0.4em 2.5em 0.4em 10px;
     }
     :host([size='small']) .trigger-text,
-    :host([size='small']) .inline-search,
     :host([size='small']) .option {
       font-size: 12px;
     }
@@ -556,7 +576,6 @@ export class Dropdown extends LitElement {
       min-height: 3.1em;
     }
     :host([size='large']) .trigger-text,
-    :host([size='large']) .inline-search,
     :host([size='large']) .option {
       font-size: 16px;
     }
@@ -609,35 +628,28 @@ export class Dropdown extends LitElement {
 
   private _renderTriggerContent(): TemplateResult {
     if (this.multiselect) {
+      const tags = this.values.map((val) => {
+        const opt = this.options.find((o) => o.value === val);
+        const tagLabel = opt?.label ?? val;
+        return html`
+          <trailhand-tag
+            label=${tagLabel}
+            value=${val}
+            variant="info"
+            size="sm"
+            dismissible
+            outlined
+            ?disabled=${this.disabled}
+            @tag-dismiss=${(e: CustomEvent<{ value: string }>) => this._removeTag(e.detail.value)}
+          ></trailhand-tag>
+        `;
+      });
+
       return html`
-        ${this.values.map((val) => {
-          const opt = this.options.find((o) => o.value === val);
-          const tagLabel = opt?.label ?? val;
-          return html`
-            <trailhand-tag
-              label=${tagLabel}
-              value=${val}
-              variant="info"
-              size="sm"
-              dismissible
-              outlined
-              ?disabled=${this.disabled}
-              @tag-dismiss=${(e: CustomEvent<{ value: string }>) => this._removeTag(e.detail.value)}
-            ></trailhand-tag>
-          `;
-        })}
-        <input
-          class="inline-search"
-          type="text"
-          .value=${this._filter}
-          placeholder=${this.values.length === 0 ? this.placeholder : ''}
-          ?disabled=${this.disabled}
-          autocomplete="off"
-          aria-label="Search options"
-          @input=${this._handleFilterInput}
-          @focus=${() => this._openDropdown()}
-          @keydown=${this._handleSearchKeydown}
-        />
+        ${tags}
+        ${this.values.length === 0
+          ? html`<span class="trigger-text placeholder">${this.placeholder}</span>`
+          : nothing}
       `;
     }
 
@@ -656,29 +668,33 @@ export class Dropdown extends LitElement {
 
     return html`
       <div class="dropdown-panel" role="listbox" aria-multiselectable=${this.multiselect}>
-        <div class="search-wrapper">
-          <input
-            class="search-input"
-            type="text"
-            placeholder="Search..."
-            .value=${this._filter}
-            autocomplete="off"
-            aria-label="Search options"
-            @input=${this._handleFilterInput}
-            @keydown=${this._handleSearchKeydown}
-          />
-          ${this._filter
-            ? html`
-                <button
-                  class="search-clear-btn"
-                  @click=${() => this._clearFilter()}
-                  aria-label="Clear search"
-                >
-                  <trailhand-icon name="x"></trailhand-icon>
-                </button>
-              `
-            : ''}
-        </div>
+        ${this.filterable
+          ? html`
+              <div class="search-wrapper">
+                <input
+                  class="search-input"
+                  type="text"
+                  placeholder="Search..."
+                  .value=${this._filter}
+                  autocomplete="off"
+                  aria-label="Search options"
+                  @input=${this._handleFilterInput}
+                  @keydown=${this._handleSearchKeydown}
+                />
+                ${this._filter
+                  ? html`
+                      <button
+                        class="search-clear-btn"
+                        @click=${() => this._clearFilter()}
+                        aria-label="Clear search"
+                      >
+                        <trailhand-icon name="x"></trailhand-icon>
+                      </button>
+                    `
+                  : nothing}
+              </div>
+            `
+          : nothing}
 
         <div class="options-list">
           ${filtered.length > 0
@@ -730,17 +746,8 @@ export class Dropdown extends LitElement {
           role="combobox"
           aria-expanded=${this._open}
           aria-haspopup="listbox"
-          tabindex=${this.disabled || this.multiselect ? -1 : 0}
-          @click=${() => {
-            if (this.multiselect) {
-              this._openDropdown();
-              this.updateComplete.then(() => {
-                this.shadowRoot?.querySelector<HTMLInputElement>('.inline-search')?.focus();
-              });
-            } else {
-              this._toggle();
-            }
-          }}
+          tabindex=${this.disabled ? -1 : 0}
+          @click=${() => this._toggle()}
           @keydown=${this._handleTriggerKeydown}
         >
           ${this._renderTriggerContent()}

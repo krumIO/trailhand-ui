@@ -34,6 +34,10 @@ const meta: Meta<DropdownProps> = {
       control: { type: 'boolean' },
       description: 'Allows multiple selections',
     },
+    filterable: {
+      control: { type: 'boolean' },
+      description: 'Enables a search/filter input inside the dropdown panel',
+    },
     label: {
       control: { type: 'text' },
       description: 'Label text above the dropdown',
@@ -57,6 +61,7 @@ const meta: Meta<DropdownProps> = {
     placeholder: 'Select a namespace...',
     disabled: false,
     multiselect: false,
+    filterable: false,
     label: 'Namespace',
     required: false,
     invalid: false,
@@ -69,6 +74,7 @@ const meta: Meta<DropdownProps> = {
       placeholder=${args.placeholder}
       ?disabled=${args.disabled}
       ?multiselect=${args.multiselect}
+      ?filterable=${args.filterable}
       label=${args.label ?? ''}
       ?required=${args.required}
       ?invalid=${args.invalid}
@@ -477,4 +483,71 @@ export const NoLabel: Story = {
       },
     },
   },
+};
+
+/**
+ * Add the `filterable` prop to render a search input inside the panel.
+ * Useful for longer option lists where users benefit from being able to
+ * type to narrow down choices.
+ */
+export const WithFilter: Story = {
+  args: { filterable: true },
+  parameters: {
+    docs: {
+      source: {
+        language: 'html',
+        code: `
+<trailhand-dropdown
+  name="namespace"
+  label="Namespace"
+  placeholder="Select a namespace..."
+  filterable
+  size="medium"
+></trailhand-dropdown>
+        `.trim(),
+      },
+    },
+  },
+};
+
+/**
+ * Multiselect with `filterable` enabled renders the search input inline
+ * inside the trigger, allowing users to type to filter while also seeing
+ * their selected tags.
+ */
+export const MultiselectWithFilter: Story = {
+  args: {
+    multiselect: true,
+    filterable: true,
+    label: 'Namespaces',
+    placeholder: 'Select namespaces...',
+  },
+  parameters: {
+    docs: {
+      source: {
+        language: 'html',
+        code: `
+<trailhand-dropdown
+  name="namespaces"
+  label="Namespaces"
+  placeholder="Select namespaces..."
+  multiselect
+  filterable
+  size="medium"
+></trailhand-dropdown>
+        `.trim(),
+      },
+    },
+  },
+  render: (args) => html`
+    <trailhand-dropdown
+      name=${args.name}
+      .options=${NAMESPACES}
+      ?multiselect=${args.multiselect}
+      ?filterable=${args.filterable}
+      placeholder=${args.placeholder}
+      label=${args.label ?? ''}
+      size=${args.size}
+    ></trailhand-dropdown>
+  `,
 };
