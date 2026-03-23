@@ -370,6 +370,12 @@ export const Disabled: Story = {
   `,
 };
 
+/**
+ * When `required` is set, the dropdown blocks form submission if no option is
+ * selected. The invalid visual state (red border) is deferred, it only appears
+ * after the user interacts with the field or a form submit is attempted, matching
+ * the behavior of native inputs and `trailhand-text-input`.
+ */
 export const Required: Story = {
   args: { required: true },
   parameters: {

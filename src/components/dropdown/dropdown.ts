@@ -96,6 +96,9 @@ export class Dropdown extends LitElement {
       this.disabled = true;
     }
     document.addEventListener('click', this._handleOutsideClick);
+    this.addEventListener('invalid', () => {
+      this._updateValidity();
+    });
   }
 
   disconnectedCallback() {
@@ -308,8 +311,24 @@ export class Dropdown extends LitElement {
       changedProperties.has('value') ||
       changedProperties.has('values')
     ) {
-      this._updateValidity();
+      // Keep internals in sync so form submission is blocked when required,
+      // but do not set this.invalid here — visual state is only shown after
+      // the user interacts or a submit is attempted.
+      const hasValue = this.multiselect ? this.values.length > 0 : !!this.value;
+      if (this.required && !hasValue) {
+        const anchor = this.shadowRoot?.querySelector<HTMLElement>('.trigger') ?? undefined;
+        this.internals.setValidity({ valueMissing: true }, 'Please select an option', anchor);
+      } else {
+        this.internals.setValidity({});
+        this.invalid = false;
+      }
     }
+  }
+
+  formAssociatedCallback(form: HTMLFormElement | null) {
+    form?.addEventListener('submit', () => {
+      this._updateValidity();
+    });
   }
 
   formResetCallback() {
@@ -361,6 +380,7 @@ export class Dropdown extends LitElement {
       transition: border-color 0.2s ease;
       font-size: 14px;
       box-sizing: border-box;
+      outline: none;
     }
 
     .trigger.open,
@@ -368,7 +388,9 @@ export class Dropdown extends LitElement {
       border-color: var(--th-input-focus-border, #0086FF);
     }
 
-    :host([invalid]) .trigger {
+    :host([invalid]) .trigger,
+    :host([invalid]) .trigger.open,
+    :host([invalid]) .trigger:focus-within {
       border-color: var(--th-input-border-invalid, #9f3a3a);
     }
 

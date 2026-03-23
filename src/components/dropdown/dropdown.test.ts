@@ -289,11 +289,30 @@ describe('Dropdown', () => {
   });
 
   describe('Required validation', () => {
-    it('is invalid when required and no value selected', async () => {
+    it('blocks form submission when required and no value selected', async () => {
       el.required = true;
       await el.updateComplete;
       expect(el.validity.valueMissing).toBe(true);
       expect(el.checkValidity()).toBe(false);
+    });
+
+    it('does not show invalid visually until the user interacts', async () => {
+      el.required = true;
+      await el.updateComplete;
+      expect(el.invalid).toBe(false);
+    });
+
+    it('shows invalid visually after user clears a required field', async () => {
+      el.required = true;
+      el.value = 'alpha';
+      await el.updateComplete;
+
+      // User clears the selection
+      const clearBtn = el.shadowRoot!.querySelector<HTMLElement>('.clear-btn');
+      clearBtn!.click();
+      await el.updateComplete;
+
+      expect(el.invalid).toBe(true);
     });
 
     it('is valid when required and a value is selected', async () => {
@@ -303,10 +322,14 @@ describe('Dropdown', () => {
       expect(el.checkValidity()).toBe(true);
     });
 
-    it('clears invalid state after selection', async () => {
+    it('clears invalid visual state after a valid selection', async () => {
       el.required = true;
+      el.value = 'alpha';
       await el.updateComplete;
-      expect(el.checkValidity()).toBe(false);
+      const clearBtn = el.shadowRoot!.querySelector<HTMLElement>('.clear-btn');
+      clearBtn!.click();
+      await el.updateComplete;
+      expect(el.invalid).toBe(true);
 
       const trigger = el.shadowRoot!.querySelector('.trigger') as HTMLElement;
       trigger.click();
@@ -315,6 +338,7 @@ describe('Dropdown', () => {
       opt!.click();
       await el.updateComplete;
 
+      expect(el.invalid).toBe(false);
       expect(el.checkValidity()).toBe(true);
     });
   });

@@ -447,6 +447,13 @@ class DevApp extends LitElement {
           multiselect
         ></trailhand-dropdown>
         <trailhand-dropdown
+          name="namespace-filterable"
+          label="With filter"
+          placeholder="Select a namespace..."
+          .options=${this.namespaceOptions}
+          filterable
+        ></trailhand-dropdown>
+        <trailhand-dropdown
           name="namespaces-multi"
           label="Multiselect w/ filter"
           placeholder="Select namespaces..."
@@ -1019,6 +1026,13 @@ class DevApp extends LitElement {
           >
             <trailhand-icon name="globe" slot="icon"></trailhand-icon>
           </trailhand-selector>
+          <trailhand-dropdown
+            name="formDropdown"
+            label="Form Dropdown"
+            placeholder="Select an option..."
+            .options=${this.namespaceOptions}
+            required
+          ></trailhand-dropdown>
         </fieldset>
         <trailhand-button type="submit">Submit Form</trailhand-button>
         <trailhand-button type="reset" variant="destructive"
