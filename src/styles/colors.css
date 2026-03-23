@@ -129,7 +129,7 @@
   --th-input-label-disabled: var(--th-color-grey-500);
   --th-input-placeholder: var(--th-color-grey-400);
   --th-input-text: var(--th-color-black);
-  --th-input-bg: 'transparent';
+  --th-input-bg: var(--th-color-grey-200);
   --th-input-icon-color: var(--th-color-grey-400);
 
   /* Selector */
@@ -159,6 +159,15 @@
   --th-form-row-title-color: var(--th-color-text-primary);
   --th-form-row-gap: 8px;
   --th-form-row-field-gap: 16px;
+
+  /* Dropdown */
+  --th-dropdown-bg: var(--th-color-white);
+  --th-dropdown-option-text: var(--th-color-black);
+  --th-dropdown-option-selected-text: var(--th-color-primary);
+  --th-dropdown-option-selected-bg: color-mix(in srgb, var(--th-color-primary) 10%, transparent);
+  --th-dropdown-option-hover-bg: color-mix(in srgb, var(--th-color-primary) 6%, transparent);
+  --th-dropdown-no-options-text: var(--th-color-grey-400);
+  --th-dropdown-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 }
 
 /* Dark Theme Overrides */
@@ -236,4 +245,13 @@
 
   /* Form Row */
   --th-form-row-title-color: var(--th-color-grey-100);
+
+  /* Dropdown */
+  --th-dropdown-bg: var(--th-color-grey-700);
+  --th-dropdown-option-text: var(--th-color-grey-100);
+  --th-dropdown-option-selected-text: var(--th-color-primary);
+  --th-dropdown-option-selected-bg: color-mix(in srgb, var(--th-color-primary) 15%, transparent);
+  --th-dropdown-option-hover-bg: color-mix(in srgb, var(--th-color-primary) 10%, transparent);
+  --th-dropdown-no-options-text: var(--th-color-grey-500);
+  --th-dropdown-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }

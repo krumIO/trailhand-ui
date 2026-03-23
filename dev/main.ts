@@ -14,6 +14,7 @@ import '../src/components/text-input';
 import '../src/components/selector';
 import '../src/components/modal';
 import '../src/components/th-form-card';
+import '../src/components/dropdown';
 import '../src/components/popover';
 
 // Import global styles
@@ -130,6 +131,28 @@ class DevApp extends LitElement {
   private _handleConfigDataCancel() {
     this.instancesConfigDataModalOpen = false;
   }
+
+  private namespaceOptions = [
+    { label: 'All Namespaces',  value: 'all',           clearOthers: true },
+    { label: 'namespace-1',     value: 'namespace-1' },
+    { label: 'namespace-2',     value: 'namespace-2' },
+    { label: 'namespace-3',     value: 'namespace-3' },
+    { label: 'namespace-4',     value: 'namespace-4' },
+    { label: 'namespace-5',     value: 'namespace-5' },
+  ];
+
+  private catalogServiceOptions = [
+    { label: 'service-1',       value: 'service-1' },
+    { label: 'service-2',       value: 'service-2' },
+    { label: 'service-3',       value: 'service-3' },
+    { label: 'service-4',       value: 'service-4' },
+  ];
+
+  private applicationOptions = [
+    { label: 'application-1',   value: 'application-1' },
+    { label: 'application-2',   value: 'application-2' },
+    { label: 'application-3',   value: 'application-3' },
+  ];
 
   private inputRef = createRef<HTMLDivElement>();
 
@@ -385,6 +408,92 @@ class DevApp extends LitElement {
           >Large</trailhand-checkbox
         >
       </div>
+      <!-------------------------- DROPDOWNS -------------------------->
+      <h1>Dropdowns</h1>
+      <div class="content">
+        <trailhand-dropdown
+          name="namespace"
+          label="Namespace"
+          placeholder="Select a namespace..."
+          .options=${this.namespaceOptions}
+        ></trailhand-dropdown>
+        <trailhand-dropdown
+          name="namespace-required"
+          label="Required"
+          placeholder="Select a namespace..."
+          .options=${this.namespaceOptions}
+          required
+        ></trailhand-dropdown>
+        <trailhand-dropdown
+          name="namespace-invalid"
+          label="Invalid"
+          placeholder="Select a namespace..."
+          .options=${this.namespaceOptions}
+          invalid
+        ></trailhand-dropdown>
+        <trailhand-dropdown
+          name="namespace-disabled"
+          label="Disabled"
+          placeholder="Select a namespace..."
+          .options=${this.namespaceOptions}
+          .value=${'namespace-1'}
+          disabled
+        ></trailhand-dropdown>
+        <trailhand-dropdown
+          name="namespaces-multi"
+          label="Multiselect"
+          placeholder="Select namespaces..."
+          .options=${this.namespaceOptions}
+          multiselect
+        ></trailhand-dropdown>
+        <trailhand-dropdown
+          name="namespace-filterable"
+          label="With filter"
+          placeholder="Select a namespace..."
+          .options=${this.namespaceOptions}
+          filterable
+        ></trailhand-dropdown>
+        <trailhand-dropdown
+          name="namespaces-multi"
+          label="Multiselect w/ filter"
+          placeholder="Select namespaces..."
+          .options=${this.namespaceOptions}
+          multiselect
+          filterable
+        ></trailhand-dropdown>
+        <trailhand-dropdown
+          name="namespaces-preselected"
+          label="Multiselect (preselected)"
+          placeholder="Select namespaces..."
+          .options=${this.namespaceOptions}
+          .values=${['namespace-1', 'namespace-2']}
+          multiselect
+        ></trailhand-dropdown>
+      </div>
+      <div class="content" style="margin-top: 1rem;">
+        <trailhand-dropdown
+          name="namespace-sm"
+          label="Small"
+          placeholder="Select..."
+          .options=${this.namespaceOptions}
+          size="small"
+        ></trailhand-dropdown>
+        <trailhand-dropdown
+          name="namespace-md"
+          label="Medium"
+          placeholder="Select..."
+          .options=${this.namespaceOptions}
+          size="medium"
+        ></trailhand-dropdown>
+        <trailhand-dropdown
+          name="namespace-lg"
+          label="Large"
+          placeholder="Select..."
+          .options=${this.namespaceOptions}
+          size="large"
+        ></trailhand-dropdown>
+      </div>
+
       <!-------------------------- TEXT INPUTS -------------------------->
       <h1>Text Inputs</h1>
       <div class="content">
@@ -530,7 +639,7 @@ class DevApp extends LitElement {
         </trailhand-button>
       </div>
 
-      <!-- Mockup 1: Configuration modal — tabs + form rows -->
+      <!-- Mockup 1: Configuration modal: tabs + form rows -->
       <trailhand-modal
         title="Configuration"
         subtitle="test-option"
@@ -555,11 +664,13 @@ class DevApp extends LitElement {
           </div>
           <trailhand-form-card>
             <trailhand-form-row columns="3">
-              <trailhand-text-input
+              <trailhand-dropdown
+                name="namespace"
                 label="Namespace"
-                placeholder="Create New Namespace"
+                placeholder="Select a namespace..."
+                .options=${this.namespaceOptions}
                 required
-              ></trailhand-text-input>
+              ></trailhand-dropdown>
               <trailhand-text-input
                 label="Name"
                 placeholder="Test"
@@ -609,11 +720,13 @@ class DevApp extends LitElement {
         <div style="width: 560px;">
           <trailhand-form-card>
             <trailhand-form-row columns="2">
-              <trailhand-text-input
+              <trailhand-dropdown
+                name="namespace"
                 label="Namespace"
-                placeholder="Create New Namespace"
+                placeholder="Select a namespace..."
+                .options=${this.namespaceOptions}
                 required
-              ></trailhand-text-input>
+              ></trailhand-dropdown>
               <trailhand-text-input
                 label="Name"
                 placeholder="A Unique Name"
@@ -621,17 +734,21 @@ class DevApp extends LitElement {
               ></trailhand-text-input>
             </trailhand-form-row>
             <trailhand-form-row>
-              <trailhand-text-input
+              <trailhand-dropdown
+                name="catalog-service"
                 label="Catalog Service"
-                placeholder="Select the type of service to create"
+                placeholder="Select the type of service to create..."
+                .options=${this.catalogServiceOptions}
                 required
-              ></trailhand-text-input>
+              ></trailhand-dropdown>
             </trailhand-form-row>
             <trailhand-form-row>
-              <trailhand-text-input
+              <trailhand-dropdown
+                name="application"
                 label="Bind to Application (Optional)"
-                placeholder="Select Application"
-              ></trailhand-text-input>
+                placeholder="Select an application..."
+                .options=${this.applicationOptions}
+              ></trailhand-dropdown>
             </trailhand-form-row>
           </trailhand-form-card>
         </div>
@@ -665,11 +782,13 @@ class DevApp extends LitElement {
             @form-card-cancel=${this._handleConfigDataCancel}
           >
             <trailhand-form-row columns="2">
-              <trailhand-text-input
+              <trailhand-dropdown
+                name="namespace"
                 label="Namespace"
-                placeholder="Create New Namespace"
+                placeholder="Select a namespace..."
+                .options=${this.namespaceOptions}
                 required
-              ></trailhand-text-input>
+              ></trailhand-dropdown>
               <trailhand-text-input
                 label="Name"
                 placeholder="A Unique Name"
@@ -677,10 +796,12 @@ class DevApp extends LitElement {
               ></trailhand-text-input>
             </trailhand-form-row>
             <trailhand-form-row>
-              <trailhand-text-input
+              <trailhand-dropdown
+                name="application"
                 label="Bind to Application (Optional)"
-                placeholder="Select Application"
-              ></trailhand-text-input>
+                placeholder="Select an application..."
+                .options=${this.applicationOptions}
+              ></trailhand-dropdown>
             </trailhand-form-row>
             <trailhand-form-row title="Config Data" columns="2">
               <trailhand-text-input
@@ -905,6 +1026,13 @@ class DevApp extends LitElement {
           >
             <trailhand-icon name="globe" slot="icon"></trailhand-icon>
           </trailhand-selector>
+          <trailhand-dropdown
+            name="formDropdown"
+            label="Form Dropdown"
+            placeholder="Select an option..."
+            .options=${this.namespaceOptions}
+            required
+          ></trailhand-dropdown>
         </fieldset>
         <trailhand-button type="submit">Submit Form</trailhand-button>
         <trailhand-button type="reset" variant="destructive"
