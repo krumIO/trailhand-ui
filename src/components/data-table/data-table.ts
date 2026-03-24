@@ -588,6 +588,13 @@ export class DataTable extends LitElement {
   goToPage(page: number): void {
     if (page >= 1 && page <= this._totalPages) {
       this._currentPage = page;
+      this.dispatchEvent(
+        new CustomEvent('page-change', {
+          detail: { page: this._currentPage },
+          bubbles: true,
+          composed: true,
+        }),
+      );
     }
   }
 
