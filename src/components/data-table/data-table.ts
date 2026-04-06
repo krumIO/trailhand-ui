@@ -175,6 +175,7 @@ export class DataTable extends LitElement {
       width: 100%;
       border-collapse: collapse;
       background-color: var(--body-bg, var(--th-color-white, #FFFFFF));
+      table-layout: fixed;
     }
 
     .data-table__thead {
