@@ -175,6 +175,7 @@ export class DataTable extends LitElement {
       width: 100%;
       border-collapse: collapse;
       background-color: var(--body-bg, var(--th-color-white, #FFFFFF));
+      table-layout: fixed;
     }
 
     .data-table__thead {
@@ -588,6 +589,13 @@ export class DataTable extends LitElement {
   goToPage(page: number): void {
     if (page >= 1 && page <= this._totalPages) {
       this._currentPage = page;
+      this.dispatchEvent(
+        new CustomEvent('page-change', {
+          detail: { page: this._currentPage },
+          bubbles: true,
+          composed: true,
+        }),
+      );
     }
   }
 
