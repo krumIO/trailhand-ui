@@ -14,6 +14,7 @@ export * from './components/checkbox';
 export * from './components/text-input';
 export * from './components/selector';
 export * from './components/dropdown';
+export * from './components/code-editor';
 
 // Export utilities
 export * from './utils';

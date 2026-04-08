@@ -16,6 +16,7 @@ import '../src/components/modal';
 import '../src/components/th-form-card';
 import '../src/components/dropdown';
 import '../src/components/popover';
+import '../src/components/code-editor';
 
 // Import global styles
 import '../src/styles/colors.css';
@@ -133,25 +134,25 @@ class DevApp extends LitElement {
   }
 
   private namespaceOptions = [
-    { label: 'All Namespaces',  value: 'all',           clearOthers: true },
-    { label: 'namespace-1',     value: 'namespace-1' },
-    { label: 'namespace-2',     value: 'namespace-2' },
-    { label: 'namespace-3',     value: 'namespace-3' },
-    { label: 'namespace-4',     value: 'namespace-4' },
-    { label: 'namespace-5',     value: 'namespace-5' },
+    { label: 'All Namespaces', value: 'all', clearOthers: true },
+    { label: 'namespace-1', value: 'namespace-1' },
+    { label: 'namespace-2', value: 'namespace-2' },
+    { label: 'namespace-3', value: 'namespace-3' },
+    { label: 'namespace-4', value: 'namespace-4' },
+    { label: 'namespace-5', value: 'namespace-5' },
   ];
 
   private catalogServiceOptions = [
-    { label: 'service-1',       value: 'service-1' },
-    { label: 'service-2',       value: 'service-2' },
-    { label: 'service-3',       value: 'service-3' },
-    { label: 'service-4',       value: 'service-4' },
+    { label: 'service-1', value: 'service-1' },
+    { label: 'service-2', value: 'service-2' },
+    { label: 'service-3', value: 'service-3' },
+    { label: 'service-4', value: 'service-4' },
   ];
 
   private applicationOptions = [
-    { label: 'application-1',   value: 'application-1' },
-    { label: 'application-2',   value: 'application-2' },
-    { label: 'application-3',   value: 'application-3' },
+    { label: 'application-1', value: 'application-1' },
+    { label: 'application-2', value: 'application-2' },
+    { label: 'application-3', value: 'application-3' },
   ];
 
   private inputRef = createRef<HTMLDivElement>();
@@ -547,6 +548,27 @@ class DevApp extends LitElement {
           ><trailhand-icon name="globe" slot="icon"></trailhand-icon
         ></trailhand-text-input>
       </div>
+      <!-------------------------- Code Editor -------------------------->
+      <h1>Code Editor</h1>
+      <div class="content" style="width: 50%;">
+        <trailhand-code-editor
+          name="code-editor"
+          value=""
+          placeholder="Type your code here..."
+        ></trailhand-code-editor>
+        <!-- <trailhand-text-input value="" placeholder="Placeholder"
+          ><trailhand-icon name="globe" slot="icon"></trailhand-icon
+        ></trailhand-text-input> -->
+      </div>
+      <div style="margin-top: 1rem;"></div>
+      <trailhand-button
+        @click=${() =>
+          console.log(
+            this.shadowRoot?.querySelector('trailhand-code-editor')?.value,
+          )}
+      >
+        Log value
+      </trailhand-button>
       <!-------------------------- Selectors -------------------------->
       <h1>Selectors</h1>
       <div class="column">
@@ -902,7 +924,9 @@ class DevApp extends LitElement {
           </trailhand-button>
           <div>
             <p style="margin: 0 0 8px; font-weight: 600;">Popover Content</p>
-            <p style="margin: 0; font-size: 14px; color: var(--th-color-text-secondary);">
+            <p
+              style="margin: 0; font-size: 14px; color: var(--th-color-text-secondary);"
+            >
               Any components can go here.
             </p>
           </div>
@@ -914,17 +938,26 @@ class DevApp extends LitElement {
           </trailhand-button>
           <div>
             <p style="margin: 0 0 8px; font-weight: 600;">Above the Trigger</p>
-            <p style="margin: 0; font-size: 14px; color: var(--th-color-text-secondary);">
+            <p
+              style="margin: 0; font-size: 14px; color: var(--th-color-text-secondary);"
+            >
               Placement set to top.
             </p>
           </div>
         </trailhand-popover>
 
-        <trailhand-popover placement="top" stay-open title="Filter Options" subtitle="containers">
+        <trailhand-popover
+          placement="top"
+          stay-open
+          title="Filter Options"
+          subtitle="containers"
+        >
           <trailhand-button slot="trigger" variant="alternate">
             Stay Open Popover
           </trailhand-button>
-          <div style="display: flex; flex-direction: column; gap: 12px; min-width: 260px;">
+          <div
+            style="display: flex; flex-direction: column; gap: 12px; min-width: 260px;"
+          >
             <trailhand-text-input
               label="Search"
               placeholder="e.g., my-container"
@@ -935,7 +968,9 @@ class DevApp extends LitElement {
             ></trailhand-text-input>
             <div style="display: flex; gap: 8px;">
               <trailhand-button size="small">Apply</trailhand-button>
-              <trailhand-button size="small" variant="secondary">Clear</trailhand-button>
+              <trailhand-button size="small" variant="secondary"
+                >Clear</trailhand-button
+              >
             </div>
           </div>
         </trailhand-popover>

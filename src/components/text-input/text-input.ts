@@ -85,6 +85,7 @@ export class TextInput extends LitElement {
       transition: 0.2s ease;
       font-size: 14px;
       color: var(--th-input-text, #333);
+      box-sizing: border-box;
     }
 
     input:disabled {
