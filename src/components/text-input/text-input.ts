@@ -90,6 +90,7 @@ export class TextInput extends LitElement {
 
     input:disabled {
       background-color: var(--th-input-bg, transparent);
+      opacity: 0.6;
     }
 
     input::placeholder {

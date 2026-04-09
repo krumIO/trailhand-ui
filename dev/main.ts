@@ -161,6 +161,22 @@ class DevApp extends LitElement {
     this.inputRef.value?.focus();
   }
 
+  private exampleJSON = {
+    name: 'John',
+    age: 30,
+    street: '123 Main St',
+    city: 'Anytown',
+    state: 'CA',
+    zip: '12345',
+    country: 'USA',
+    gender: 'male',
+    height: 180,
+    weight: 75,
+    active: true,
+  };
+
+  private codeEditorValue = JSON.stringify(this.exampleJSON, null, 2);
+
   render() {
     return html`
       <div class="header">
@@ -509,7 +525,7 @@ class DevApp extends LitElement {
         ></trailhand-text-input>
         <trailhand-text-input
           label="Disabled"
-          value=""
+          value="This is disabled"
           placeholder="Placeholder"
           disabled
           ><trailhand-icon name="globe" slot="icon"></trailhand-icon
@@ -552,20 +568,48 @@ class DevApp extends LitElement {
       <h1>Code Editor</h1>
       <div class="content" style="width: 50%;">
         <trailhand-code-editor
-          name="code-editor"
-          value=""
-          placeholder="Type your code here..."
+          name="small-editor"
+          label="Small Code Editor"
+          size="small"
         ></trailhand-code-editor>
-        <!-- <trailhand-text-input value="" placeholder="Placeholder"
-          ><trailhand-icon name="globe" slot="icon"></trailhand-icon
-        ></trailhand-text-input> -->
+        <trailhand-code-editor
+          name="medium-editor"
+          label="Medium Code Editor"
+          size="medium"
+        ></trailhand-code-editor>
+        <trailhand-code-editor
+          name="large-editor"
+          label="Large Code Editor"
+          size="large"
+        ></trailhand-code-editor>
+        <trailhand-code-editor
+          name="code-editor"
+          label="Code Editor"
+          .value=${this.codeEditorValue}
+          placeholder="Type your code here..."
+          @input=${(e: Event) => {
+            const target = e.target as HTMLInputElement;
+            this.codeEditorValue = target.value;
+          }}
+        ></trailhand-code-editor>
+        <trailhand-code-editor
+          name="disabled-code-editor"
+          label="Disabled Multiline"
+          required
+          .value=${JSON.stringify(this.exampleJSON, null, 2)}
+          disabled
+        ></trailhand-code-editor>
+        <trailhand-code-editor
+          name="disabled-code-editor"
+          label="Disabled Single Line"
+          required
+          value="single line code editor"
+          disabled
+        ></trailhand-code-editor>
       </div>
       <div style="margin-top: 1rem;"></div>
       <trailhand-button
-        @click=${() =>
-          console.log(
-            this.shadowRoot?.querySelector('trailhand-code-editor')?.value,
-          )}
+        @click=${() => console.log('Code Editor Value:', this.codeEditorValue)}
       >
         Log value
       </trailhand-button>
@@ -1026,6 +1070,11 @@ class DevApp extends LitElement {
           >
             <trailhand-icon name="globe" slot="icon"></trailhand-icon>
           </trailhand-selector>
+          <trailhand-code-editor
+            name="disabledCodeEditor"
+            label="Disabled Code Editor"
+            required
+          ></trailhand-code-editor>
         </fieldset>
         <fieldset class="fieldset">
           <legend>Enabled Fieldset</legend>
@@ -1068,6 +1117,12 @@ class DevApp extends LitElement {
             .options=${this.namespaceOptions}
             required
           ></trailhand-dropdown>
+          <trailhand-code-editor
+            name="codeEditor"
+            label="Code Editor"
+            placeholder="Type your code here..."
+            required
+          ></trailhand-code-editor>
         </fieldset>
         <trailhand-button type="submit">Submit Form</trailhand-button>
         <trailhand-button type="reset" variant="destructive"
