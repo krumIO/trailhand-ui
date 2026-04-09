@@ -15,6 +15,7 @@ export class CodeEditor extends LitElement {
     | 'small'
     | 'medium'
     | 'large' = 'medium';
+  @property({ type: Number, attribute: 'max-rows' }) maxRows = 8;
 
   @state() private _isMultiLine = false;
   @state() private _isFocused = false;
@@ -221,12 +222,12 @@ export class CodeEditor extends LitElement {
     }
   }
 
-  // Autosize the textarea based on content, with a max height of 8 lines
+  // Autosize the textarea based on content, with a max height of `maxRows` lines
   private _autosize() {
     const el = this._editor;
     if (!el) return;
     el.style.height = 'auto';
-    const max = parseFloat(getComputedStyle(el).lineHeight) * 8;
+    const max = parseFloat(getComputedStyle(el).lineHeight) * this.maxRows;
     el.style.height = Math.min(el.scrollHeight, max) + 'px';
     el.style.overflowY = el.scrollHeight > max ? 'auto' : 'hidden';
   }

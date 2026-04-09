@@ -12,6 +12,7 @@ interface CodeEditorProps {
   label: string;
   size: 'small' | 'medium' | 'large';
   invalid: boolean;
+  maxRows: number;
 }
 
 const meta: Meta<CodeEditorProps> = {
@@ -52,6 +53,10 @@ const meta: Meta<CodeEditorProps> = {
       control: { type: 'boolean' },
       description: 'Manually set invalid state',
     },
+    maxRows: {
+      control: { type: 'number', min: 1, step: 1 },
+      description: 'Maximum number of visible rows before the editor scrolls',
+    },
   },
   args: {
     name: 'code-editor',
@@ -62,6 +67,7 @@ const meta: Meta<CodeEditorProps> = {
     label: 'Code Editor Label',
     size: 'medium',
     invalid: false,
+    maxRows: 8,
   },
   render: (args) => html`
     <trailhand-code-editor
@@ -73,6 +79,7 @@ const meta: Meta<CodeEditorProps> = {
       size=${args.size}
       ?invalid=${args.invalid}
       label=${args.label ?? ''}
+      max-rows=${args.maxRows}
     ></trailhand-code-editor>
   `,
 };
@@ -97,6 +104,40 @@ export const WithMultiLineValue: Story = {
 export const WithLongMultiLineValue: Story = {
   name: 'Scrollable (8+ lines)',
   args: {
+    value: JSON.stringify(
+      {
+        id: 101,
+        name: 'Jane Doe',
+        isActive: true,
+        roles: ['admin', 'editor'],
+        profile: {
+          email: 'jane.doe@example.com',
+          joined: '2023-01-15',
+        },
+        preferences: null,
+        metadata: {
+          createdBy: 'system',
+          version: 3,
+        },
+      },
+      null,
+      2,
+    ),
+  },
+};
+
+export const ShortMaxRows: Story = {
+  name: 'Custom maxRows (3)',
+  args: {
+    maxRows: 3,
+    value: JSON.stringify({ name: 'Jane', age: 30, active: true }, null, 2),
+  },
+};
+
+export const TallMaxRows: Story = {
+  name: 'Custom maxRows (16)',
+  args: {
+    maxRows: 16,
     value: JSON.stringify(
       {
         id: 101,
@@ -160,8 +201,6 @@ export const Large: Story = {
   },
 };
 
-// ── Interaction tests ──
-
 export const TypeSingleLine: Story = {
   name: 'Interaction: type in single-line mode',
   parameters: {
@@ -196,6 +235,12 @@ export const EnterExpandsToMultiLine: Story = {
     await userEvent.type(input, 'first line');
     await userEvent.keyboard('{Enter}');
 
+    await waitFor(() => {
+      const el = editor.shadowRoot?.querySelector('textarea.editor');
+      if (!el) throw new Error('textarea not yet rendered');
+      return el;
+    });
+
     await expect(
       editor.shadowRoot?.querySelector('textarea.editor'),
     ).toBeTruthy();
@@ -218,7 +263,6 @@ export const TabInsertsSpaces: Story = {
     await userEvent.type(input, 'line one');
     await userEvent.keyboard('{Enter}');
 
-    // Wait for the mode switch to complete and textarea to appear
     const textarea = await waitFor(() => {
       const el =
         editor.shadowRoot?.querySelector<HTMLTextAreaElement>(
@@ -249,12 +293,19 @@ export const BackspaceCollapsesToSingleLine: Story = {
     await userEvent.type(input, 'only line');
     await userEvent.keyboard('{Enter}');
 
-    const textarea =
-      editor.shadowRoot?.querySelector<HTMLTextAreaElement>('textarea.editor');
-    if (!textarea) throw new Error('Internal textarea not found');
+    await waitFor(() => {
+      const el = editor.shadowRoot?.querySelector('textarea.editor');
+      if (!el) throw new Error('textarea not yet rendered');
+      return el;
+    });
 
-    // Delete the empty second line to collapse back
     await userEvent.keyboard('{Backspace}');
+
+    await waitFor(() => {
+      const el = editor.shadowRoot?.querySelector('input.input');
+      if (!el) throw new Error('input not yet rendered');
+      return el;
+    });
 
     await expect(editor.shadowRoot?.querySelector('input.input')).toBeTruthy();
   },
@@ -275,7 +326,6 @@ export const PasteMultiLine: Story = {
 
     await userEvent.click(input);
 
-    // Dispatch a real ClipboardEvent with actual clipboardData
     const pastedText = '{\n  "name": "Jane"\n}';
     const clipboardEvent = new ClipboardEvent('paste', {
       bubbles: true,

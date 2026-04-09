@@ -591,6 +591,7 @@ class DevApp extends LitElement {
             const target = e.target as HTMLInputElement;
             this.codeEditorValue = target.value;
           }}
+          max-rows="5"
         ></trailhand-code-editor>
         <trailhand-code-editor
           name="disabled-code-editor"
