@@ -86,6 +86,7 @@ export class TextInput extends LitElement {
       font-size: 14px;
       color: var(--th-input-text, #333);
       box-sizing: border-box;
+      font-family: 'Montserrat', system-ui, sans-serif;
     }
 
     input:disabled {

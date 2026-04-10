@@ -74,7 +74,6 @@ export class CodeEditor extends LitElement {
       color: var(--th-input-text, #333);
       box-sizing: border-box;
       display: block;
-      line-height: 1.7;
     }
 
     .code-input:disabled {
@@ -110,6 +109,7 @@ export class CodeEditor extends LitElement {
       caret-color: var(--th-input-text, #333);
       position: relative;
       z-index: 1;
+      line-height: 1.7;
     }
 
     .editor:disabled {
