@@ -220,7 +220,7 @@ export class CodeEditor extends LitElement {
   // When the value changes, check if it contains newlines to determine if we should be in multi-line mode
   willUpdate(changedProperties: Map<string, unknown>) {
     if (changedProperties.has('value')) {
-      if (this.value?.includes('\t')) {
+      if (this.value?.match(/\r|\t/)) {
         this.value = this._normalizeText(this.value);
       }
       if (this.value?.includes('\n')) {
