@@ -88,6 +88,12 @@ export class DataTable extends LitElement {
   @property({ type: String, attribute: 'no-results-message' })
   noResultsMessage = 'No results found';
 
+  @property({ type: Boolean, attribute: 'server-side' })
+  serverSide = false;
+
+  @property({ type: Number, attribute: 'total-items' })
+  totalItems = 0;
+
   // Internal state
   @state()
   private _searchQuery = '';
@@ -513,6 +519,9 @@ export class DataTable extends LitElement {
     if (!this.paginated) {
       return this._sortedRows;
     }
+    if (this.serverSide) {
+      return this._sortedRows;
+    }
 
     const start = (this._currentPage - 1) * this.rowsPerPage;
     const end = start + this.rowsPerPage;
@@ -528,6 +537,9 @@ export class DataTable extends LitElement {
     if (!this.paginated) {
       return 1;
     }
+    if (this.serverSide) {
+      return Math.ceil(this.totalItems / this.rowsPerPage);
+    }
     return Math.ceil(this._sortedRows.length / this.rowsPerPage);
   }
 
@@ -537,16 +549,10 @@ export class DataTable extends LitElement {
    * @private
    */
   private get _paginationInfo(): { start: number; end: number; total: number } {
+    const total = this.serverSide ? this.totalItems : this._sortedRows.length;
     const start = (this._currentPage - 1) * this.rowsPerPage + 1;
-    const end = Math.min(
-      this._currentPage * this.rowsPerPage,
-      this._sortedRows.length,
-    );
-    return {
-      start,
-      end,
-      total: this._sortedRows.length,
-    };
+    const end = Math.min(this._currentPage * this.rowsPerPage, total);
+    return { start, end, total };
   }
 
   /**
