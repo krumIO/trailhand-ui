@@ -74,7 +74,6 @@ export class CodeEditor extends LitElement {
       color: var(--th-input-text, #333);
       box-sizing: border-box;
       display: block;
-      line-height: 1.7;
     }
 
     .code-input:disabled {
@@ -110,6 +109,7 @@ export class CodeEditor extends LitElement {
       caret-color: var(--th-input-text, #333);
       position: relative;
       z-index: 1;
+      line-height: 1.7;
     }
 
     .editor:disabled {
@@ -203,22 +203,24 @@ export class CodeEditor extends LitElement {
     }
   `;
 
-  // When the component is added to the DOM, check if the initial value contains newlines
-  connectedCallback() {
-    super.connectedCallback();
-    if (this.value?.includes('\n')) {
-      this._isMultiLine = true;
-      this._isFocused = false;
-      this.updateComplete.then(() => {
-        this._autosize();
-        this._updateMirror();
-        this._syncMirrorScroll();
-      });
+  // When the value changes, check if it contains newlines to determine if we should be in multi-line mode
+  willUpdate(changedProperties: Map<string, unknown>) {
+    if (changedProperties.has('value')) {
+      if (this.value?.includes('\t')) {
+        this.value = this._normalizeTabs(this.value);
+      }
+      if (this.value?.includes('\n')) {
+        this._isMultiLine = true;
+      }
     }
-    // Check if we're in a disabled fieldset on initial connection
-    const fieldset = this.closest('fieldset');
-    if (fieldset?.disabled) {
-      this.disabled = true;
+  }
+
+  // After updating, if we're in multi-line mode and the value changed, we need to update the mirror content and autosize the textarea
+  updated(changedProperties: Map<string, unknown>) {
+    if (changedProperties.has('value') && this._isMultiLine) {
+      this._autosize();
+      this._updateMirror();
+      this._syncMirrorScroll();
     }
   }
 
