@@ -221,7 +221,7 @@ export class CodeEditor extends LitElement {
   willUpdate(changedProperties: Map<string, unknown>) {
     if (changedProperties.has('value')) {
       if (this.value?.includes('\t')) {
-        this.value = this._normalizeTabs(this.value);
+        this.value = this._normalizeText(this.value);
       }
       if (this.value?.includes('\n')) {
         this._isMultiLine = true;
@@ -260,11 +260,13 @@ export class CodeEditor extends LitElement {
     }
   }
 
-  // Normalize tabs to spaces for consistent rendering in the mirror
-  private _normalizeTabs(text: string) {
-    return text.replace(/\t/g, '  ');
+  // Normalize text to spaces for consistent rendering in the mirror
+  private _normalizeText(text: string) {
+    return text
+      .replace(/\r\n/g, '\n')
+      .replace(/\r/g, '\n')
+      .replace(/\t/g, '  ');
   }
-
   // Escape HTML special characters to prevent rendering issues
   private _escapeHtml(str: string): string {
     return str
@@ -329,6 +331,7 @@ export class CodeEditor extends LitElement {
       this._autosize();
       this._updateMirror();
       this._syncMirrorScroll();
+      this._emitChange();
     });
   }
 
@@ -353,7 +356,7 @@ export class CodeEditor extends LitElement {
 
   private _onCodeInputPaste(e: ClipboardEvent) {
     const text = e.clipboardData?.getData('text') ?? '';
-    const normalized = this._normalizeTabs(text);
+    const normalized = this._normalizeText(text);
 
     if (normalized.includes('\n')) {
       e.preventDefault();
