@@ -203,6 +203,20 @@ export class CodeEditor extends LitElement {
     }
   `;
 
+  connectedCallback() {
+    super.connectedCallback();
+    // Runs when the element is inserted into the DOM and is visible,
+    // so scrollHeight is always accurate here
+    if (this.value?.includes('\n')) {
+      this._isMultiLine = true;
+      this.updateComplete.then(() => {
+        this._autosize();
+        this._updateMirror();
+        this._syncMirrorScroll();
+      });
+    }
+  }
+
   // When the value changes, check if it contains newlines to determine if we should be in multi-line mode
   willUpdate(changedProperties: Map<string, unknown>) {
     if (changedProperties.has('value')) {
@@ -215,12 +229,15 @@ export class CodeEditor extends LitElement {
     }
   }
 
-  // After updating, if we're in multi-line mode and the value changed, we need to update the mirror content and autosize the textarea
   updated(changedProperties: Map<string, unknown>) {
     if (changedProperties.has('value') && this._isMultiLine) {
-      this._autosize();
       this._updateMirror();
       this._syncMirrorScroll();
+      // Only autosize if the element has real dimensions —
+      // if not, connectedCallback will handle it when it becomes visible
+      if (this._editor?.offsetHeight > 0) {
+        this._autosize();
+      }
     }
   }
 
