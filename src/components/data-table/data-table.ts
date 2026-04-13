@@ -94,6 +94,14 @@ export class DataTable extends LitElement {
   @property({ type: Number, attribute: 'total-items' })
   totalItems = 0;
 
+  /**
+   * Externally controlled current page for server-side pagination.
+   * When > 0 and server-side is true, overrides internal page state.
+   * Set this from the parent after a page-change event fetch completes.
+   */
+  @property({ type: Number, attribute: 'current-page' })
+  currentPage = 0;
+
   // Internal state
   @state()
   private _searchQuery = '';
@@ -106,6 +114,17 @@ export class DataTable extends LitElement {
 
   @state()
   private _sortDirection: 'asc' | 'desc' = 'asc';
+
+  /**
+   * Effective current page: uses the externally controlled `currentPage` prop
+   * when in server-side mode, otherwise uses internal state.
+   */
+  private get _effectiveCurrentPage(): number {
+    if (this.serverSide && this.currentPage > 0) {
+      return this.currentPage;
+    }
+    return this._currentPage;
+  }
 
   static override styles = css`
     :host {
@@ -173,7 +192,19 @@ export class DataTable extends LitElement {
     }
 
     .data-table__wrapper {
+      position: relative;
       border: 1px solid var(--border, var(--th-color-border, #D7D7D7));
+      border-radius: 4px;
+    }
+
+    .data-table__loading-overlay {
+      position: absolute;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1;
       border-radius: 4px;
     }
 
@@ -550,8 +581,8 @@ export class DataTable extends LitElement {
    */
   private get _paginationInfo(): { start: number; end: number; total: number } {
     const total = this.serverSide ? this.totalItems : this._sortedRows.length;
-    const start = (this._currentPage - 1) * this.rowsPerPage + 1;
-    const end = Math.min(this._currentPage * this.rowsPerPage, total);
+    const start = (this._effectiveCurrentPage - 1) * this.rowsPerPage + 1;
+    const end = Math.min(this._effectiveCurrentPage * this.rowsPerPage, total);
     return { start, end, total };
   }
 
@@ -594,10 +625,15 @@ export class DataTable extends LitElement {
    */
   goToPage(page: number): void {
     if (page >= 1 && page <= this._totalPages) {
-      this._currentPage = page;
+      // In server-side mode the parent drives the current page via the
+      // `current-page` prop after fetching new data. Don't advance internal
+      // state so the displayed page stays correct until the parent confirms.
+      if (!this.serverSide) {
+        this._currentPage = page;
+      }
       this.dispatchEvent(
         new CustomEvent('page-change', {
-          detail: { page: this._currentPage },
+          detail: { page },
           bubbles: true,
           composed: true,
         }),
@@ -724,141 +760,137 @@ export class DataTable extends LitElement {
             `
           : ''}
 
-        <!-- Loading state -->
-        ${this.loading
-          ? html`
-              <div class="data-table__loading">
-                <div class="data-table__spinner"></div>
-                <span>Loading...</span>
-              </div>
-            `
-          : html`
-              <!-- Table -->
-              <div class="data-table__wrapper">
-                <table class="data-table__table">
-                  <thead class="data-table__thead">
-                    <tr>
-                      ${this.columns.map(
-                        (column) => html`
-                          <th
-                            class="data-table__th ${this.sortable &&
-                            column.sortable !== false
-                              ? 'data-table__th--sortable'
-                              : ''} ${this._sortColumn === column.field
-                              ? 'data-table__th--sorted'
-                              : ''}"
-                            style=${column.width
-                              ? `width: ${column.width}`
-                              : ''}
-                            @click=${() => this._handleSort(column.field)}
-                          >
-                            <div class="data-table__th-content">
-                              <span>${column.label}</span>
-                              ${this._renderSortIcon(column)}
-                            </div>
-                          </th>
-                        `,
-                      )}
-                      ${this.renderActions
-                        ? html`
-                            <th
-                              class="data-table__th data-table__th--actions"
-                              style="width: var(--data-table-actions-width, 40px)"
-                            ></th>
-                          `
+        <!-- Table (always rendered; loading overlay appears on top when loading) -->
+        <div class="data-table__wrapper">
+          ${this.loading
+            ? html`
+                <div class="data-table__loading-overlay">
+                  <div class="data-table__spinner"></div>
+                </div>
+              `
+            : ''}
+          <table class="data-table__table">
+            <thead class="data-table__thead">
+              <tr>
+                ${this.columns.map(
+                  (column) => html`
+                    <th
+                      class="data-table__th ${this.sortable &&
+                      column.sortable !== false
+                        ? 'data-table__th--sortable'
+                        : ''} ${this._sortColumn === column.field
+                        ? 'data-table__th--sorted'
+                        : ''}"
+                      style=${column.width
+                        ? `width: ${column.width}`
                         : ''}
+                      @click=${() => this._handleSort(column.field)}
+                    >
+                      <div class="data-table__th-content">
+                        <span>${column.label}</span>
+                        ${this._renderSortIcon(column)}
+                      </div>
+                    </th>
+                  `,
+                )}
+                ${this.renderActions
+                  ? html`
+                      <th
+                        class="data-table__th data-table__th--actions"
+                        style="width: var(--data-table-actions-width, 40px)"
+                      ></th>
+                    `
+                  : ''}
+              </tr>
+            </thead>
+            <tbody class="data-table__tbody">
+              ${!this.loading && this._paginatedRows.length === 0
+                ? html`
+                    <tr class="data-table__tr">
+                      <td
+                        class="data-table__td data-table__td--empty"
+                        colspan=${this.renderActions
+                          ? this.columns.length + 1
+                          : this.columns.length}
+                      >
+                        <slot name="empty">
+                          ${this._searchQuery
+                            ? this.noResultsMessage
+                            : this.emptyMessage}
+                        </slot>
+                      </td>
                     </tr>
-                  </thead>
-                  <tbody class="data-table__tbody">
-                    ${this._paginatedRows.length === 0
-                      ? html`
-                          <tr class="data-table__tr">
-                            <td
-                              class="data-table__td data-table__td--empty"
-                              colspan=${this.renderActions
-                                ? this.columns.length + 1
-                                : this.columns.length}
-                            >
-                              <slot name="empty">
-                                ${this._searchQuery
-                                  ? this.noResultsMessage
-                                  : this.emptyMessage}
+                  `
+                : this._paginatedRows.map(
+                    (row) => html`
+                      <tr class="data-table__tr">
+                        ${this.columns.map(
+                          (column) => html`
+                            <td class="data-table__td">
+                              <slot
+                                name="cell:${column.field}"
+                                .row=${row}
+                                .value=${this._getNestedValue(
+                                  row,
+                                  column.field,
+                                )}
+                                .column=${column}
+                              >
+                                ${this._renderCellContent(row, column)}
                               </slot>
                             </td>
-                          </tr>
-                        `
-                      : this._paginatedRows.map(
-                          (row) => html`
-                            <tr class="data-table__tr">
-                              ${this.columns.map(
-                                (column) => html`
-                                  <td class="data-table__td">
-                                    <slot
-                                      name="cell:${column.field}"
-                                      .row=${row}
-                                      .value=${this._getNestedValue(
-                                        row,
-                                        column.field,
-                                      )}
-                                      .column=${column}
-                                    >
-                                      ${this._renderCellContent(row, column)}
-                                    </slot>
-                                  </td>
-                                `,
-                              )}
-                              ${this.renderActions
-                                ? html`
-                                    <td
-                                      class="data-table__td data-table__td--actions"
-                                    >
-                                      ${this.renderActions(row)}
-                                    </td>
-                                  `
-                                : ''}
-                            </tr>
                           `,
                         )}
-                  </tbody>
-                </table>
+                        ${this.renderActions
+                          ? html`
+                              <td
+                                class="data-table__td data-table__td--actions"
+                              >
+                                ${this.renderActions(row)}
+                              </td>
+                            `
+                          : ''}
+                      </tr>
+                    `,
+                  )}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination (visible even while loading so controls stay accessible) -->
+        ${this.paginated && this._totalPages > 1
+          ? html`
+              <div class="data-table__pagination">
+                <div class="data-table__pagination-info">
+                  ${this._paginationInfo.start}-${this._paginationInfo.end}
+                  of ${this._paginationInfo.total}
+                </div>
+                <div class="data-table__pagination-controls">
+                  <button
+                    class="data-table__pagination-btn"
+                    ?disabled=${this._effectiveCurrentPage === 1 || this.loading}
+                    @click=${this.prevPage}
+                    aria-label="Previous page"
+                  >
+                    ${this._renderChevronLeft()}
+                  </button>
+
+                  <span class="data-table__pagination-current">
+                    ${this._effectiveCurrentPage} / ${this._totalPages}
+                  </span>
+
+                  <button
+                    class="data-table__pagination-btn"
+                    ?disabled=${this._effectiveCurrentPage === this._totalPages || this.loading}
+                    @click=${this.nextPage}
+                    aria-label="Next page"
+                  >
+                    ${this._renderChevronRight()}
+                  </button>
+                </div>
               </div>
-
-              <!-- Pagination -->
-              ${this.paginated && !this.loading && this._totalPages > 1
-                ? html`
-                    <div class="data-table__pagination">
-                      <div class="data-table__pagination-info">
-                        ${this._paginationInfo.start}-${this._paginationInfo
-                          .end}
-                        of ${this._paginationInfo.total}
-                      </div>
-                      <div class="data-table__pagination-controls">
-                        <button
-                          class="data-table__pagination-btn"
-                          ?disabled=${this._currentPage === 1}
-                          @click=${this.prevPage}
-                          aria-label="Previous page"
-                        >
-                          ${this._renderChevronLeft()}
-                        </button>
-
-                        <span class="data-table__pagination-current">
-                          ${this._currentPage} / ${this._totalPages}
-                        </span>
-
-                        <button
-                          class="data-table__pagination-btn"
-                          ?disabled=${this._currentPage === this._totalPages}
-                          @click=${this.nextPage}
-                          aria-label="Next page"
-                        >
-                          ${this._renderChevronRight()}
-                        </button>
-                      </div>
-                    </div>
-                  `
-                : ''}
-            `}
+            `
+          : ''}
       </div>
     `;
   }
