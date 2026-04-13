@@ -197,17 +197,6 @@ export class DataTable extends LitElement {
       border-radius: 4px;
     }
 
-    .data-table__loading-overlay {
-      position: absolute;
-      inset: 0;
-      background-color: rgba(0, 0, 0, 0.1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1;
-      border-radius: 4px;
-    }
-
     .data-table__table {
       width: 100%;
       border-collapse: collapse;
@@ -625,12 +614,7 @@ export class DataTable extends LitElement {
    */
   goToPage(page: number): void {
     if (page >= 1 && page <= this._totalPages) {
-      // In server-side mode the parent drives the current page via the
-      // `current-page` prop after fetching new data. Don't advance internal
-      // state so the displayed page stays correct until the parent confirms.
-      if (!this.serverSide) {
-        this._currentPage = page;
-      }
+      this._currentPage = page;
       this.dispatchEvent(
         new CustomEvent('page-change', {
           detail: { page },
@@ -645,14 +629,14 @@ export class DataTable extends LitElement {
    * Navigate to the next page
    */
   nextPage(): void {
-    this.goToPage(this._effectiveCurrentPage + 1);
+    this.goToPage(this._currentPage + 1);
   }
 
   /**
    * Navigate to the previous page
    */
   prevPage(): void {
-    this.goToPage(this._effectiveCurrentPage - 1);
+    this.goToPage(this._currentPage - 1);
   }
 
   /**
@@ -760,15 +744,7 @@ export class DataTable extends LitElement {
             `
           : ''}
 
-        <!-- Table (always rendered; loading overlay appears on top when loading) -->
         <div class="data-table__wrapper">
-          ${this.loading
-            ? html`
-                <div class="data-table__loading-overlay">
-                  <div class="data-table__spinner"></div>
-                </div>
-              `
-            : ''}
           <table class="data-table__table">
             <thead class="data-table__thead">
               <tr>
@@ -804,7 +780,22 @@ export class DataTable extends LitElement {
               </tr>
             </thead>
             <tbody class="data-table__tbody">
-              ${!this.loading && this._paginatedRows.length === 0
+              ${this.loading
+                ? html`
+                    <tr class="data-table__tr">
+                      <td
+                        class="data-table__td data-table__td--empty"
+                        colspan=${this.renderActions
+                          ? this.columns.length + 1
+                          : this.columns.length}
+                      >
+                        <div class="data-table__loading">
+                          <div class="data-table__spinner"></div>
+                        </div>
+                      </td>
+                    </tr>
+                  `
+                : this._paginatedRows.length === 0
                 ? html`
                     <tr class="data-table__tr">
                       <td
