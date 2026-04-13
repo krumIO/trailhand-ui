@@ -645,14 +645,14 @@ export class DataTable extends LitElement {
    * Navigate to the next page
    */
   nextPage(): void {
-    this.goToPage(this._currentPage + 1);
+    this.goToPage(this._effectiveCurrentPage + 1);
   }
 
   /**
    * Navigate to the previous page
    */
   prevPage(): void {
-    this.goToPage(this._currentPage - 1);
+    this.goToPage(this._effectiveCurrentPage - 1);
   }
 
   /**
