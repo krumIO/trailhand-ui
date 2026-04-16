@@ -469,6 +469,9 @@ class DevApp extends LitElement {
           placeholder="Select a namespace..."
           .options=${this.namespaceOptions}
           filterable
+          @dropdown-filter=${(e: CustomEvent<{ filter: string }>) => {
+            console.log('Filter input:', e.detail.filter);
+          }}
         ></trailhand-dropdown>
         <trailhand-dropdown
           name="namespaces-multi"

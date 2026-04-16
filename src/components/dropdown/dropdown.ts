@@ -120,7 +120,9 @@ export class Dropdown extends LitElement {
     this._filter = '';
     if (this.filterable) {
       this.updateComplete.then(() => {
-        this.shadowRoot?.querySelector<HTMLInputElement>('.search-input')?.focus();
+        this.shadowRoot
+          ?.querySelector<HTMLInputElement>('.search-input')
+          ?.focus();
       });
     }
   }
@@ -164,7 +166,10 @@ export class Dropdown extends LitElement {
         const clearOthersValues = this.options
           .filter((o) => o.clearOthers)
           .map((o) => o.value);
-        this.values = [...this.values.filter((v) => !clearOthersValues.includes(v)), option.value];
+        this.values = [
+          ...this.values.filter((v) => !clearOthersValues.includes(v)),
+          option.value,
+        ];
       }
       this._updateFormValue();
       this._emitChangeEvent();
@@ -215,8 +220,13 @@ export class Dropdown extends LitElement {
   private _updateValidity() {
     const hasValue = this.multiselect ? this.values.length > 0 : !!this.value;
     if (this.required && !hasValue) {
-      const anchor = this.shadowRoot?.querySelector<HTMLElement>('.trigger') ?? undefined;
-      this.internals.setValidity({ valueMissing: true }, 'Please select an option', anchor);
+      const anchor =
+        this.shadowRoot?.querySelector<HTMLElement>('.trigger') ?? undefined;
+      this.internals.setValidity(
+        { valueMissing: true },
+        'Please select an option',
+        anchor,
+      );
       this.invalid = true;
     } else {
       this.internals.setValidity({});
@@ -239,6 +249,13 @@ export class Dropdown extends LitElement {
 
   private _handleFilterInput(e: Event) {
     this._filter = (e.target as HTMLInputElement).value;
+    this.dispatchEvent(
+      new CustomEvent('dropdown-filter', {
+        detail: { filter: this._filter },
+        bubbles: true,
+        composed: true,
+      }),
+    );
   }
 
   private _handleSearchKeydown(e: KeyboardEvent) {
@@ -284,7 +301,9 @@ export class Dropdown extends LitElement {
 
   private _focusOption(index: number) {
     this.updateComplete.then(() => {
-      const opts = this.shadowRoot?.querySelectorAll<HTMLElement>('.option:not(.disabled)');
+      const opts = this.shadowRoot?.querySelectorAll<HTMLElement>(
+        '.option:not(.disabled)',
+      );
       opts?.[index]?.focus();
     });
   }
@@ -316,8 +335,13 @@ export class Dropdown extends LitElement {
       // the user interacts or a submit is attempted.
       const hasValue = this.multiselect ? this.values.length > 0 : !!this.value;
       if (this.required && !hasValue) {
-        const anchor = this.shadowRoot?.querySelector<HTMLElement>('.trigger') ?? undefined;
-        this.internals.setValidity({ valueMissing: true }, 'Please select an option', anchor);
+        const anchor =
+          this.shadowRoot?.querySelector<HTMLElement>('.trigger') ?? undefined;
+        this.internals.setValidity(
+          { valueMissing: true },
+          'Please select an option',
+          anchor,
+        );
       } else {
         this.internals.setValidity({});
         this.invalid = false;
@@ -385,7 +409,7 @@ export class Dropdown extends LitElement {
 
     .trigger.open,
     .trigger:focus-within {
-      border-color: var(--th-input-focus-border, #0086FF);
+      border-color: var(--th-input-focus-border, #0086ff);
     }
 
     :host([invalid]) .trigger,
@@ -496,7 +520,7 @@ export class Dropdown extends LitElement {
     }
 
     .search-input:focus {
-      border-color: var(--th-input-focus-border, #0086FF);
+      border-color: var(--th-input-focus-border, #0086ff);
     }
 
     .search-input::placeholder {
@@ -547,12 +571,29 @@ export class Dropdown extends LitElement {
 
     .option:hover:not(.disabled),
     .option:focus:not(.disabled) {
-      background: var(--th-dropdown-option-hover-bg, color-mix(in srgb, var(--th-input-focus-border, #0086FF) 6%, transparent));
+      background: var(
+        --th-dropdown-option-hover-bg,
+        color-mix(
+          in srgb,
+          var(--th-input-focus-border, #0086ff) 6%,
+          transparent
+        )
+      );
     }
 
     .option.selected {
-      background: var(--th-dropdown-option-selected-bg, color-mix(in srgb, var(--th-input-focus-border, #0086FF) 10%, transparent));
-      color: var(--th-dropdown-option-selected-text, var(--th-input-focus-border, #0086FF));
+      background: var(
+        --th-dropdown-option-selected-bg,
+        color-mix(
+          in srgb,
+          var(--th-input-focus-border, #0086ff) 10%,
+          transparent
+        )
+      );
+      color: var(
+        --th-dropdown-option-selected-text,
+        var(--th-input-focus-border, #0086ff)
+      );
     }
 
     .option.disabled {
@@ -571,13 +612,19 @@ export class Dropdown extends LitElement {
       width: 14px;
       height: 14px;
       flex-shrink: 0;
-      color: var(--th-dropdown-option-selected-text, var(--th-input-focus-border, #0086FF));
+      color: var(
+        --th-dropdown-option-selected-text,
+        var(--th-input-focus-border, #0086ff)
+      );
     }
 
     .no-options {
       padding: 1em 16px;
       font-size: 13px;
-      color: var(--th-dropdown-no-options-text, var(--th-input-placeholder, #aaa));
+      color: var(
+        --th-dropdown-no-options-text,
+        var(--th-input-placeholder, #aaa)
+      );
       text-align: center;
     }
 
@@ -662,7 +709,8 @@ export class Dropdown extends LitElement {
             dismissible
             outlined
             ?disabled=${this.disabled}
-            @tag-dismiss=${(e: CustomEvent<{ value: string }>) => this._removeTag(e.detail.value)}
+            @tag-dismiss=${(e: CustomEvent<{ value: string }>) =>
+              this._removeTag(e.detail.value)}
           ></trailhand-tag>
         `;
       });
@@ -670,7 +718,9 @@ export class Dropdown extends LitElement {
       return html`
         ${tags}
         ${this.values.length === 0
-          ? html`<span class="trigger-text placeholder">${this.placeholder}</span>`
+          ? html`<span class="trigger-text placeholder"
+              >${this.placeholder}</span
+            >`
           : nothing}
       `;
     }
@@ -689,7 +739,11 @@ export class Dropdown extends LitElement {
     const filtered = this._filteredOptions;
 
     return html`
-      <div class="dropdown-panel" role="listbox" aria-multiselectable=${this.multiselect}>
+      <div
+        class="dropdown-panel"
+        role="listbox"
+        aria-multiselectable=${this.multiselect}
+      >
         ${this.filterable
           ? html`
               <div class="search-wrapper">
@@ -726,19 +780,22 @@ export class Dropdown extends LitElement {
                   : this.value === option.value;
                 return html`
                   <div
-                    class="option ${isSelected ? 'selected' : ''} ${option.disabled
-                      ? 'disabled'
-                      : ''}"
+                    class="option ${isSelected
+                      ? 'selected'
+                      : ''} ${option.disabled ? 'disabled' : ''}"
                     role="option"
                     aria-selected=${isSelected}
                     aria-disabled=${option.disabled ?? false}
                     tabindex=${option.disabled ? -1 : 0}
                     @click=${() => this._selectOption(option)}
-                    @keydown=${(e: KeyboardEvent) => this._handleOptionKeydown(e, index)}
+                    @keydown=${(e: KeyboardEvent) =>
+                      this._handleOptionKeydown(e, index)}
                   >
                     <span class="option-label">${option.label}</span>
                     ${isSelected
-                      ? html`<span class="option-check">${this._checkSvg()}</span>`
+                      ? html`<span class="option-check"
+                          >${this._checkSvg()}</span
+                        >`
                       : html`<span class="option-check"></span>`}
                   </div>
                 `;
@@ -750,7 +807,9 @@ export class Dropdown extends LitElement {
   }
 
   render(): TemplateResult {
-    const hasSelection = this.multiselect ? this.values.length > 0 : !!this.value;
+    const hasSelection = this.multiselect
+      ? this.values.length > 0
+      : !!this.value;
 
     return html`
       <div class="wrapper">
@@ -758,7 +817,9 @@ export class Dropdown extends LitElement {
           ? html`
               <label class="input-label">
                 ${this.label}
-                <span class="required-indicator">${this.required ? '*' : ''}</span>
+                <span class="required-indicator"
+                  >${this.required ? '*' : ''}</span
+                >
               </label>
             `
           : ''}
@@ -789,7 +850,9 @@ export class Dropdown extends LitElement {
                   </button>
                 `
               : ''}
-            <span class="chevron ${this._open ? 'open' : ''}">${this._chevronSvg()}</span>
+            <span class="chevron ${this._open ? 'open' : ''}"
+              >${this._chevronSvg()}</span
+            >
           </span>
         </div>
 
