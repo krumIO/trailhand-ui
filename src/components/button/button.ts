@@ -119,16 +119,19 @@ export class Button extends LitElement {
     .trailhand-button--small {
       font-size: 11px;
       padding: 12px 8px;
+      height: 32px;
     }
 
     .trailhand-button--medium {
       font-size: 12px;
       padding: 12px 16px;
+      height: 40px;
     }
 
     .trailhand-button--large {
       font-size: 14px;
       padding: 16px 32px;
+      height: 48px;
     }
 
     .icon {

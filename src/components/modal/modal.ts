@@ -7,6 +7,7 @@ export interface ModalProps {
   title: string;
   subtitle: string;
   dismissible: boolean;
+  position: 'center' | 'top';
 }
 
 export class Modal extends LitElement {
@@ -25,6 +26,9 @@ export class Modal extends LitElement {
   @property({ type: Boolean })
   inline = false;
 
+  @property({ type: String })
+  position: 'center' | 'top' = 'center';
+
   @query('dialog') private dialog!: HTMLDialogElement;
 
   @state() private hasFooter = false;
@@ -36,7 +40,7 @@ export class Modal extends LitElement {
       font-family: var(--font-family, 'Poppins', sans-serif);
     }
 
-    dialog {
+    /* dialog {
       border: none;
       border-radius: 12px;
       padding: 0;
@@ -46,6 +50,32 @@ export class Modal extends LitElement {
       background: var(--th-color-background, #ffffff);
       min-width: 360px;
       margin: auto;
+    } */
+
+    dialog {
+      position: fixed;
+      margin: 0;
+      inset: auto;
+      left: 50%;
+      transform: translateX(-50%);
+      border: none;
+      border-radius: 12px;
+      padding: 0;
+      min-width: 360px;
+      max-width: 90vw;
+      max-height: 90vh;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      background: var(--th-color-background, #ffffff);
+    }
+
+    :host(:not([position='top'])) dialog {
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    :host([position='top']) dialog {
+      top: var(--th-modal-top, 80px);
+      transform: translateX(-50%);
     }
 
     dialog::backdrop {
@@ -163,6 +193,7 @@ export class Modal extends LitElement {
         @cancel=${this.handleClose}
         aria-labelledby="modal-title"
         aria-modal="true"
+        part="dialog"
       >
         <div class="modal-header" part="header">
           <slot name="heading">

@@ -10,6 +10,10 @@ export interface TextInputProps {
   label?: string;
   required?: boolean;
   invalid?: boolean;
+  type?: 'text' | 'number' | 'email' | 'password' | 'tel' | 'url';
+  min?: number;
+  max?: number;
+  step?: number;
 }
 
 export class TextInput extends LitElement {
@@ -38,6 +42,18 @@ export class TextInput extends LitElement {
 
   @property({ type: Boolean, reflect: true })
   invalid = false;
+
+  @property({ type: String })
+  type: 'text' | 'number' | 'email' | 'password' | 'tel' | 'url' = 'text';
+
+  @property({ type: Number })
+  min?: number;
+
+  @property({ type: Number })
+  max?: number;
+
+  @property({ type: Number })
+  step?: number;
 
   private internals: ElementInternals;
   private _input: HTMLInputElement;
@@ -84,6 +100,7 @@ export class TextInput extends LitElement {
       background: transparent;
       transition: 0.2s ease;
       font-size: 14px;
+      height: 40px;
       color: var(--th-input-text, #333);
       box-sizing: border-box;
       font-family: 'Montserrat', system-ui, sans-serif;
@@ -115,12 +132,14 @@ export class TextInput extends LitElement {
     }
     :host([size='small']) input {
       font-size: 12px;
+      height: 32px;
     }
     :host([size='large']) .input-wrapper {
       font-size: 16px;
     }
     :host([size='large']) input {
       font-size: 16px;
+      height: 48px;
     }
 
     /* Disabled */
@@ -223,12 +242,15 @@ export class TextInput extends LitElement {
         >
         <div class="input-wrapper">
           <input
-            type="text"
+            .type=${this.type}
             name=${this.name}
             .value=${this.value}
             placeholder=${this.placeholder}
             ?disabled=${this.disabled}
             ?required=${this.required}
+            min=${this.min ?? ''}
+            max=${this.max ?? ''}
+            step=${this.step ?? ''}
             @input=${this.handleInput}
           />
           <span class="icon"><slot name="icon"></slot></span>

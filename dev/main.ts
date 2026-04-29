@@ -566,6 +566,15 @@ class DevApp extends LitElement {
           invalid
           ><trailhand-icon name="globe" slot="icon"></trailhand-icon
         ></trailhand-text-input>
+        <trailhand-text-input
+          type="number"
+          label="Number"
+          value="42"
+          placeholder="Enter a number"
+          min="0"
+          max="100"
+          step="1"
+        ></trailhand-text-input>
       </div>
       <!-------------------------- Code Editor -------------------------->
       <h1>Code Editor</h1>
@@ -667,6 +676,7 @@ class DevApp extends LitElement {
       <trailhand-modal
         title="Modal Heading"
         subtitle="Subtitle"
+        position="top"
         .open=${this.modalOpen}
         @modal-close=${() => (this.modalOpen = false)}
         @modal-open=${this.handleModalOpen}
@@ -1094,6 +1104,16 @@ class DevApp extends LitElement {
             label="Form Text Input 3"
             name="formTextInput3"
             placeholder="Type something..."
+            required
+          ></trailhand-text-input>
+          <trailhand-text-input
+            type="number"
+            label="Number"
+            placeholder="Enter a number"
+            min="0"
+            max="100"
+            step="4"
+            name="formNumberInput"
             required
           ></trailhand-text-input>
           <trailhand-selector

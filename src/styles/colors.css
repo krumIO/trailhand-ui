@@ -9,9 +9,9 @@
 :root {
   /* Color Palette */
   /* Primary Blues */
-  --th-color-primary: #0086FF;           /* Primary brand color */
-  --th-color-light-primary: #e6f3ff;     /* Light variant for backgrounds */
-  --th-color-dark-primary: #005cb9;      /* Dark variant for buttons/links */
+  --th-color-primary: #0086ff; /* Primary brand color */
+  --th-color-light-primary: #e6f3ff; /* Light variant for backgrounds */
+  --th-color-dark-primary: #005cb9; /* Dark variant for buttons/links */
 
   /* Black + White */
   --th-color-black: #000000;
@@ -37,7 +37,7 @@
   --th-color-dark-green: #0f8240;
 
   --th-color-light-yellow: #fffeb4;
-  --th-color-yellow: #D3C255;
+  --th-color-yellow: #d3c255;
   --th-color-dark-yellow: #a89939;
 
   --th-color-light-blue: #e6f3ff;
@@ -87,9 +87,9 @@
   --th-button-secondary-color: var(--th-color-primary);
   --th-button-secondary-border: var(--th-color-primary);
 
-  --th-button-alternate-bg: var(--th-color-blue);
-  --th-button-alternate-bg-hover: var(--th-color-dark-blue);
-  --th-button-alternate-color: var(--th-color-white);
+  --th-button-alternate-bg: var(--th-color-light-blue);
+  --th-button-alternate-bg-hover: var(--th-color-light-blue);
+  --th-button-alternate-color: var(--th-color-blue);
 
   --th-button-destructive-bg: var(--th-color-red);
   --th-button-destructive-bg-hover: var(--th-color-dark-red);
@@ -164,10 +164,20 @@
   --th-dropdown-bg: var(--th-color-white);
   --th-dropdown-option-text: var(--th-color-black);
   --th-dropdown-option-selected-text: var(--th-color-primary);
-  --th-dropdown-option-selected-bg: color-mix(in srgb, var(--th-color-primary) 10%, transparent);
-  --th-dropdown-option-hover-bg: color-mix(in srgb, var(--th-color-primary) 6%, transparent);
+  --th-dropdown-option-selected-bg: color-mix(
+    in srgb,
+    var(--th-color-primary) 10%,
+    transparent
+  );
+  --th-dropdown-option-hover-bg: color-mix(
+    in srgb,
+    var(--th-color-primary) 6%,
+    transparent
+  );
   --th-dropdown-no-options-text: var(--th-color-grey-400);
   --th-dropdown-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+
+  --th-modal-top: 34px;
 }
 
 /* Dark Theme Overrides */
@@ -250,8 +260,16 @@
   --th-dropdown-bg: var(--th-color-grey-700);
   --th-dropdown-option-text: var(--th-color-grey-100);
   --th-dropdown-option-selected-text: var(--th-color-primary);
-  --th-dropdown-option-selected-bg: color-mix(in srgb, var(--th-color-primary) 15%, transparent);
-  --th-dropdown-option-hover-bg: color-mix(in srgb, var(--th-color-primary) 10%, transparent);
+  --th-dropdown-option-selected-bg: color-mix(
+    in srgb,
+    var(--th-color-primary) 15%,
+    transparent
+  );
+  --th-dropdown-option-hover-bg: color-mix(
+    in srgb,
+    var(--th-color-primary) 10%,
+    transparent
+  );
   --th-dropdown-no-options-text: var(--th-color-grey-500);
   --th-dropdown-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
