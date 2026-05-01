@@ -26,7 +26,7 @@ export class Modal extends LitElement {
   @property({ type: Boolean })
   inline = false;
 
-  @property({ type: String })
+  @property({ type: String, reflect: true })
   position: 'center' | 'top' = 'center';
 
   @query('dialog') private dialog!: HTMLDialogElement;
@@ -39,18 +39,6 @@ export class Modal extends LitElement {
       width: 100%;
       font-family: var(--font-family, 'Poppins', sans-serif);
     }
-
-    /* dialog {
-      border: none;
-      border-radius: 12px;
-      padding: 0;
-      max-width: 90vw;
-      max-height: 90vh;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-      background: var(--th-color-background, #ffffff);
-      min-width: 360px;
-      margin: auto;
-    } */
 
     dialog {
       position: fixed;
