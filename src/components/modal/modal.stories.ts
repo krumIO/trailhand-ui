@@ -225,18 +225,16 @@ export const DispatchesCloseEventOnEscape: Story = {
   },
   args: {
     open: true,
+    dismissible: true,
   },
   play: async ({ canvasElement }) => {
     const modal = canvasElement.querySelector('trailhand-modal') as Modal;
-    const dialog = modal.shadowRoot?.querySelector(
-      'dialog',
-    ) as HTMLDialogElement;
 
     const onCloseMock = fn();
     modal.addEventListener('modal-close', onCloseMock);
 
-    const cancelEvent = new Event('cancel', { bubbles: true, composed: true });
-    dialog.dispatchEvent(cancelEvent);
+    // simulate ESC key
+    window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
 
     await expect(modal.open).toBe(false);
     await expect(onCloseMock).toHaveBeenCalled();

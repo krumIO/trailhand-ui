@@ -689,6 +689,7 @@ class DevApp extends LitElement {
             label="Modal Text Input"
             placeholder="Type something..."
           ></trailhand-text-input>
+          <input type="file" />
         </div>
         <div slot="footer">
           <trailhand-button @click=${() => (this.modalOpen = false)}
