@@ -165,13 +165,18 @@ export class Modal extends LitElement {
 
   private handleCancel(e: Event) {
     e.preventDefault();
+    e.stopImmediatePropagation();
   }
 
   private handleKeydown = (e: KeyboardEvent) => {
     if (!this.open) return;
 
-    if (e.key === 'Escape' && this.dismissible) {
-      this.handleClose();
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      if (this.dismissible) {
+        this.handleClose();
+      }
     }
   };
 

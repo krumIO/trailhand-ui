@@ -677,6 +677,7 @@ class DevApp extends LitElement {
         title="Modal Heading"
         subtitle="Subtitle"
         position="top"
+        .dismissible=${false}
         .open=${this.modalOpen}
         @modal-close=${() => (this.modalOpen = false)}
         @modal-open=${this.handleModalOpen}
