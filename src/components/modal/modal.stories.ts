@@ -225,6 +225,7 @@ export const DispatchesCloseEventOnEscape: Story = {
   },
   args: {
     open: true,
+    dismissible: true,
   },
   play: async ({ canvasElement }) => {
     const modal = canvasElement.querySelector('trailhand-modal') as Modal;
