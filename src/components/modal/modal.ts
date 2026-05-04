@@ -163,6 +163,28 @@ export class Modal extends LitElement {
     this.open = false;
   }
 
+  private handleCancel(e: Event) {
+    e.preventDefault();
+  }
+
+  private handleKeydown = (e: KeyboardEvent) => {
+    if (!this.open) return;
+
+    if (e.key === 'Escape' && this.dismissible) {
+      this.handleClose();
+    }
+  };
+
+  connectedCallback() {
+    super.connectedCallback();
+    window.addEventListener('keydown', this.handleKeydown);
+  }
+
+  disconnectedCallback() {
+    window.removeEventListener('keydown', this.handleKeydown);
+    super.disconnectedCallback();
+  }
+
   private handleBackdropClick(e: MouseEvent) {
     if (!this.dismissible) return;
     const rect = this.dialog.getBoundingClientRect();
@@ -178,7 +200,7 @@ export class Modal extends LitElement {
     return html`
       <dialog
         @click=${this.handleBackdropClick}
-        @cancel=${this.handleClose}
+        @cancel=${this.handleCancel}
         aria-labelledby="modal-title"
         aria-modal="true"
         part="dialog"
