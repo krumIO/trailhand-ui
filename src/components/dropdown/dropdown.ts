@@ -34,6 +34,7 @@ export interface DropdownProps {
   required?: boolean;
   invalid?: boolean;
   size: 'small' | 'medium' | 'large';
+  position: 'top' | 'bottom';
 }
 
 export class Dropdown extends LitElement {
@@ -74,6 +75,9 @@ export class Dropdown extends LitElement {
 
   @property({ type: String, reflect: true })
   size: 'small' | 'medium' | 'large' = 'medium';
+
+  @property({ type: String, reflect: true })
+  position: 'top' | 'bottom' = 'bottom';
 
   @state()
   private _open = false;
@@ -482,7 +486,6 @@ export class Dropdown extends LitElement {
     /* ── Dropdown panel ── */
     .dropdown-panel {
       position: absolute;
-      top: calc(100% + 4px);
       left: 0;
       right: 0;
       background: var(--th-dropdown-bg, #ffffff);
@@ -490,6 +493,14 @@ export class Dropdown extends LitElement {
       border-radius: 8px;
       box-shadow: var(--th-dropdown-shadow, 0 4px 16px rgba(0, 0, 0, 0.1));
       z-index: 100;
+    }
+
+    .dropdown-panel.bottom {
+      top: calc(100% + 4px);
+    }
+
+    .dropdown-panel.top {
+      bottom: calc(100% + 4px);
     }
 
     /* Search row inside panel */
@@ -740,7 +751,7 @@ export class Dropdown extends LitElement {
 
     return html`
       <div
-        class="dropdown-panel"
+        class="dropdown-panel ${this.position}"
         role="listbox"
         aria-multiselectable=${this.multiselect}
       >

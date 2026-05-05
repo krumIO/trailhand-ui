@@ -5,12 +5,12 @@ import { DropdownProps } from './dropdown';
 
 const NAMESPACES = [
   { label: 'All Namespaces', value: 'all' },
-  { label: 'namespace-1',    value: 'namespace-1' },
-  { label: 'namespace-2',    value: 'namespace-2' },
-  { label: 'namespace-3',    value: 'namespace-3' },
-  { label: 'namespace-4',    value: 'namespace-4' },
-  { label: 'namespace-5',    value: 'namespace-5' },
-  { label: 'namespace-6',    value: 'namespace-6' },
+  { label: 'namespace-1', value: 'namespace-1' },
+  { label: 'namespace-2', value: 'namespace-2' },
+  { label: 'namespace-3', value: 'namespace-3' },
+  { label: 'namespace-4', value: 'namespace-4' },
+  { label: 'namespace-5', value: 'namespace-5' },
+  { label: 'namespace-6', value: 'namespace-6' },
 ];
 
 const meta: Meta<DropdownProps> = {
@@ -55,6 +55,12 @@ const meta: Meta<DropdownProps> = {
       options: ['small', 'medium', 'large'],
       description: 'Size of the dropdown',
     },
+    position: {
+      control: { type: 'select' },
+      options: ['bottom', 'top'],
+      description:
+        'Controls where the dropdown panel appears relative to the trigger',
+    },
   },
   args: {
     name: 'namespace',
@@ -66,6 +72,7 @@ const meta: Meta<DropdownProps> = {
     required: false,
     invalid: false,
     size: 'medium',
+    position: 'bottom',
   },
   render: (args) => html`
     <trailhand-dropdown
@@ -79,6 +86,7 @@ const meta: Meta<DropdownProps> = {
       ?required=${args.required}
       ?invalid=${args.invalid}
       size=${args.size}
+      position=${args.position}
     ></trailhand-dropdown>
   `,
 };
@@ -228,12 +236,12 @@ export const MultiselectWithClearAll: Story = {
       name=${args.name}
       .options=${[
         { label: 'All Namespaces', value: 'all', clearOthers: true },
-        { label: 'namespace-1',    value: 'namespace-1' },
-        { label: 'namespace-2',    value: 'namespace-2' },
-        { label: 'namespace-3',    value: 'namespace-3' },
-        { label: 'namespace-4',    value: 'namespace-4' },
-        { label: 'namespace-5',    value: 'namespace-5' },
-        { label: 'namespace-6',    value: 'namespace-6' },
+        { label: 'namespace-1', value: 'namespace-1' },
+        { label: 'namespace-2', value: 'namespace-2' },
+        { label: 'namespace-3', value: 'namespace-3' },
+        { label: 'namespace-4', value: 'namespace-4' },
+        { label: 'namespace-5', value: 'namespace-5' },
+        { label: 'namespace-6', value: 'namespace-6' },
       ]}
       ?multiselect=${args.multiselect}
       placeholder=${args.placeholder}
@@ -326,11 +334,11 @@ export const WithDisabledOptions: Story = {
       name=${args.name}
       .options=${[
         { label: 'All Namespaces', value: 'all' },
-        { label: 'namespace-1',    value: 'namespace-1' },
-        { label: 'namespace-2',    value: 'namespace-2' },
-        { label: 'namespace-3',    value: 'namespace-3', disabled: true },
-        { label: 'namespace-4',    value: 'namespace-4' },
-        { label: 'namespace-5',    value: 'namespace-5' },
+        { label: 'namespace-1', value: 'namespace-1' },
+        { label: 'namespace-2', value: 'namespace-2' },
+        { label: 'namespace-3', value: 'namespace-3', disabled: true },
+        { label: 'namespace-4', value: 'namespace-4' },
+        { label: 'namespace-5', value: 'namespace-5' },
       ]}
       placeholder=${args.placeholder}
       label=${args.label ?? ''}
@@ -555,5 +563,40 @@ export const MultiselectWithFilter: Story = {
       label=${args.label ?? ''}
       size=${args.size}
     ></trailhand-dropdown>
+  `,
+};
+
+/** Dropdown with `position="top"` should open above the trigger */
+export const TopPosition: Story = {
+  args: {
+    position: 'top',
+  },
+  parameters: {
+    docs: {
+      source: {
+        language: 'html',
+        code: `
+<trailhand-dropdown
+  name="namespace"
+  label="Namespace"
+  placeholder="Select a namespace..."
+  position="top"
+  size="medium"
+></trailhand-dropdown>
+        `.trim(),
+      },
+    },
+  },
+  render: (args) => html`
+    <div style="height: 500px; display: flex; align-items: flex-end;">
+      <trailhand-dropdown
+        name=${args.name}
+        .options=${NAMESPACES}
+        placeholder=${args.placeholder}
+        label=${args.label ?? ''}
+        size=${args.size}
+        position=${args.position}
+      ></trailhand-dropdown>
+    </div>
   `,
 };

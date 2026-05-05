@@ -137,9 +137,19 @@ class DevApp extends LitElement {
     { label: 'All Namespaces', value: 'all', clearOthers: true },
     { label: 'namespace-1', value: 'namespace-1' },
     { label: 'namespace-2', value: 'namespace-2' },
-    { label: 'namespace-3', value: 'namespace-3' },
-    { label: 'namespace-4', value: 'namespace-4' },
-    { label: 'namespace-5', value: 'namespace-5' },
+    // { label: 'namespace-3', value: 'namespace-3' },
+    // { label: 'namespace-4', value: 'namespace-4' },
+    // { label: 'namespace-5', value: 'namespace-5' },
+    // { label: 'namespace-1', value: 'namespace-1' },
+    // { label: 'namespace-2', value: 'namespace-2' },
+    // { label: 'namespace-3', value: 'namespace-3' },
+    // { label: 'namespace-4', value: 'namespace-4' },
+    // { label: 'namespace-5', value: 'namespace-5' },
+    // { label: 'namespace-1', value: 'namespace-1' },
+    // { label: 'namespace-2', value: 'namespace-2' },
+    // { label: 'namespace-3', value: 'namespace-3' },
+    // { label: 'namespace-4', value: 'namespace-4' },
+    // { label: 'namespace-5', value: 'namespace-5' },
   ];
 
   private catalogServiceOptions = [
@@ -511,6 +521,15 @@ class DevApp extends LitElement {
           placeholder="Select..."
           .options=${this.namespaceOptions}
           size="large"
+        ></trailhand-dropdown>
+        <trailhand-dropdown
+          name="namespace"
+          label="Namespace (Top Position)"
+          placeholder="Select a namespace..."
+          .options=${this.namespaceOptions}
+          position="top"
+          multiselect
+          filterable
         ></trailhand-dropdown>
       </div>
 
