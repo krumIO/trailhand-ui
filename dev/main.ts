@@ -574,6 +574,13 @@ class DevApp extends LitElement {
           min="0"
           max="100"
           step="1"
+          ><trailhand-icon name="globe" slot="icon"></trailhand-icon
+        ></trailhand-text-input>
+        <trailhand-text-input
+          type="datetime-local"
+          label="Date"
+          placeholder="Select a date and time"
+          ><trailhand-icon name="globe" slot="icon"></trailhand-icon
         ></trailhand-text-input>
       </div>
       <!-------------------------- Code Editor -------------------------->
@@ -677,7 +684,6 @@ class DevApp extends LitElement {
         title="Modal Heading"
         subtitle="Subtitle"
         position="top"
-        .dismissible=${false}
         .open=${this.modalOpen}
         @modal-close=${() => (this.modalOpen = false)}
         @modal-open=${this.handleModalOpen}

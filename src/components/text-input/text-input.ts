@@ -1,5 +1,5 @@
 import { LitElement, html, css, TemplateResult } from 'lit';
-import { property } from 'lit/decorators.js';
+import { property, state } from 'lit/decorators.js';
 
 export interface TextInputProps {
   name: string;
@@ -10,10 +10,21 @@ export interface TextInputProps {
   label?: string;
   required?: boolean;
   invalid?: boolean;
-  type?: 'text' | 'number' | 'email' | 'password' | 'tel' | 'url';
-  min?: number;
-  max?: number;
-  step?: number;
+  type?:
+    | 'text'
+    | 'number'
+    | 'email'
+    | 'password'
+    | 'tel'
+    | 'url'
+    | 'date'
+    | 'datetime-local'
+    | 'month'
+    | 'week'
+    | 'time';
+  min?: number | string;
+  max?: number | string;
+  step?: number | string;
 }
 
 export class TextInput extends LitElement {
@@ -44,16 +55,30 @@ export class TextInput extends LitElement {
   invalid = false;
 
   @property({ type: String })
-  type: 'text' | 'number' | 'email' | 'password' | 'tel' | 'url' = 'text';
+  type:
+    | 'text'
+    | 'number'
+    | 'email'
+    | 'password'
+    | 'tel'
+    | 'url'
+    | 'date'
+    | 'datetime-local'
+    | 'month'
+    | 'week'
+    | 'time' = 'text';
 
-  @property({ type: Number })
-  min?: number;
+  @property()
+  min?: number | string;
 
-  @property({ type: Number })
-  max?: number;
+  @property()
+  max?: number | string;
 
-  @property({ type: Number })
-  step?: number;
+  @property()
+  step?: number | string;
+
+  @state()
+  private _hasIcon = false;
 
   private internals: ElementInternals;
   private _input: HTMLInputElement;
@@ -93,7 +118,7 @@ export class TextInput extends LitElement {
 
     input {
       width: 100%;
-      padding: 0.75em 3em 0.75em 16px;
+      padding: 0.75em 16px;
       border-radius: 8px;
       border: 1px solid var(--th-input-border, #d7d7d7);
       outline: none;
@@ -104,6 +129,10 @@ export class TextInput extends LitElement {
       color: var(--th-input-text, #333);
       box-sizing: border-box;
       font-family: 'Montserrat', system-ui, sans-serif;
+    }
+
+    .input-wrapper.has-icon input {
+      padding-right: 3em;
     }
 
     input:disabled {
@@ -194,6 +223,13 @@ export class TextInput extends LitElement {
     this.emitChangeEvent();
   }
 
+  private _handleSlotChange(e: Event) {
+    const slot = e.target as HTMLSlotElement;
+    const nodes = slot.assignedNodes({ flatten: true });
+
+    this._hasIcon = nodes.length > 0;
+  }
+
   firstUpdated() {
     this._input = this.shadowRoot!.querySelector('input')!;
 
@@ -240,7 +276,7 @@ export class TextInput extends LitElement {
             >${this.required ? '*' : ''}</span
           ></label
         >
-        <div class="input-wrapper">
+        <div class="input-wrapper ${this._hasIcon ? 'has-icon' : ''}">
           <input
             .type=${this.type}
             name=${this.name}
@@ -253,7 +289,9 @@ export class TextInput extends LitElement {
             step=${this.step ?? ''}
             @input=${this.handleInput}
           />
-          <span class="icon"><slot name="icon"></slot></span>
+          <span class="icon"
+            ><slot name="icon" @slotchange=${this._handleSlotChange}></slot
+          ></span>
         </div>
       </div>
     `;
