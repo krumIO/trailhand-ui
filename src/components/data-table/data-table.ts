@@ -1,5 +1,6 @@
 import { LitElement, html, css, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
+import { repeat } from 'lit/directives/repeat.js';
 import { dataTableFormatters } from '../../utils/formatters';
 import 'iconify-icon';
 import { addIcon } from 'iconify-icon';
@@ -812,8 +813,7 @@ export class DataTable extends LitElement {
                       </td>
                     </tr>
                   `
-                : this._paginatedRows.map(
-                    (row) => html`
+                : repeat(this._paginatedRows, (row) => row[this.keyField], (row) => html `
                       <tr class="data-table__tr">
                         ${this.columns.map(
                           (column) => html`
