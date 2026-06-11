@@ -47,10 +47,10 @@ export class Button extends LitElement {
   static override styles = css`
     :host {
       display: inline-block;
+      font-family: var(--font-family, 'Poppins', sans-serif);
     }
 
     .trailhand-button {
-      font-family: 'Montserrat', system-ui, sans-serif;
       font-weight: 600;
       border: 0;
       border-radius: 8px;

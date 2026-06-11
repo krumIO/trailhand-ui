@@ -35,7 +35,7 @@ export class CodeEditor extends LitElement {
     :host {
       display: block;
       width: 100%;
-      font-family: 'Montserrat', system-ui, sans-serif;
+      font-family: var(--font-family, 'Poppins', sans-serif);
       min-width: 0;
     }
 
@@ -70,7 +70,7 @@ export class CodeEditor extends LitElement {
       outline: none;
       background: transparent;
       transition: border-color 0.2s ease;
-      font-family: 'Montserrat', system-ui, sans-serif;
+      font-family: var(--font-family, 'Poppins', sans-serif);
       color: var(--th-input-text, #333);
       box-sizing: border-box;
       display: block;
@@ -121,7 +121,7 @@ export class CodeEditor extends LitElement {
       position: absolute;
       inset: 0;
       padding: 0.75em 16px;
-      font-family: 'Montserrat', system-ui, sans-serif;
+      font-family: var(--font-family, 'Poppins', sans-serif);
       line-height: 1.7;
       white-space: pre;
       pointer-events: none;

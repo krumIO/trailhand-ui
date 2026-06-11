@@ -49,7 +49,7 @@ export class Selector extends LitElement {
       display: block;
       width: 100%;
       box-sizing: border-box;
-      font-family: 'Montserrat', system-ui, sans-serif;
+      font-family: var(--font-family, 'Poppins', sans-serif);
     }
 
     .wrapper {

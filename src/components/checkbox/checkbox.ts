@@ -43,7 +43,7 @@ export class Checkbox extends LitElement {
   static styles = css`
     :host {
       display: inline-block;
-      font-family: 'Montserrat', system-ui, sans-serif;
+      font-family: var(--font-family, 'Poppins', sans-serif);
     }
 
     .wrapper {

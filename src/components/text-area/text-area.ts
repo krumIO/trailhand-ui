@@ -1,7 +1,7 @@
 import { LitElement, html, css, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 
-export interface TextInputProps {
+export interface TextAreaProps {
   name: string;
   value: string;
   placeholder: string;
@@ -10,24 +10,13 @@ export interface TextInputProps {
   label?: string;
   required?: boolean;
   invalid?: boolean;
-  type?:
-    | 'text'
-    | 'number'
-    | 'email'
-    | 'password'
-    | 'tel'
-    | 'url'
-    | 'date'
-    | 'datetime-local'
-    | 'month'
-    | 'week'
-    | 'time';
-  min?: number | string;
-  max?: number | string;
-  step?: number | string;
+  rows?: number;
+  maxlength?: number;
+  resize?: 'none' | 'vertical' | 'horizontal' | 'both';
+  showCount?: boolean;
 }
 
-export class TextInput extends LitElement {
+export class TextArea extends LitElement {
   static formAssociated = true;
 
   @property({ type: String })
@@ -54,34 +43,20 @@ export class TextInput extends LitElement {
   @property({ type: Boolean, reflect: true })
   invalid = false;
 
+  @property({ type: Number })
+  rows = 4;
+
+  @property({ type: Number })
+  maxlength?: number;
+
   @property({ type: String })
-  type:
-    | 'text'
-    | 'number'
-    | 'email'
-    | 'password'
-    | 'tel'
-    | 'url'
-    | 'date'
-    | 'datetime-local'
-    | 'month'
-    | 'week'
-    | 'time' = 'text';
+  resize: 'none' | 'vertical' | 'horizontal' | 'both' = 'vertical';
 
-  @property()
-  min?: number | string;
-
-  @property()
-  max?: number | string;
-
-  @property()
-  step?: number | string;
-
-  @state()
-  private _hasIcon = false;
+  @property({ type: Boolean })
+  showCount = false;
 
   private internals: ElementInternals;
-  private _input: HTMLInputElement;
+  private _textarea: HTMLTextAreaElement;
 
   constructor() {
     super();
@@ -109,85 +84,87 @@ export class TextInput extends LitElement {
       color: var(--th-color-red, #bf1e1e);
     }
 
-    .input-wrapper {
+    .textarea-wrapper {
       position: relative;
       display: flex;
-      align-items: center;
+      flex-direction: column;
       font-size: 14px;
     }
 
-    input {
+    textarea {
       width: 100%;
       padding: 0.75em 16px;
       border-radius: 8px;
       border: 1px solid var(--th-input-border, #d7d7d7);
       outline: none;
       background: transparent;
-      transition: 0.2s ease;
+      transition: border-color 0.2s ease;
       font-size: 14px;
-      height: 40px;
       color: var(--th-input-text, #333);
       box-sizing: border-box;
       font-family: var(--font-family, 'Poppins', sans-serif);
+      line-height: 1.5;
+      resize: var(--th-textarea-resize, vertical);
+      min-height: 80px;
     }
 
-    .input-wrapper.has-icon input {
-      padding-right: 3em;
-    }
-
-    input:disabled {
+    textarea:disabled {
       background-color: var(--th-input-bg, transparent);
       opacity: 0.6;
+      cursor: not-allowed;
     }
 
-    input::placeholder {
+    textarea::placeholder {
       color: var(--th-input-placeholder, #d7d7d7);
     }
 
-    input:focus {
+    textarea:focus {
       border-color: var(--th-input-focus-border, #005cb9);
     }
 
-    .icon {
-      position: absolute;
-      right: 1em;
-      pointer-events: none;
-      color: var(--th-input-icon-color, #d7d7d7);
+    /* Character count */
+    .count {
+      align-self: flex-end;
+      font-size: 11px;
+      color: var(--th-input-label, #999);
+      margin-top: 0.25rem;
+      user-select: none;
+    }
+
+    .count.over-limit {
+      color: var(--th-input-border-invalid, #9f3a3a);
     }
 
     /* Sizes */
-    :host([size='small']) .input-wrapper {
+    :host([size='small']) .textarea-wrapper {
       font-size: 12px;
     }
-    :host([size='small']) input {
+    :host([size='small']) textarea {
       font-size: 12px;
-      height: 32px;
-    }
-    :host([size='large']) .input-wrapper {
-      font-size: 16px;
-    }
-    :host([size='large']) input {
-      font-size: 16px;
-      height: 48px;
+      min-height: 60px;
     }
 
-    /* Disabled */
-    input:disabled {
-      cursor: not-allowed;
+    :host([size='large']) .textarea-wrapper {
+      font-size: 16px;
     }
+    :host([size='large']) textarea {
+      font-size: 16px;
+      min-height: 100px;
+    }
+
+    /* Disabled label */
     :host([disabled]) label {
       color: var(--th-input-label-disabled, #999);
     }
 
     /* Invalid */
-    :host([invalid]) input {
+    :host([invalid]) textarea {
       border-color: var(--th-input-border-invalid, #9f3a3a);
     }
   `;
 
   connectedCallback() {
     super.connectedCallback();
-    // Check if we're in a disabled fieldset on initial connection
     const fieldset = this.closest('fieldset');
     if (fieldset?.disabled) {
       this.disabled = true;
@@ -195,15 +172,21 @@ export class TextInput extends LitElement {
   }
 
   focus() {
-    this._input?.focus();
+    this._textarea?.focus();
+  }
+
+  private get _currentLength(): number {
+    return this.value?.length ?? 0;
+  }
+
+  private get _isOverLimit(): boolean {
+    return this.maxlength != null && this._currentLength > this.maxlength;
   }
 
   private emitChangeEvent() {
-    // emit native change event for form integration
     this.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
-    // emit a custom event with the current value of the input
     this.dispatchEvent(
-      new CustomEvent('text-input-change', {
+      new CustomEvent('text-area-change', {
         detail: { value: this.value, name: this.name },
         bubbles: true,
         composed: true,
@@ -212,8 +195,9 @@ export class TextInput extends LitElement {
   }
 
   private handleInput(e: Event) {
-    const target = e.target as HTMLInputElement;
+    const target = e.target as HTMLTextAreaElement;
     this.value = target.value;
+
     if (this.value) {
       this.internals.setFormValue(this.value);
     } else {
@@ -221,33 +205,34 @@ export class TextInput extends LitElement {
     }
 
     this.emitChangeEvent();
-  }
-
-  private _handleSlotChange(e: Event) {
-    const slot = e.target as HTMLSlotElement;
-    const nodes = slot.assignedNodes({ flatten: true });
-
-    this._hasIcon = nodes.length > 0;
+    this._updateValidity();
   }
 
   firstUpdated() {
-    this._input = this.shadowRoot!.querySelector('input')!;
+    this._textarea = this.shadowRoot!.querySelector('textarea')!;
+    // Apply resize style via CSS custom property
+    this._textarea.style.resize = this.resize;
+  }
 
-    this._input.addEventListener('input', () => {
-      this._updateValidity();
-    });
+  updated(changed: Map<string, unknown>) {
+    if (changed.has('resize') && this._textarea) {
+      this._textarea.style.resize = this.resize;
+    }
   }
 
   private _updateValidity() {
-    const isValid = this._input.validity.valid;
+    const isValid = this._textarea.validity.valid && !this._isOverLimit;
     this.invalid = !isValid;
+
     if (isValid) {
       this.internals.setValidity({});
     } else {
       this.internals.setValidity(
-        this._input.validity,
-        this._input.validationMessage,
-        this._input,
+        this._textarea.validity,
+        this._isOverLimit
+          ? `Exceeded maximum length of ${this.maxlength}`
+          : this._textarea.validationMessage,
+        this._textarea,
       );
     }
   }
@@ -268,34 +253,33 @@ export class TextInput extends LitElement {
   }
 
   render(): TemplateResult {
+    const countLabel = this.maxlength != null
+      ? `${this._currentLength} / ${this.maxlength}`
+      : `${this._currentLength}`;
+
     return html`
       <div class="wrapper">
-        <label for=${this.name} class="input-label"
-          >${this.label}
-          <span class="required-indicator"
-            >${this.required ? '*' : ''}</span
-          ></label
-        >
-        <div class="input-wrapper ${this._hasIcon ? 'has-icon' : ''}">
-          <input
-            .type=${this.type}
+        <label for=${this.name} class="input-label">
+          ${this.label}
+          <span class="required-indicator">${this.required ? '*' : ''}</span>
+        </label>
+        <div class="textarea-wrapper">
+          <textarea
             name=${this.name}
             .value=${this.value}
             placeholder=${this.placeholder}
             ?disabled=${this.disabled}
             ?required=${this.required}
-            min=${this.min ?? ''}
-            max=${this.max ?? ''}
-            step=${this.step ?? ''}
+            rows=${this.rows}
             @input=${this.handleInput}
-          />
-          <span class="icon"
-            ><slot name="icon" @slotchange=${this._handleSlotChange}></slot
-          ></span>
+          ></textarea>
+          ${this.showCount
+            ? html`<span class="count ${this._isOverLimit ? 'over-limit' : ''}">${countLabel}</span>`
+            : ''}
         </div>
       </div>
     `;
   }
 }
 
-customElements.define('trailhand-text-input', TextInput);
+customElements.define('trailhand-text-area', TextArea);
