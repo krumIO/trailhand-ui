@@ -7,6 +7,7 @@
  */
 
 :root {
+  --font-family: 'Arial', system-ui, sans-serif; /* Global font family */
   /* Color Palette */
   /* Primary Blues */
   --th-color-primary: #0086ff; /* Primary brand color */

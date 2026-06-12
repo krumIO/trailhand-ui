@@ -17,6 +17,7 @@ import '../src/components/th-form-card';
 import '../src/components/dropdown';
 import '../src/components/popover';
 import '../src/components/code-editor';
+import '../src/components/text-area';
 
 // Import global styles
 import '../src/styles/colors.css';
@@ -602,6 +603,16 @@ class DevApp extends LitElement {
           ><trailhand-icon name="globe" slot="icon"></trailhand-icon
         ></trailhand-text-input>
       </div>
+      <!-------------------------- Text Area -------------------------->
+      <h1>Text Area</h1>
+      <div class="content">
+        <trailhand-text-area
+          name="text-area"
+          label="Text Area"
+          placeholder="Enter text here..."
+        ></trailhand-text-area>
+      </div>
+
       <!-------------------------- Code Editor -------------------------->
       <h1>Code Editor</h1>
       <div class="content" style="width: 50%;">
@@ -1143,6 +1154,12 @@ class DevApp extends LitElement {
             name="formNumberInput"
             required
           ></trailhand-text-input>
+          <trailhand-text-area
+            name="formTextArea"
+            label="Form Text Area"
+            placeholder="Enter text here..."
+            required
+          ></trailhand-text-area>
           <trailhand-selector
             name="formSelector"
             value="option1"

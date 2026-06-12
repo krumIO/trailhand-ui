@@ -372,7 +372,7 @@ export class Dropdown extends LitElement {
   static styles = css`
     :host {
       display: inline-block;
-      font-family: 'Montserrat', system-ui, sans-serif;
+      font-family: var(--font-family, 'Poppins', sans-serif);
       position: relative;
       min-width: var(--th-dropdown-min-width, 220px);
     }
