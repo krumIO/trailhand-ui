@@ -32,6 +32,8 @@ import {
   faMinus,
   faCheck,
   faPlus,
+  faHammer,
+  faCodeBranch,
 } from '@fortawesome/free-solid-svg-icons';
 
 const iconMap = {
@@ -64,6 +66,8 @@ const iconMap = {
   minus: faMinus,
   check: faCheck,
   plus: faPlus,
+  hammer: faHammer,
+  codeBranch: faCodeBranch,
 };
 
 export const availableIcons = Object.keys(iconMap) as (keyof typeof iconMap)[];
