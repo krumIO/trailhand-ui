@@ -151,6 +151,8 @@ const solidIcons = [
   'minus',
   'check',
   'plus',
+  'hammer',
+  'codeBranch',
 ];
 
 export const AllIcons: Story = {
