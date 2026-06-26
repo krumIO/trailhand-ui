@@ -2,6 +2,7 @@ import { LitElement, html, css, nothing, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import '../icon/icon';
 import '../th-tag/th-tag';
+import '../loading-spinner/loading-spinner';
 
 export interface DropdownOption {
   label: string;
@@ -30,6 +31,7 @@ export interface DropdownProps {
   disabled: boolean;
   multiselect: boolean;
   filterable?: boolean;
+  loading?: boolean;
   label?: string;
   required?: boolean;
   invalid?: boolean;
@@ -72,6 +74,9 @@ export class Dropdown extends LitElement {
 
   @property({ type: Boolean })
   filterable = false;
+
+  @property({ type: Boolean })
+  loading = false;
 
   @property({ type: String, reflect: true })
   size: 'small' | 'medium' | 'large' = 'medium';
@@ -639,6 +644,13 @@ export class Dropdown extends LitElement {
       text-align: center;
     }
 
+    .loading-spinner-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1em 0;
+    }
+
     /* ── Size: small ── */
     :host([size='small']) .trigger {
       font-size: 12px;
@@ -783,36 +795,47 @@ export class Dropdown extends LitElement {
             `
           : nothing}
 
-        <div class="options-list">
-          ${filtered.length > 0
-            ? filtered.map((option, index) => {
-                const isSelected = this.multiselect
-                  ? this.values.includes(option.value)
-                  : this.value === option.value;
-                return html`
-                  <div
-                    class="option ${isSelected
-                      ? 'selected'
-                      : ''} ${option.disabled ? 'disabled' : ''}"
-                    role="option"
-                    aria-selected=${isSelected}
-                    aria-disabled=${option.disabled ?? false}
-                    tabindex=${option.disabled ? -1 : 0}
-                    @click=${() => this._selectOption(option)}
-                    @keydown=${(e: KeyboardEvent) =>
-                      this._handleOptionKeydown(e, index)}
-                  >
-                    <span class="option-label">${option.label}</span>
-                    ${isSelected
-                      ? html`<span class="option-check"
-                          >${this._checkSvg()}</span
-                        >`
-                      : html`<span class="option-check"></span>`}
-                  </div>
-                `;
-              })
-            : html`<div class="no-options">No options found</div>`}
-        </div>
+        ${this.loading
+          ?
+          html`
+            <div class="options-list">
+              <div class="loading-spinner-wrapper">
+                <trailhand-loading-spinner size="small"></trailhand-loading-spinner>
+              </div>
+            </div>
+          `
+          : 
+          html`<div class="options-list">
+            ${filtered.length > 0
+              ? filtered.map((option, index) => {
+                  const isSelected = this.multiselect
+                    ? this.values.includes(option.value)
+                    : this.value === option.value;
+                  return html`
+                    <div
+                      class="option ${isSelected
+                        ? 'selected'
+                        : ''} ${option.disabled ? 'disabled' : ''}"
+                      role="option"
+                      aria-selected=${isSelected}
+                      aria-disabled=${option.disabled ?? false}
+                      tabindex=${option.disabled ? -1 : 0}
+                      @click=${() => this._selectOption(option)}
+                      @keydown=${(e: KeyboardEvent) =>
+                        this._handleOptionKeydown(e, index)}
+                    >
+                      <span class="option-label">${option.label}</span>
+                      ${isSelected
+                        ? html`<span class="option-check"
+                            >${this._checkSvg()}</span
+                          >`
+                        : html`<span class="option-check"></span>`}
+                    </div>
+                  `;
+                })
+              : html`<div class="no-options">No options found</div>`}
+          </div>`
+        }
       </div>
     `;
   }
