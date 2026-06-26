@@ -161,6 +161,13 @@
   --th-form-row-gap: 8px;
   --th-form-row-field-gap: 16px;
 
+  /* Loading Spinner */
+  --th-loading-spinner-size-small: 20px;
+  --th-loading-spinner-size-medium: 40px;
+  --th-loading-spinner-size-large: 60px;
+  --th-loading-spinner-background-color: var(--th-color-grey-200);
+  --th-loading-spinner-color: var(--th-color-primary);
+
   /* Dropdown */
   --th-dropdown-bg: var(--th-color-white);
   --th-dropdown-option-text: var(--th-color-black);
@@ -256,6 +263,10 @@
 
   /* Form Row */
   --th-form-row-title-color: var(--th-color-grey-100);
+
+  /* Loading Spinner */
+  --th-loading-spinner-background-color: var(--th-color-grey-600);
+  --th-loading-spinner-color: var(--th-color-primary);
 
   /* Dropdown */
   --th-dropdown-bg: var(--th-color-grey-700);

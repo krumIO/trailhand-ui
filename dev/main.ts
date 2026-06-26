@@ -18,6 +18,7 @@ import '../src/components/dropdown';
 import '../src/components/popover';
 import '../src/components/code-editor';
 import '../src/components/text-area';
+import '../src/components/loading-spinner';
 
 // Import global styles
 import '../src/styles/colors.css';
@@ -499,6 +500,13 @@ class DevApp extends LitElement {
           .options=${this.namespaceOptions}
           .values=${['namespace-1', 'namespace-2']}
           multiselect
+        ></trailhand-dropdown>
+        <trailhand-dropdown
+          name="loading"
+          label="Loading"
+          placeholder="Select a namespace..."
+          .options=${this.namespaceOptions}
+          .loading=${true}
         ></trailhand-dropdown>
       </div>
       <div class="content" style="margin-top: 1rem;">
@@ -1070,6 +1078,16 @@ class DevApp extends LitElement {
             </div>
           </div>
         </trailhand-popover>
+      </div>
+
+      <!-------------------------- LOADING SPINNER -------------------------->
+      <h1>Loading Spinner</h1>
+      <div class="content">
+        <trailhand-loading-spinner></trailhand-loading-spinner>
+        <trailhand-loading-spinner size="small"></trailhand-loading-spinner>
+        <trailhand-loading-spinner size="medium"></trailhand-loading-spinner>
+        <trailhand-loading-spinner size="large"></trailhand-loading-spinner>
+        <trailhand-loading-spinner size="medium" label="Loading..."></trailhand-loading-spinner>
       </div>
 
       <!-------------------------- FORM INTEGRATION -------------------------->

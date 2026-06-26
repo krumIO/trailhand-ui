@@ -50,6 +50,10 @@ const meta: Meta<DropdownProps> = {
       control: { type: 'boolean' },
       description: 'Marks the field as invalid',
     },
+    loading: {
+      control: { type: 'boolean' },
+      description: 'Displays a loading state',
+    },
     size: {
       control: { type: 'select' },
       options: ['small', 'medium', 'large'],
@@ -71,6 +75,7 @@ const meta: Meta<DropdownProps> = {
     label: 'Namespace',
     required: false,
     invalid: false,
+    loading: false,
     size: 'medium',
     position: 'bottom',
   },
@@ -85,6 +90,7 @@ const meta: Meta<DropdownProps> = {
       label=${args.label ?? ''}
       ?required=${args.required}
       ?invalid=${args.invalid}
+      ?loading=${args.loading}
       size=${args.size}
       position=${args.position}
     ></trailhand-dropdown>
@@ -598,5 +604,36 @@ export const TopPosition: Story = {
         position=${args.position}
       ></trailhand-dropdown>
     </div>
+  `,
+};
+
+/** Dropdown with `loading` state */
+export const Loading: Story = {
+  args: { loading: true },
+  parameters: {
+    docs: {
+      source: {
+        language: 'html',
+        code: `
+<trailhand-dropdown
+  name="namespace"
+  label="Namespace"
+  placeholder="Select a namespace..."
+  loading
+  size="medium"
+></trailhand-dropdown>
+        `.trim(),
+      },
+    },
+  },
+  render: (args) => html`
+    <trailhand-dropdown
+      name=${args.name}
+      .options=${NAMESPACES}
+      placeholder=${args.placeholder}
+      label=${args.label ?? ''}
+      size=${args.size}
+      ?loading=${args.loading}
+    ></trailhand-dropdown>
   `,
 };
