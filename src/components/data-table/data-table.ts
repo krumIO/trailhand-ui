@@ -84,6 +84,15 @@ export class DataTable extends LitElement {
   @property({ type: Boolean })
   selectable = false;
 
+  /**
+   * Optional callback to control whether an individual row can be selected
+   * when `selectable` is true. Rows for which this returns false render a
+   * disabled checkbox and are excluded from the header select-all/tri-state
+   * calculation. Defaults to allowing selection for every row.
+   */
+  @property({ attribute: false })
+  rowSelectable: (row: RowData) => boolean = () => true;
+
   @property({ attribute: false })
   renderActions?: (row: RowData) => unknown;
 
@@ -637,19 +646,21 @@ export class DataTable extends LitElement {
    * @private
    */
   private get _headerCheckboxState(): 'none' | 'some' | 'all' {
-    const visible = this._paginatedRows;
-    if (visible.length === 0) {
+    const selectableRows = this._paginatedRows.filter((row) =>
+      this.rowSelectable(row),
+    );
+    if (selectableRows.length === 0) {
       return 'none';
     }
 
-    const selectedCount = visible.filter((row) =>
+    const selectedCount = selectableRows.filter((row) =>
       this._selectedRows.has(row[this.keyField]),
     ).length;
 
     if (selectedCount === 0) {
       return 'none';
     }
-    return selectedCount === visible.length ? 'all' : 'some';
+    return selectedCount === selectableRows.length ? 'all' : 'some';
   }
 
   /**
@@ -675,6 +686,10 @@ export class DataTable extends LitElement {
    * @private
    */
   private _handleRowSelectionChange(row: RowData): void {
+    if (!this.rowSelectable(row)) {
+      return;
+    }
+
     const key = row[this.keyField];
     const next = new Map(this._selectedRows);
 
@@ -693,13 +708,15 @@ export class DataTable extends LitElement {
    * @private
    */
   private _handleHeaderSelectionChange(): void {
-    const visible = this._paginatedRows;
+    const selectableRows = this._paginatedRows.filter((row) =>
+      this.rowSelectable(row),
+    );
     const next = new Map(this._selectedRows);
 
     if (this._headerCheckboxState === 'all') {
-      visible.forEach((row) => next.delete(row[this.keyField]));
+      selectableRows.forEach((row) => next.delete(row[this.keyField]));
     } else {
-      visible.forEach((row) => next.set(row[this.keyField], row));
+      selectableRows.forEach((row) => next.set(row[this.keyField], row));
     }
 
     this._selectedRows = next;
@@ -951,6 +968,7 @@ export class DataTable extends LitElement {
                                 <trailhand-checkbox
                                   size="medium"
                                   .checked=${this._selectedRows.has(row[this.keyField])}
+                                  .disabled=${!this.rowSelectable(row)}
                                   @checkbox-change=${() =>
                                     this._handleRowSelectionChange(row)}
                                   aria-label="Select row"

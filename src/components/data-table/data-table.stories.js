@@ -21,6 +21,7 @@ export default {
     if (args.loading !== undefined) table.loading = args.loading;
     if (args.keyField) table.keyField = args.keyField;
     if (args.selectable !== undefined) table.selectable = args.selectable;
+    if (args.rowSelectable) table.rowSelectable = args.rowSelectable;
     if (args.renderActions) table.renderActions = args.renderActions;
     if (args.emptyMessage) table.emptyMessage = args.emptyMessage;
     if (args.noResultsMessage) table.noResultsMessage = args.noResultsMessage;
@@ -72,6 +73,11 @@ export default {
       description:
         'Show a checkbox column for row selection, with a tri-state header checkbox scoped to the currently rendered rows. Emits a "selection-change" event with { selectedKeys, selectedRows } on every change.',
       defaultValue: false,
+    },
+    rowSelectable: {
+      control: false,
+      description:
+        'Optional (row) => boolean callback controlling which rows can be checked when selectable is true. Ineligible rows render a disabled checkbox and are excluded from the header select-all/tri-state calculation. Defaults to allowing every row.',
     },
     renderActions: {
       control: false,
@@ -605,6 +611,47 @@ export const SelectableWithActions = {
       description: {
         story:
           'The selection checkbox column and the row actions column can be used together; the checkbox column is always pinned as the first column.',
+      },
+    },
+  },
+};
+
+/**
+ * Selectable rows with some rows non-selectable
+ */
+export const SelectableWithDisabledRows = {
+  render: () => {
+    const wrapper = document.createElement('div');
+
+    const status = document.createElement('p');
+    status.style.margin = '0 0 8px 0';
+    status.style.fontSize = '13px';
+    status.textContent = 'Selected: none';
+
+    const table = document.createElement('trailhand-table');
+    table.columns = userColumns;
+    table.rows = sampleUsers;
+    table.rowsPerPage = 5;
+    table.selectable = true;
+    // Inactive users can't be bulk-deleted in this example
+    table.rowSelectable = (row) => row.status === 'Active';
+
+    table.addEventListener('selection-change', (e) => {
+      const { selectedKeys } = e.detail;
+      status.textContent = selectedKeys.length
+        ? `Selected: ${selectedKeys.join(', ')}`
+        : 'Selected: none';
+    });
+
+    wrapper.appendChild(status);
+    wrapper.appendChild(table);
+    return wrapper;
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Use `rowSelectable` to control which rows can be checked, e.g. when a row is not eligible for a bulk action for domain reasons. Ineligible rows render a disabled checkbox and are excluded from the header select-all/tri-state calculation.',
       },
     },
   },
