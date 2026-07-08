@@ -153,6 +153,7 @@ const solidIcons = [
   'plus',
   'hammer',
   'codeBranch',
+  'trash',
 ];
 
 export const AllIcons: Story = {

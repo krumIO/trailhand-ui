@@ -20,6 +20,7 @@ export default {
     if (args.paginated !== undefined) table.paginated = args.paginated;
     if (args.loading !== undefined) table.loading = args.loading;
     if (args.keyField) table.keyField = args.keyField;
+    if (args.selectable !== undefined) table.selectable = args.selectable;
     if (args.renderActions) table.renderActions = args.renderActions;
     if (args.emptyMessage) table.emptyMessage = args.emptyMessage;
     if (args.noResultsMessage) table.noResultsMessage = args.noResultsMessage;
@@ -66,6 +67,12 @@ export default {
       description: 'Field to use as unique key for rows',
       defaultValue: 'id',
     },
+    selectable: {
+      control: 'boolean',
+      description:
+        'Show a checkbox column for row selection, with a tri-state header checkbox scoped to the currently rendered rows. Emits a "selection-change" event with { selectedKeys, selectedRows } on every change.',
+      defaultValue: false,
+    },
     renderActions: {
       control: false,
       description:
@@ -85,6 +92,7 @@ A feature-rich data table component with sorting, filtering, and pagination.
 - Custom cell rendering via slots
 - Formatter support via imported utilities (age, date, dateTime, memory, milliCPUs)
 - Opt-in row actions via renderActions callback
+- Opt-in row selection via selectable + selection-change event
 - Loading state
 - Empty state
 - Nested object support with dot notation
@@ -520,6 +528,83 @@ export const WithRowActions = {
       description: {
         story:
           'Opt-in to row actions by providing a renderActions callback. Use with ActionMenu or any custom element.',
+      },
+    },
+  },
+};
+
+/**
+ * Selectable rows
+ */
+export const Selectable = {
+  render: () => {
+    const wrapper = document.createElement('div');
+
+    const status = document.createElement('p');
+    status.style.margin = '0 0 8px 0';
+    status.style.fontSize = '13px';
+    status.textContent = 'Selected: none';
+
+    const table = document.createElement('trailhand-table');
+    table.columns = userColumns;
+    table.rows = sampleUsers;
+    table.rowsPerPage = 5;
+    table.selectable = true;
+
+    table.addEventListener('selection-change', (e) => {
+      const { selectedKeys } = e.detail;
+      status.textContent = selectedKeys.length
+        ? `Selected: ${selectedKeys.join(', ')}`
+        : 'Selected: none';
+    });
+
+    wrapper.appendChild(status);
+    wrapper.appendChild(table);
+    return wrapper;
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Set `selectable` to show a checkbox column. The header checkbox is tri-state (none/some/all) and is scoped to the currently rendered page. Listen for the "selection-change" event, whose detail contains `selectedKeys` and `selectedRows`. Selections made on one page are retained internally even if `rows` is swapped out (e.g. for server-side pagination), so a consumer can accumulate a selection across pages.',
+      },
+    },
+  },
+};
+
+/**
+ * Selectable rows with row actions
+ */
+export const SelectableWithActions = {
+  render: () => {
+    const table = document.createElement('trailhand-table');
+    table.columns = userColumns;
+    table.rows = sampleUsers.slice(0, 5);
+    table.selectable = true;
+    table.renderActions = (row) => html`
+      <trailhand-action-menu
+        .resource=${row}
+        .actions=${[
+          {
+            label: 'View Details',
+            action: (resource) => alert(`View: ${resource.name}`),
+          },
+          {
+            label: 'Delete',
+            action: (resource) => alert(`Delete: ${resource.name}`),
+            danger: true,
+          },
+        ]}
+      ></trailhand-action-menu>
+    `;
+
+    return table;
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'The selection checkbox column and the row actions column can be used together; the checkbox column is always pinned as the first column.',
       },
     },
   },
