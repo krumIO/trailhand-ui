@@ -2,6 +2,7 @@ import { LitElement, html, css, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { dataTableFormatters } from '../../utils/formatters';
+import '../checkbox/checkbox';
 import 'iconify-icon';
 import { addIcon } from 'iconify-icon';
 import chevronUp from '@iconify/icons-heroicons/chevron-up-20-solid';
@@ -80,6 +81,9 @@ export class DataTable extends LitElement {
   @property({ type: String, attribute: 'key-field' })
   keyField = 'id';
 
+  @property({ type: Boolean })
+  selectable = false;
+
   @property({ attribute: false })
   renderActions?: (row: RowData) => unknown;
 
@@ -115,6 +119,16 @@ export class DataTable extends LitElement {
 
   @state()
   private _sortDirection: 'asc' | 'desc' = 'asc';
+
+  /**
+   * Selected rows, keyed by the value of `keyField`. A Map (rather than a
+   * Set of keys) so selections made on one page/filter survive the `rows`
+   * property being swapped out from under the table (e.g. server-side
+   * pagination), letting selection persist across pages if the consumer
+   * wants that.
+   */
+  @state()
+  private _selectedRows: Map<any, RowData> = new Map();
 
   /**
    * Effective current page: uses the externally controlled `currentPage` prop
@@ -235,6 +249,14 @@ export class DataTable extends LitElement {
     .data-table__th--actions {
       width: 40px;
       padding: 0.75rem 0.5rem;
+    }
+
+    .data-table__th--selection,
+    .data-table__td--selection {
+      width: var(--data-table-selection-width, 40px);
+      padding: 0.75rem 0.5rem;
+      text-align: center;
+      vertical-align: middle;
     }
 
     .data-table__th-content {
@@ -610,6 +632,89 @@ export class DataTable extends LitElement {
   }
 
   /**
+   * Tri-state of the header "select all" checkbox, scoped to the currently
+   * rendered rows (i.e. the current page/filter), not the full dataset.
+   * @private
+   */
+  private get _headerCheckboxState(): 'none' | 'some' | 'all' {
+    const visible = this._paginatedRows;
+    if (visible.length === 0) {
+      return 'none';
+    }
+
+    const selectedCount = visible.filter((row) =>
+      this._selectedRows.has(row[this.keyField]),
+    ).length;
+
+    if (selectedCount === 0) {
+      return 'none';
+    }
+    return selectedCount === visible.length ? 'all' : 'some';
+  }
+
+  /**
+   * Emit the current selection as a `selection-change` event
+   * @private
+   */
+  private _emitSelectionChange(): void {
+    this.dispatchEvent(
+      new CustomEvent('selection-change', {
+        detail: {
+          selectedKeys: Array.from(this._selectedRows.keys()),
+          selectedRows: Array.from(this._selectedRows.values()),
+        },
+        bubbles: true,
+        composed: true,
+      }),
+    );
+  }
+
+  /**
+   * Toggle selection of a single row
+   * @param row - The row to toggle
+   * @private
+   */
+  private _handleRowSelectionChange(row: RowData): void {
+    const key = row[this.keyField];
+    const next = new Map(this._selectedRows);
+
+    if (next.has(key)) {
+      next.delete(key);
+    } else {
+      next.set(key, row);
+    }
+
+    this._selectedRows = next;
+    this._emitSelectionChange();
+  }
+
+  /**
+   * Toggle selection of all currently rendered rows
+   * @private
+   */
+  private _handleHeaderSelectionChange(): void {
+    const visible = this._paginatedRows;
+    const next = new Map(this._selectedRows);
+
+    if (this._headerCheckboxState === 'all') {
+      visible.forEach((row) => next.delete(row[this.keyField]));
+    } else {
+      visible.forEach((row) => next.set(row[this.keyField], row));
+    }
+
+    this._selectedRows = next;
+    this._emitSelectionChange();
+  }
+
+  /**
+   * Clear all selected rows
+   */
+  clearSelection(): void {
+    this._selectedRows = new Map();
+    this._emitSelectionChange();
+  }
+
+  /**
    * Navigate to a specific page
    * @param page - The page number
    */
@@ -724,6 +829,22 @@ export class DataTable extends LitElement {
   }
 
   /**
+   * Total number of rendered columns, including the selection and actions
+   * columns when present. Used for colspan on empty/loading rows.
+   * @private
+   */
+  private get _totalColumnCount(): number {
+    let count = this.columns.length;
+    if (this.selectable) {
+      count += 1;
+    }
+    if (this.renderActions) {
+      count += 1;
+    }
+    return count;
+  }
+
+  /**
    * Render the component
    * @returns TemplateResult
    */
@@ -749,6 +870,19 @@ export class DataTable extends LitElement {
           <table class="data-table__table">
             <thead class="data-table__thead">
               <tr>
+                ${this.selectable
+                  ? html`
+                      <th class="data-table__th data-table__th--selection">
+                        <trailhand-checkbox
+                          size="medium"
+                          .checked=${this._headerCheckboxState === 'all'}
+                          .indeterminate=${this._headerCheckboxState === 'some'}
+                          @checkbox-change=${this._handleHeaderSelectionChange}
+                          aria-label="Select all rows"
+                        ></trailhand-checkbox>
+                      </th>
+                    `
+                  : ''}
                 ${this.columns.map(
                   (column) => html`
                     <th
@@ -786,9 +920,7 @@ export class DataTable extends LitElement {
                     <tr class="data-table__tr">
                       <td
                         class="data-table__td data-table__td--empty"
-                        colspan=${this.renderActions
-                          ? this.columns.length + 1
-                          : this.columns.length}
+                        colspan=${this._totalColumnCount}
                       >
                         <div class="data-table__loading">
                           <div class="data-table__spinner"></div>
@@ -801,9 +933,7 @@ export class DataTable extends LitElement {
                     <tr class="data-table__tr">
                       <td
                         class="data-table__td data-table__td--empty"
-                        colspan=${this.renderActions
-                          ? this.columns.length + 1
-                          : this.columns.length}
+                        colspan=${this._totalColumnCount}
                       >
                         <slot name="empty">
                           ${this._searchQuery
@@ -815,6 +945,19 @@ export class DataTable extends LitElement {
                   `
                 : repeat(this._paginatedRows, (row) => row[this.keyField], (row) => html `
                       <tr class="data-table__tr">
+                        ${this.selectable
+                          ? html`
+                              <td class="data-table__td data-table__td--selection">
+                                <trailhand-checkbox
+                                  size="medium"
+                                  .checked=${this._selectedRows.has(row[this.keyField])}
+                                  @checkbox-change=${() =>
+                                    this._handleRowSelectionChange(row)}
+                                  aria-label="Select row"
+                                ></trailhand-checkbox>
+                              </td>
+                            `
+                          : ''}
                         ${this.columns.map(
                           (column) => html`
                             <td class="data-table__td">
