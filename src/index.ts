@@ -17,6 +17,7 @@ export * from './components/dropdown';
 export * from './components/code-editor';
 export * from './components/text-area';
 export * from './components/loading-spinner';
+export * from './components/pagination';
 
 // Export utilities
 export * from './utils';

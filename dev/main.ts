@@ -19,6 +19,7 @@ import '../src/components/popover';
 import '../src/components/code-editor';
 import '../src/components/text-area';
 import '../src/components/loading-spinner';
+import '../src/components/pagination';
 
 // Import global styles
 import '../src/styles/colors.css';
@@ -1090,6 +1091,17 @@ class DevApp extends LitElement {
         <trailhand-loading-spinner size="medium" label="Loading..."></trailhand-loading-spinner>
       </div>
 
+      <!-------------------------- PAGINATION -------------------------->
+      <h1>Pagination</h1>
+      <div class="content">
+        <div style="width: 600px;">
+          <trailhand-pagination
+            total-items="100"
+            items-per-page="10"
+            current-page="1"
+          ></trailhand-pagination>
+        </div>
+      </div>
       <!-------------------------- FORM INTEGRATION -------------------------->
       <h1>Form Integration</h1>
       <form
