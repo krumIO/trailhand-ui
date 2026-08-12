@@ -3,18 +3,15 @@ import { property, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { dataTableFormatters } from '../../utils/formatters';
 import '../checkbox/checkbox';
+import '../pagination/pagination';
 import 'iconify-icon';
 import { addIcon } from 'iconify-icon';
 import chevronUp from '@iconify/icons-heroicons/chevron-up-20-solid';
 import chevronDown from '@iconify/icons-heroicons/chevron-down-20-solid';
-import chevronLeft from '@iconify/icons-heroicons/chevron-left-20-solid';
-import chevronRight from '@iconify/icons-heroicons/chevron-right-20-solid';
 
 // Pre-load icons to avoid CDN delay
 addIcon('heroicons:chevron-up-20-solid', chevronUp);
 addIcon('heroicons:chevron-down-20-solid', chevronDown);
-addIcon('heroicons:chevron-left-20-solid', chevronLeft);
-addIcon('heroicons:chevron-right-20-solid', chevronRight);
 
 /**
  * Type definition for sort functions
@@ -324,63 +321,6 @@ export class DataTable extends LitElement {
       padding: 0.5rem;
       text-align: center;
       vertical-align: middle;
-    }
-
-    .data-table__pagination {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem 0;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .data-table__pagination-info {
-      color: var(--muted, var(--th-color-text-muted, #8D8D8D));
-      font-size: 13px;
-    }
-
-    .data-table__pagination-controls {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    .data-table__pagination-current {
-      color: var(--body-text, var(--th-color-text-primary, #212121));
-      font-size: 13px;
-      min-width: 60px;
-      text-align: center;
-    }
-
-    .data-table__pagination-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 32px;
-      height: 32px;
-      padding: 0;
-      border: 1px solid var(--border, var(--th-color-border, #D7D7D7));
-      border-radius: 4px;
-      background-color: var(--body-bg, var(--th-color-white, #FFFFFF));
-      color: var(--body-text, var(--th-color-text-primary, #212121));
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .data-table__pagination-btn:hover:not(:disabled) {
-      background-color: var(--sortable-table-row-hover-bg, var(--th-color-grey-100, #FAFAFA));
-      border-color: var(--link, var(--th-color-primary, #3d98d3));
-    }
-
-    .data-table__pagination-btn:disabled {
-      opacity: 0.4;
-      cursor: not-allowed;
-    }
-
-    .data-table__pagination-icon {
-      width: 16px;
-      height: 16px;
     }
   `;
 
@@ -763,6 +703,16 @@ export class DataTable extends LitElement {
   }
 
   /**
+   * Handle a `page-change` event bubbled up from the `<trailhand-pagination>`
+   * control and apply it to the table's own page state.
+   * @param e - The page-change event
+   * @private
+   */
+  private _handlePaginationChange(e: CustomEvent<{ page: number }>): void {
+    this.goToPage(e.detail.page);
+  }
+
+  /**
    * Reset search query
    */
   resetSearch(): void {
@@ -813,34 +763,6 @@ export class DataTable extends LitElement {
         class="data-table__sort-icon"
         icon="heroicons:chevron-up-20-solid"
         style="opacity: 0.3"
-      ></iconify-icon>
-    `;
-  }
-
-  /**
-   * Render chevron left icon
-   * @returns TemplateResult
-   * @private
-   */
-  private _renderChevronLeft(): TemplateResult {
-    return html`
-      <iconify-icon
-        class="data-table__pagination-icon"
-        icon="heroicons:chevron-left-20-solid"
-      ></iconify-icon>
-    `;
-  }
-
-  /**
-   * Render chevron right icon
-   * @returns TemplateResult
-   * @private
-   */
-  private _renderChevronRight(): TemplateResult {
-    return html`
-      <iconify-icon
-        class="data-table__pagination-icon"
-        icon="heroicons:chevron-right-20-solid"
       ></iconify-icon>
     `;
   }
@@ -1012,35 +934,15 @@ export class DataTable extends LitElement {
         <!-- Pagination (visible even while loading so controls stay accessible) -->
         ${this.paginated && this._totalPages > 1
           ? html`
-              <div class="data-table__pagination">
-                <div class="data-table__pagination-info">
-                  ${this._paginationInfo.start}-${this._paginationInfo.end}
-                  of ${this._paginationInfo.total}
-                </div>
-                <div class="data-table__pagination-controls">
-                  <button
-                    class="data-table__pagination-btn"
-                    ?disabled=${this._effectiveCurrentPage === 1 || this.loading}
-                    @click=${this.prevPage}
-                    aria-label="Previous page"
-                  >
-                    ${this._renderChevronLeft()}
-                  </button>
-
-                  <span class="data-table__pagination-current">
-                    ${this._effectiveCurrentPage} / ${this._totalPages}
-                  </span>
-
-                  <button
-                    class="data-table__pagination-btn"
-                    ?disabled=${this._effectiveCurrentPage === this._totalPages || this.loading}
-                    @click=${this.nextPage}
-                    aria-label="Next page"
-                  >
-                    ${this._renderChevronRight()}
-                  </button>
-                </div>
-              </div>
+              <trailhand-pagination
+                current-page=${this._effectiveCurrentPage}
+                total-pages=${this._totalPages}
+                start-item=${this._paginationInfo.start}
+                end-item=${this._paginationInfo.end}
+                total-items=${this._paginationInfo.total}
+                .disabled=${this.loading}
+                @page-change=${this._handlePaginationChange}
+              ></trailhand-pagination>
             `
           : ''}
       </div>
