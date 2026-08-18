@@ -18,6 +18,7 @@ export * from './components/code-editor';
 export * from './components/text-area';
 export * from './components/loading-spinner';
 export * from './components/pagination';
+export * from './components/dock';
 
 // Export utilities
 export * from './utils';

@@ -121,41 +121,6 @@ export const WithSizes: Story = {
   `,
 };
 
-const solidIcons = [
-  'globe',
-  'home',
-  'user',
-  'bug',
-  'error',
-  'pause',
-  'play',
-  'close',
-  'table',
-  'rocket',
-  'gauge',
-  'list',
-  'folderPlus',
-  'gears',
-  'shoppingBag',
-  'info',
-  'chartLine',
-  'sliders',
-  'database',
-  'circleCheck',
-  'warning',
-  'tools',
-  'cancel',
-  'loading',
-  'gear',
-  'x',
-  'minus',
-  'check',
-  'plus',
-  'hammer',
-  'codeBranch',
-  'trash',
-];
-
 export const AllIcons: Story = {
   render: () => html`
     <div>
@@ -165,7 +130,7 @@ export const AllIcons: Story = {
       <div
         style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 24px;"
       >
-        ${solidIcons.map(
+        ${availableIcons.map(
           (iconName) => html`
             <div
               style="display: flex; flex-direction: column; align-items: center; gap: 8px;"

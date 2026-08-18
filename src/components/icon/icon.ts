@@ -35,6 +35,9 @@ import {
   faHammer,
   faCodeBranch,
   faTrashCan,
+  faFile,
+  faChevronRight,
+  faCircle,
 } from '@fortawesome/free-solid-svg-icons';
 
 const iconMap = {
@@ -70,13 +73,16 @@ const iconMap = {
   hammer: faHammer,
   codeBranch: faCodeBranch,
   trash: faTrashCan,
+  file: faFile,
+  chevronRight: faChevronRight,
+  circle: faCircle,
 };
 
 export const availableIcons = Object.keys(iconMap) as (keyof typeof iconMap)[];
 
 library.add(...Object.values(iconMap));
 
-type AvailableIcons = keyof typeof iconMap;
+export type AvailableIcons = keyof typeof iconMap;
 
 export interface IconProps {
   name: AvailableIcons;
