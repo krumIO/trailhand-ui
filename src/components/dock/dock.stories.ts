@@ -2,7 +2,19 @@ import type { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { expect, fn, userEvent } from 'storybook/test';
 import './dock';
-import type { DockProps } from './dock';
+import type { DockProps, DockPin } from './dock';
+
+// The component never positions itself on screen, that's the consumer's
+// job. This wrapper does it for every story so the pin control works.
+function wrapperStyle(pin: DockPin): string {
+  if (pin === 'left') {
+    return 'height: 400px; display: flex; justify-content: flex-start;';
+  }
+  if (pin === 'right') {
+    return 'height: 400px; display: flex; justify-content: flex-end;';
+  }
+  return 'height: 400px; display: flex; flex-direction: column; justify-content: flex-end;';
+}
 
 const meta: Meta<DockProps> = {
   title: 'Components/Dock',
@@ -54,7 +66,7 @@ const threeTabs = [
 
 export const Default: Story = {
   render: (args) => html`
-    <div style="height: 400px; display: flex; flex-direction: column; justify-content: flex-end;">
+    <div style=${wrapperStyle(args.pin)}>
       <trailhand-dock
         ?open=${args.open}
         pin=${args.pin}
@@ -82,12 +94,13 @@ export const Default: Story = {
 export const SingleTab: Story = {
   args: { activeTab: 'logs' },
   render: (args) => html`
-    <div style="height: 400px; display: flex; flex-direction: column; justify-content: flex-end;">
+    <div style=${wrapperStyle(args.pin)}>
       <trailhand-dock
         ?open=${args.open}
         pin=${args.pin}
         active-tab=${args.activeTab}
         height=${args.height}
+        width=${args.width}
         .tabs=${[{ id: 'logs', label: 'App Logs' }]}
       >
         <div slot="tab:logs" style="padding: 12px; font-family: monospace; font-size: 12px;">
@@ -100,12 +113,13 @@ export const SingleTab: Story = {
 
 export const WithIcons: Story = {
   render: (args) => html`
-    <div style="height: 400px; display: flex; flex-direction: column; justify-content: flex-end;">
+    <div style=${wrapperStyle(args.pin)}>
       <trailhand-dock
         ?open=${args.open}
         pin=${args.pin}
         active-tab=${args.activeTab}
         height=${args.height}
+        width=${args.width}
         .tabs=${[
           { id: 'logs', label: 'App Logs', icon: 'list' },
           { id: 'shell', label: 'Shell', icon: 'codeBranch' },
@@ -121,12 +135,13 @@ export const WithIcons: Story = {
 export const NonClosableTab: Story = {
   args: { activeTab: 'logs' },
   render: (args) => html`
-    <div style="height: 400px; display: flex; flex-direction: column; justify-content: flex-end;">
+    <div style=${wrapperStyle(args.pin)}>
       <trailhand-dock
         ?open=${args.open}
         pin=${args.pin}
         active-tab=${args.activeTab}
         height=${args.height}
+        width=${args.width}
         .tabs=${[{ id: 'logs', label: 'App Logs', closable: false }]}
       >
         <div slot="tab:logs" style="padding: 12px;">
@@ -153,10 +168,10 @@ export const Empty: Story = {
 export const PinLeft: Story = {
   args: { pin: 'left', activeTab: 'logs' },
   render: (args) => html`
-    <div style="height: 400px; display: flex; justify-content: flex-end;">
+    <div style=${wrapperStyle(args.pin)}>
       <trailhand-dock
         ?open=${args.open}
-        pin="left"
+        pin=${args.pin}
         active-tab=${args.activeTab}
         width=${args.width}
         .tabs=${threeTabs}
@@ -174,10 +189,10 @@ export const PinLeft: Story = {
 export const PinRight: Story = {
   args: { pin: 'right', activeTab: 'logs' },
   render: (args) => html`
-    <div style="height: 400px; display: flex; justify-content: flex-start;">
+    <div style=${wrapperStyle(args.pin)}>
       <trailhand-dock
         ?open=${args.open}
-        pin="right"
+        pin=${args.pin}
         active-tab=${args.activeTab}
         width=${args.width}
         .tabs=${threeTabs}
@@ -200,12 +215,13 @@ export const ActiveTabStaging: Story = {
 export const ManyTabsOverflow: Story = {
   args: { activeTab: 'tab-1' },
   render: (args) => html`
-    <div style="height: 400px; display: flex; flex-direction: column; justify-content: flex-end;">
+    <div style=${wrapperStyle(args.pin)}>
       <trailhand-dock
         ?open=${args.open}
         pin=${args.pin}
         active-tab=${args.activeTab}
         height=${args.height}
+        width=${args.width}
         .tabs=${Array.from({ length: 12 }, (_, i) => ({
           id: `tab-${i + 1}`,
           label: `Instance ${i + 1} logs`,
@@ -225,7 +241,7 @@ export const DarkMode: Story = {
   render: (args) => html`
     <div
       data-theme="dark"
-      style="height: 400px; background: #1a1a1a; display: flex; flex-direction: column; justify-content: flex-end;"
+      style="background: #1a1a1a; ${wrapperStyle(args.pin)}"
     >
       <trailhand-dock
         ?open=${args.open}

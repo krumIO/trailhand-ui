@@ -173,8 +173,7 @@ describe('Dock', () => {
       resizer.dispatchEvent(new PointerEvent('pointerdown', { clientY: 500, pointerId: 1, bubbles: true }));
       resizer.dispatchEvent(new PointerEvent('pointermove', { clientY: 460, pointerId: 1, bubbles: true }));
 
-      // mid-drag, already committed, a consumer syncing its own layout to
-      // this needs the live value, not one that lags behind the drag
+      // mid-drag, already committed, not waiting for the drag to end
       expect(el.height).toBe(startHeight + 40);
 
       resizer.dispatchEvent(new PointerEvent('pointermove', { clientY: 440, pointerId: 1, bubbles: true }));
@@ -197,6 +196,46 @@ describe('Dock', () => {
       resizer.dispatchEvent(new PointerEvent('pointermove', { clientY: 440, pointerId: 1, bubbles: true }));
 
       expect(callCount).toBe(2);
+    });
+
+    describe('left/right pin drag direction', () => {
+      // A narrow test viewport can put the width clamp's ceiling below its
+      // 250px floor, collapsing every result to the same value. Stub one
+      // wide enough that these tests can actually tell direction apart.
+      let originalInnerWidth: number;
+
+      beforeEach(() => {
+        originalInnerWidth = window.innerWidth;
+        Object.defineProperty(window, 'innerWidth', { value: 2000, configurable: true });
+      });
+
+      afterEach(() => {
+        Object.defineProperty(window, 'innerWidth', { value: originalInnerWidth, configurable: true });
+      });
+
+      it('dragging right grows a left-pinned dock (handle is on its right edge)', async () => {
+        el.pin = 'left';
+        el.width = 300;
+        await el.updateComplete;
+        const resizer = el.shadowRoot!.querySelector('.dock__resizer') as HTMLElement;
+
+        resizer.dispatchEvent(new PointerEvent('pointerdown', { clientX: 500, pointerId: 1, bubbles: true }));
+        resizer.dispatchEvent(new PointerEvent('pointermove', { clientX: 540, pointerId: 1, bubbles: true }));
+
+        expect(el.width).toBe(340);
+      });
+
+      it('dragging left grows a right-pinned dock (handle is on its left edge)', async () => {
+        el.pin = 'right';
+        el.width = 300;
+        await el.updateComplete;
+        const resizer = el.shadowRoot!.querySelector('.dock__resizer') as HTMLElement;
+
+        resizer.dispatchEvent(new PointerEvent('pointerdown', { clientX: 500, pointerId: 1, bubbles: true }));
+        resizer.dispatchEvent(new PointerEvent('pointermove', { clientX: 460, pointerId: 1, bubbles: true }));
+
+        expect(el.width).toBe(340);
+      });
     });
   });
 

@@ -85,6 +85,7 @@ export class Dock extends LitElement {
     :host([pin='left']) .dock,
     :host([pin='right']) .dock {
       height: 100%;
+      flex-direction: row;
     }
 
     :host([pin='right']) .dock {
@@ -109,6 +110,12 @@ export class Dock extends LitElement {
       cursor: ew-resize;
     }
 
+    /* Handle renders first in markup, correct for bottom/right pins. Left
+       needs it after the body so it lands on the page-facing edge. */
+    :host([pin='left']) .dock__resizer {
+      order: 1;
+    }
+
     .dock__resizer:hover,
     .dock__resizer:focus-visible {
       background: var(--th-color-primary, #3d98d3);
@@ -121,6 +128,15 @@ export class Dock extends LitElement {
       border-radius: var(--_radius);
       background: var(--_body-bg);
       color: var(--_text-color);
+      overflow: hidden;
+    }
+
+    .dock__body {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      min-width: 0;
+      min-height: 0;
       overflow: hidden;
     }
 
@@ -291,8 +307,8 @@ export class Dock extends LitElement {
       : Math.min(Math.max(raw, 250), window.innerWidth * 0.4);
   }
 
-  // Commits live, on every pointermove/keydown, not just once the drag ends.
-  // This is important for consumers that need to sync their own layout to the dock's size live.
+  // Commits live (every pointermove/keydown), not debounced to the drag end,
+  // so a consumer syncing its own layout to this doesn't lag behind.
   private _commitResize(size: number): void {
     if (this.pin === 'bottom') {
       this.height = size;
@@ -313,9 +329,9 @@ export class Dock extends LitElement {
     if (!this._dragStart) return;
     const coord = this.pin === 'bottom' ? e.clientY : e.clientX;
     const rawDelta = coord - this._dragStart.pointerCoord;
-    // Dragging toward the screen edge grows the panel. Bottom/left both
-    // need the delta negated for that, right pin doesn't.
-    const signedDelta = this.pin === 'right' ? rawDelta : -rawDelta;
+    // Handle faces the page, not the viewport edge. Left is the only pin
+    // where growing doesn't need the delta negated.
+    const signedDelta = this.pin === 'left' ? rawDelta : -rawDelta;
     this._commitResize(this._clamp(this._dragStart.startSize + signedDelta));
   };
 
@@ -426,11 +442,13 @@ export class Dock extends LitElement {
     return html`
       <div class="dock" style=${styleMap(sizeStyle)}>
         ${this._renderResizer()}
-        <div class="dock__tabs" role="tablist">
-          ${repeat(this.tabs, (t) => t.id, (t) => this._renderTab(t))}
-        </div>
-        <div class="dock__panels">
-          ${repeat(this.tabs, (t) => t.id, (t) => this._renderPanel(t))}
+        <div class="dock__body">
+          <div class="dock__tabs" role="tablist">
+            ${repeat(this.tabs, (t) => t.id, (t) => this._renderTab(t))}
+          </div>
+          <div class="dock__panels">
+            ${repeat(this.tabs, (t) => t.id, (t) => this._renderPanel(t))}
+          </div>
         </div>
       </div>
     `;
