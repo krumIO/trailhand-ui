@@ -1,6 +1,6 @@
 {
   "name": "@krumio/trailhand-ui",
-  "version": "1.10.2",
+  "version": "1.11.0",
   "type": "module",
   "description": "Reusable web components built with Lit Element",
   "main": "./dist/index.js",
