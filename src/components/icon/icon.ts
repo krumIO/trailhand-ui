@@ -38,6 +38,7 @@ import {
   faFile,
   faChevronRight,
   faCircle,
+  faSquareXmark
 } from '@fortawesome/free-solid-svg-icons';
 
 const iconMap = {
@@ -76,6 +77,7 @@ const iconMap = {
   file: faFile,
   chevronRight: faChevronRight,
   circle: faCircle,
+  closeSquare: faSquareXmark
 };
 
 export const availableIcons = Object.keys(iconMap) as (keyof typeof iconMap)[];

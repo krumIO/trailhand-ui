@@ -180,20 +180,16 @@ export class Dock extends LitElement {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 14px;
-      height: 14px;
       margin-left: 4px;
       padding: 0;
-      border: 1px solid var(--_text-color);
-      border-radius: var(--_radius);
+      border: none;
       background: none;
       cursor: pointer;
       color: inherit;
-      font-size: 9px;
+      font-size: 15px;
     }
 
     .dock__tab-close:hover {
-      border-color: var(--th-color-primary, #3d98d3);
       color: var(--th-color-primary, #3d98d3);
     }
 
@@ -407,7 +403,7 @@ export class Dock extends LitElement {
                 this._closeTab(tab.id);
               }}
             >
-              <trailhand-icon name="x"></trailhand-icon>
+              <trailhand-icon name="closeSquare"></trailhand-icon>
             </button>`
           : nothing}
       </div>
