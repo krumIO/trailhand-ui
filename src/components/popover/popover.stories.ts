@@ -31,6 +31,11 @@ const meta: Meta<PopoverProps> = {
       control: 'text',
       description: 'Optional header subtitle, shown next to the title',
     },
+    escapeBoundary: {
+      control: 'boolean',
+      description:
+        'Position via `position: fixed` computed from the trigger, so the content escapes a clipping ancestor (overflow: hidden/auto) instead of being cut off by it',
+    },
   },
   args: {
     open: false,
@@ -38,6 +43,7 @@ const meta: Meta<PopoverProps> = {
     placement: 'bottom',
     title: '',
     subtitle: '',
+    escapeBoundary: false,
   },
   render: (args) => html`
     <div style="display: flex; justify-content: center; padding: 80px;">
@@ -47,6 +53,7 @@ const meta: Meta<PopoverProps> = {
         placement=${args.placement}
         title=${args.title}
         subtitle=${args.subtitle}
+        ?escape-boundary=${args.escapeBoundary}
       >
         <trailhand-button slot="trigger">Open Popover</trailhand-button>
         <p style="margin: 0; font-size: 14px; color: var(--th-color-text-secondary);">
@@ -168,6 +175,31 @@ export const WithForm: Story = {
             <trailhand-button size="small">Apply</trailhand-button>
             <trailhand-button size="small" variant="secondary">Clear</trailhand-button>
           </div>
+        </div>
+      </trailhand-popover>
+    </div>
+  `,
+};
+
+export const ClippedByAncestor: Story = {
+  args: { placement: 'top', escapeBoundary: false },
+  render: (args) => html`
+    <div
+      style="width: 240px; height: 90px; overflow: hidden; border: 1px dashed var(--th-color-border); display: flex; align-items: flex-end; justify-content: center; padding: 12px;"
+    >
+      <trailhand-popover
+        placement=${args.placement}
+        ?open=${args.open}
+        ?escape-boundary=${args.escapeBoundary}
+      >
+        <trailhand-button slot="trigger">Open Popover</trailhand-button>
+        <div style="min-width: 220px;">
+          <p style="margin: 0 0 8px; font-weight: 600;">Tall content</p>
+          <p style="margin: 0; font-size: 14px; color: var(--th-color-text-secondary);">
+            The dashed box clips overflow, like a scrollable panel. Toggle
+            escapeBoundary in the controls to see the popover render outside
+            it instead of getting cut off.
+          </p>
         </div>
       </trailhand-popover>
     </div>

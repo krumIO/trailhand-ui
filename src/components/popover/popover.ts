@@ -1,5 +1,6 @@
 import { LitElement, html, css, TemplateResult, nothing } from 'lit';
 import { property, state } from 'lit/decorators.js';
+import { styleMap } from 'lit/directives/style-map.js';
 import '../icon/icon';
 
 export type PopoverPlacement = 'top' | 'bottom' | 'left' | 'right';
@@ -10,6 +11,7 @@ export interface PopoverProps {
   placement: PopoverPlacement;
   title: string;
   subtitle: string;
+  escapeBoundary: boolean;
 }
 
 /**
@@ -38,6 +40,11 @@ export class Popover extends LitElement {
 
   @property({ type: String })
   subtitle = '';
+
+  // When true, the popover is positioned via `position: fixed` computed from the trigger, 
+  // so it escapes a clipping ancestor (overflow: hidden/auto) instead of being cut off by it.
+  @property({ type: Boolean, attribute: 'escape-boundary' })
+  escapeBoundary = false;
 
   @state() private _hasHeadingSlot = false;
 
@@ -203,6 +210,48 @@ export class Popover extends LitElement {
     );
   }
 
+  private _computeFixedPosition(): Record<string, string> {
+    const gap = 8;
+    const rect = this.getBoundingClientRect();
+    let style: Record<string, string>;
+
+    switch (this.placement) {
+      case 'top':
+        style = {
+          position:  'fixed',
+          left:      `${rect.left + rect.width / 2}px`,
+          bottom:    `${window.innerHeight - rect.top + gap}px`,
+          transform: 'translateX(-50%)',
+        };
+        break;
+      case 'left':
+        style = {
+          position:  'fixed',
+          top:       `${rect.top + rect.height / 2}px`,
+          right:     `${window.innerWidth - rect.left + gap}px`,
+          transform: 'translateY(-50%)',
+        };
+        break;
+      case 'right':
+        style = {
+          position:  'fixed',
+          top:       `${rect.top + rect.height / 2}px`,
+          left:      `${rect.right + gap}px`,
+          transform: 'translateY(-50%)',
+        };
+        break;
+      default:
+        style = {
+          position:  'fixed',
+          left:      `${rect.left + rect.width / 2}px`,
+          top:       `${rect.bottom + gap}px`,
+          transform: 'translateX(-50%)',
+        };
+    }
+
+    return style;
+  }
+
   private _close(): void {
     this.open = false;
     this.dispatchEvent(
@@ -234,6 +283,15 @@ export class Popover extends LitElement {
   }
 
   override render(): TemplateResult {
+    // Computed fresh on every render rather than cached in state: caching it
+    // meant a stale value could briefly apply whenever open/escapeBoundary/
+    // placement changed together, since state set during `updated()` only
+    // takes effect on the render after next.
+    const fixedStyle =
+      this.open && this.escapeBoundary
+        ? styleMap(this._computeFixedPosition())
+        : nothing;
+
     return html`
       <div
         class="trigger-wrapper"
@@ -246,6 +304,7 @@ export class Popover extends LitElement {
 
       <div
         class="popover-content ${this.open ? 'popover-content--open' : ''}"
+        style=${fixedStyle}
         role="dialog"
         aria-hidden=${!this.open}
       >
