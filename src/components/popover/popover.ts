@@ -1,4 +1,4 @@
-import { LitElement, html, css, TemplateResult, nothing } from 'lit';
+import { LitElement, html, css, TemplateResult, nothing, PropertyValues } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import '../icon/icon';
@@ -47,6 +47,12 @@ export class Popover extends LitElement {
   escapeBoundary = false;
 
   @state() private _hasHeadingSlot = false;
+
+  // Nudges the fixed-positioned popover-content back onto screen when centering it on
+  // the trigger (see _computeFixedPosition) would otherwise push it past the viewport
+  // edge - e.g. a trigger sitting near the left edge with placement="top"/"bottom".
+  @state() private _clampOffsetX = 0;
+  @state() private _clampOffsetY = 0;
 
   private _boundHandleClickOutside: (e: Event) => void;
 
@@ -221,7 +227,7 @@ export class Popover extends LitElement {
           position:  'fixed',
           left:      `${rect.left + rect.width / 2}px`,
           bottom:    `${window.innerHeight - rect.top + gap}px`,
-          transform: 'translateX(-50%)',
+          transform: `translateX(-50%) translateX(${this._clampOffsetX}px)`,
         };
         break;
       case 'left':
@@ -229,7 +235,7 @@ export class Popover extends LitElement {
           position:  'fixed',
           top:       `${rect.top + rect.height / 2}px`,
           right:     `${window.innerWidth - rect.left + gap}px`,
-          transform: 'translateY(-50%)',
+          transform: `translateY(-50%) translateY(${this._clampOffsetY}px)`,
         };
         break;
       case 'right':
@@ -237,7 +243,7 @@ export class Popover extends LitElement {
           position:  'fixed',
           top:       `${rect.top + rect.height / 2}px`,
           left:      `${rect.right + gap}px`,
-          transform: 'translateY(-50%)',
+          transform: `translateY(-50%) translateY(${this._clampOffsetY}px)`,
         };
         break;
       default:
@@ -245,11 +251,68 @@ export class Popover extends LitElement {
           position:  'fixed',
           left:      `${rect.left + rect.width / 2}px`,
           top:       `${rect.bottom + gap}px`,
-          transform: 'translateX(-50%)',
+          transform: `translateX(-50%) translateX(${this._clampOffsetX}px)`,
         };
     }
 
     return style;
+  }
+
+  override updated(changed: PropertyValues<this>): void {
+    super.updated(changed);
+
+    if (this.open && this.escapeBoundary) {
+      // Content isn't visible (opacity/visibility) while closed, but it's still laid
+      // out in the DOM, so its rect is measurable as soon as it's open.
+      this._clampToViewport();
+    } else if (changed.has('open') && !this.open) {
+      // Reset so a stale offset from this position doesn't leak into the next open,
+      // e.g. after the trigger (or the viewport) has moved.
+      this._clampOffsetX = 0;
+      this._clampOffsetY = 0;
+    }
+  }
+
+  // Re-centers _computeFixedPosition's placement against the viewport instead of just
+  // the trigger, so a trigger near a screen edge doesn't push the popover off it.
+  private _clampToViewport(): void {
+    const content = this.shadowRoot?.querySelector('.popover-content') as HTMLElement | null;
+
+    if (!content) {
+      return;
+    }
+
+    const margin = 8;
+    const hostRect = this.getBoundingClientRect();
+    const contentRect = content.getBoundingClientRect();
+
+    if (this.placement === 'left' || this.placement === 'right') {
+      const naturalTop = hostRect.top + hostRect.height / 2 - contentRect.height / 2;
+      let offsetY = 0;
+
+      if (naturalTop < margin) {
+        offsetY = margin - naturalTop;
+      } else if (naturalTop + contentRect.height > window.innerHeight - margin) {
+        offsetY = (window.innerHeight - margin) - (naturalTop + contentRect.height);
+      }
+
+      if (offsetY !== this._clampOffsetY) {
+        this._clampOffsetY = offsetY;
+      }
+    } else {
+      const naturalLeft = hostRect.left + hostRect.width / 2 - contentRect.width / 2;
+      let offsetX = 0;
+
+      if (naturalLeft < margin) {
+        offsetX = margin - naturalLeft;
+      } else if (naturalLeft + contentRect.width > window.innerWidth - margin) {
+        offsetX = (window.innerWidth - margin) - (naturalLeft + contentRect.width);
+      }
+
+      if (offsetX !== this._clampOffsetX) {
+        this._clampOffsetX = offsetX;
+      }
+    }
   }
 
   private _close(): void {
