@@ -48,9 +48,8 @@ export class Popover extends LitElement {
 
   @state() private _hasHeadingSlot = false;
 
-  // Nudges the fixed-positioned popover-content back onto screen when centering it on
-  // the trigger (see _computeFixedPosition) would otherwise push it past the viewport
-  // edge - e.g. a trigger sitting near the left edge with placement="top"/"bottom".
+  // These offsets are computed in `_clampToViewport()` and applied via CSS custom properties to 
+  // the placement transforms, so the popover can be re-centered against the viewport instead of just the trigger.
   @state() private _clampOffsetX = 0;
   @state() private _clampOffsetY = 0;
 
@@ -128,45 +127,45 @@ export class Popover extends LitElement {
     :host(:not([placement])) .popover-content {
       top: calc(100% + 8px);
       left: 50%;
-      transform: translateX(-50%) translateY(-6px);
+      transform: translateX(-50%) translateX(var(--th-popover-clamp-x, 0px)) translateY(-6px);
     }
 
     :host([placement='bottom']) .popover-content--open,
     :host(:not([placement])) .popover-content--open {
-      transform: translateX(-50%) translateY(0);
+      transform: translateX(-50%) translateX(var(--th-popover-clamp-x, 0px)) translateY(0);
     }
 
     /* Placement: top */
     :host([placement='top']) .popover-content {
       bottom: calc(100% + 8px);
       left: 50%;
-      transform: translateX(-50%) translateY(6px);
+      transform: translateX(-50%) translateX(var(--th-popover-clamp-x, 0px)) translateY(6px);
     }
 
     :host([placement='top']) .popover-content--open {
-      transform: translateX(-50%) translateY(0);
+      transform: translateX(-50%) translateX(var(--th-popover-clamp-x, 0px)) translateY(0);
     }
 
     /* Placement: right */
     :host([placement='right']) .popover-content {
       left: calc(100% + 8px);
       top: 50%;
-      transform: translateY(-50%) translateX(-6px);
+      transform: translateY(-50%) translateY(var(--th-popover-clamp-y, 0px)) translateX(-6px);
     }
 
     :host([placement='right']) .popover-content--open {
-      transform: translateY(-50%) translateX(0);
+      transform: translateY(-50%) translateY(var(--th-popover-clamp-y, 0px)) translateX(0);
     }
 
     /* Placement: left */
     :host([placement='left']) .popover-content {
       right: calc(100% + 8px);
       top: 50%;
-      transform: translateY(-50%) translateX(6px);
+      transform: translateY(-50%) translateY(var(--th-popover-clamp-y, 0px)) translateX(6px);
     }
 
     :host([placement='left']) .popover-content--open {
-      transform: translateY(-50%) translateX(0);
+      transform: translateY(-50%) translateY(var(--th-popover-clamp-y, 0px)) translateX(0);
     }
 
     /* Dark mode */
@@ -261,11 +260,12 @@ export class Popover extends LitElement {
   override updated(changed: PropertyValues<this>): void {
     super.updated(changed);
 
-    if (this.open && this.escapeBoundary) {
+    if (this.open) {
       // Content isn't visible (opacity/visibility) while closed, but it's still laid
-      // out in the DOM, so its rect is measurable as soon as it's open.
+      // out in the DOM, so its rect is measurable as soon as it's open. Runs in every
+      // positioning mode, not just escape-boundary.
       this._clampToViewport();
-    } else if (changed.has('open') && !this.open) {
+    } else if (changed.has('open')) {
       // Reset so a stale offset from this position doesn't leak into the next open,
       // e.g. after the trigger (or the viewport) has moved.
       this._clampOffsetX = 0;
@@ -273,8 +273,8 @@ export class Popover extends LitElement {
     }
   }
 
-  // Re-centers _computeFixedPosition's placement against the viewport instead of just
-  // the trigger, so a trigger near a screen edge doesn't push the popover off it.
+  // Re-centers the popover's placement against the viewport instead of just the
+  // trigger, so a trigger near a screen edge doesn't push the popover off it.
   private _clampToViewport(): void {
     const content = this.shadowRoot?.querySelector('.popover-content') as HTMLElement | null;
 
@@ -346,14 +346,20 @@ export class Popover extends LitElement {
   }
 
   override render(): TemplateResult {
+    // The viewport clamp offsets are applied via CSS custom properties so the 
+    // placement transforms can consume them.
     // Computed fresh on every render rather than cached in state: caching it
     // meant a stale value could briefly apply whenever open/escapeBoundary/
     // placement changed together, since state set during `updated()` only
     // takes effect on the render after next.
-    const fixedStyle =
-      this.open && this.escapeBoundary
-        ? styleMap(this._computeFixedPosition())
-        : nothing;
+    const contentStyle: Record<string, string> = {
+      '--th-popover-clamp-x': `${this._clampOffsetX}px`,
+      '--th-popover-clamp-y': `${this._clampOffsetY}px`,
+    };
+
+    if (this.open && this.escapeBoundary) {
+      Object.assign(contentStyle, this._computeFixedPosition());
+    }
 
     return html`
       <div
@@ -367,7 +373,7 @@ export class Popover extends LitElement {
 
       <div
         class="popover-content ${this.open ? 'popover-content--open' : ''}"
-        style=${fixedStyle}
+        style=${styleMap(contentStyle)}
         role="dialog"
         aria-hidden=${!this.open}
       >
