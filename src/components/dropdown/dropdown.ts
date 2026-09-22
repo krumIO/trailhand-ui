@@ -140,6 +140,13 @@ export class Dropdown extends LitElement {
     if (!this._open) return;
     this._open = false;
     this._filter = '';
+    this.dispatchEvent(
+      new CustomEvent('dropdown-filter', {
+        detail: { filter: this._filter },
+        bubbles: true,
+        composed: true,
+      }),
+    );
   }
 
   private _toggle() {
@@ -208,6 +215,13 @@ export class Dropdown extends LitElement {
 
   private _clearFilter() {
     this._filter = '';
+    this.dispatchEvent(
+      new CustomEvent('dropdown-filter', {
+        detail: { filter: this._filter },
+        bubbles: true,
+        composed: true,
+      }),
+    );
     this.shadowRoot?.querySelector<HTMLInputElement>('.search-input')?.focus();
   }
 
