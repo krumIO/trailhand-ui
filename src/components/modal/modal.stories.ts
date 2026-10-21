@@ -27,12 +27,17 @@ const meta: Meta<ModalProps> = {
       control: 'boolean',
       description: 'Whether the modal can be dismissed',
     },
+    showDismissButton: {
+      control: 'boolean',
+      description: 'Whether the dismiss button is shown',
+    },
   },
   args: {
     open: false,
     title: 'Modal Title',
     subtitle: '',
     dismissible: true,
+    showDismissButton: false
   },
   render: (args) => {
     const openModal = (e: Event) => {
@@ -48,7 +53,7 @@ const meta: Meta<ModalProps> = {
         .title=${args.title}
         .subtitle=${args.subtitle}
         .dismissible=${args.dismissible}
-        .showDismissButton=${true}
+        .showDismissButton=${args.showDismissButton}
       >
         <p>Modal body content goes here.</p>
       </trailhand-modal>
@@ -173,6 +178,7 @@ export const DispatchesCloseEventOnClose: Story = {
   },
   args: {
     open: true,
+    showDismissButton: true
   },
   play: async ({ canvasElement }) => {
     const modal = canvasElement.querySelector('trailhand-modal') as Modal;
