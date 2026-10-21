@@ -278,6 +278,7 @@ export const NonDismissibleHasNoCloseButton: Story = {
   args: {
     open: true,
     dismissible: false,
+    showDismissButton: false
   },
   play: async ({ canvasElement }) => {
     const modal = canvasElement.querySelector('trailhand-modal') as Modal;
