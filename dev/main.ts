@@ -116,6 +116,10 @@ class DevApp extends LitElement {
       flex-direction: column;
       gap: 1rem;
     }
+
+    .preselected-dropdown {
+      width: 300px;
+    }
   `;
 
   private handleThemeToggle(e: CustomEvent<{ checked: boolean }>) {
@@ -140,19 +144,14 @@ class DevApp extends LitElement {
     { label: 'All Namespaces', value: 'all', clearOthers: true },
     { label: 'namespace-1', value: 'namespace-1' },
     { label: 'namespace-2', value: 'namespace-2' },
-    // { label: 'namespace-3', value: 'namespace-3' },
-    // { label: 'namespace-4', value: 'namespace-4' },
-    // { label: 'namespace-5', value: 'namespace-5' },
-    // { label: 'namespace-1', value: 'namespace-1' },
-    // { label: 'namespace-2', value: 'namespace-2' },
-    // { label: 'namespace-3', value: 'namespace-3' },
-    // { label: 'namespace-4', value: 'namespace-4' },
-    // { label: 'namespace-5', value: 'namespace-5' },
-    // { label: 'namespace-1', value: 'namespace-1' },
-    // { label: 'namespace-2', value: 'namespace-2' },
-    // { label: 'namespace-3', value: 'namespace-3' },
-    // { label: 'namespace-4', value: 'namespace-4' },
-    // { label: 'namespace-5', value: 'namespace-5' },
+    { label: 'namespace-3', value: 'namespace-3' },
+    { label: 'namespace-4', value: 'namespace-4' },
+    { label: 'namespace-5', value: 'namespace-5' },
+    { label: 'namespace-6', value: 'namespace-6' },
+    { label: 'namespace-7', value: 'namespace-7' },
+    { label: 'namespace-8', value: 'namespace-8' }, 
+    { label: 'namespace-9', value: 'namespace-9' },
+    { label: 'namespace-10', value: 'namespace-10' }
   ];
 
   private catalogServiceOptions = [
@@ -494,14 +493,17 @@ class DevApp extends LitElement {
           multiselect
           filterable
         ></trailhand-dropdown>
-        <trailhand-dropdown
-          name="namespaces-preselected"
-          label="Multiselect (preselected)"
-          placeholder="Select namespaces..."
-          .options=${this.namespaceOptions}
-          .values=${['namespace-1', 'namespace-2']}
-          multiselect
-        ></trailhand-dropdown>
+        <div class="preselected-dropdown">
+          <trailhand-dropdown
+            name="namespaces-preselected"
+            label="Multiselect (preselected)"
+            placeholder="Select namespaces..."
+            .options=${this.namespaceOptions}
+            .values=${['namespace-1', 'namespace-2', 'namespace-3', 'namespace-4']}
+            multiselect
+          ></trailhand-dropdown>
+        </div>
+        
         <trailhand-dropdown
           name="loading"
           label="Loading"
@@ -726,6 +728,11 @@ class DevApp extends LitElement {
         .open=${this.modalOpen}
         @modal-close=${() => (this.modalOpen = false)}
         @modal-open=${this.handleModalOpen}
+        .dismissible=${false}
+        .showDismissButton=${true}
+        @close-button-click=${() => (this.modalOpen = false)}
+        @backdrop-click=${() => (this.modalOpen = false)}
+        @escape-key-press=${() => (this.modalOpen = false)}
       >
         <div
           style="display: flex; flex-direction: column; gap: 1rem; width: 500px;"

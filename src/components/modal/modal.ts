@@ -7,6 +7,7 @@ export interface ModalProps {
   title: string;
   subtitle: string;
   dismissible: boolean;
+  showDismissButton: boolean;
   position: 'center' | 'top';
 }
 
@@ -22,6 +23,9 @@ export class Modal extends LitElement {
 
   @property({ type: Boolean })
   dismissible = true;
+
+  @property({ type: Boolean, attribute: 'show-dismiss-button' })
+  showDismissButton = false;
 
   @property({ type: Boolean })
   inline = false;
@@ -177,6 +181,7 @@ export class Modal extends LitElement {
       if (this.dismissible) {
         this.handleClose();
       }
+      this.dispatchEvent(new CustomEvent('escape-key-press'));
     }
   };
 
@@ -191,14 +196,16 @@ export class Modal extends LitElement {
   }
 
   private handleBackdropClick(e: MouseEvent) {
-    if (!this.dismissible) return;
     const rect = this.dialog.getBoundingClientRect();
     const clickedOutside =
       e.clientX < rect.left ||
       e.clientX > rect.right ||
       e.clientY < rect.top ||
       e.clientY > rect.bottom;
-    if (clickedOutside) this.handleClose();
+    if (clickedOutside) {
+      if (this.dismissible) this.handleClose();
+      this.dispatchEvent(new CustomEvent('backdrop-click'));
+    }
   }
 
   render() {
@@ -219,10 +226,15 @@ export class Modal extends LitElement {
                 : ''}
             </div>
           </slot>
-          ${this.dismissible
+          ${this.showDismissButton 
             ? html`<button
                 class="close-button"
-                @click=${this.handleClose}
+                @click=${() => {
+                  if (this.dismissible) {
+                    this.handleClose();
+                  }
+                  this.dispatchEvent(new CustomEvent('close-button-click'));
+                }}
                 aria-label="Close"
               >
                 <trailhand-icon name="x"></trailhand-icon>

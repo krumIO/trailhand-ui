@@ -418,7 +418,7 @@ export class Dropdown extends LitElement {
       align-items: center;
       flex-wrap: wrap;
       gap: 4px;
-      height: 40px;
+      min-height: 40px;
       padding: 0.45em 3em 0.45em 12px;
       border-radius: 8px;
       border: 1px solid var(--th-input-border, #d7d7d7);
@@ -669,7 +669,7 @@ export class Dropdown extends LitElement {
     :host([size='small']) .trigger {
       font-size: 12px;
       padding: 0.4em 2.5em 0.4em 10px;
-      height: 32px;
+      min-height: 32px;
     }
     :host([size='small']) .trigger-text,
     :host([size='small']) .option {
@@ -679,7 +679,7 @@ export class Dropdown extends LitElement {
     /* ── Size: large ── */
     :host([size='large']) .trigger {
       font-size: 16px;
-      height: 48px;
+      min-height: 48px;
     }
     :host([size='large']) .trigger-text,
     :host([size='large']) .option {
