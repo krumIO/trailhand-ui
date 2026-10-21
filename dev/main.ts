@@ -728,11 +728,7 @@ class DevApp extends LitElement {
         .open=${this.modalOpen}
         @modal-close=${() => (this.modalOpen = false)}
         @modal-open=${this.handleModalOpen}
-        .dismissible=${false}
-        .showDismissButton=${true}
-        @close-button-click=${() => (this.modalOpen = false)}
-        @backdrop-click=${() => (this.modalOpen = false)}
-        @escape-key-press=${() => (this.modalOpen = false)}
+        .dismissible=${true}
       >
         <div
           style="display: flex; flex-direction: column; gap: 1rem; width: 500px;"

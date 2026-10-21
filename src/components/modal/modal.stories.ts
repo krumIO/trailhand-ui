@@ -48,6 +48,7 @@ const meta: Meta<ModalProps> = {
         .title=${args.title}
         .subtitle=${args.subtitle}
         .dismissible=${args.dismissible}
+        .showDismissButton=${true}
       >
         <p>Modal body content goes here.</p>
       </trailhand-modal>
