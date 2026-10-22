@@ -197,6 +197,8 @@ export class Modal extends LitElement {
 
   private handleBackdropClick(e: MouseEvent) {
     const rect = this.dialog.getBoundingClientRect();
+    // Only consider clicks that originate from the dialog itself, not its children
+    if (e.composedPath()[0] !== this.dialog) return;
     const clickedOutside =
       e.clientX < rect.left ||
       e.clientX > rect.right ||
