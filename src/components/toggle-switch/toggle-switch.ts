@@ -17,11 +17,11 @@ export class ToggleSwitch extends LitElement {
   @property({ type: Boolean })
   checked = false;
 
-  @property({ type: String, attribute: 'on-label' })
-  onLabel = 'On';
+  @property({ type: String, attribute: 'right-label' })
+  rightLabel = 'On';
 
-  @property({ type: String, attribute: 'off-label' })
-  offLabel = 'Off';
+  @property({ type: String, attribute: 'left-label' })
+  leftLabel = 'Off';
 
   @property({ type: String, attribute: 'storage-key' })
   storageKey: string | null = null;
@@ -173,17 +173,17 @@ export class ToggleSwitch extends LitElement {
    */
   override render(): TemplateResult {
     return html`
-      <span class="label">${this.offLabel}</span>
+      <span class="label">${this.leftLabel}</span>
       <label class="toggle-switch">
         <input
           type="checkbox"
-          aria-label=${this.name || `${this.offLabel} / ${this.onLabel}`}
+          aria-label=${this.name || `${this.leftLabel} / ${this.rightLabel}`}
           .checked=${this.checked}
           @change=${this.handleToggleChange}
         />
         <span class="slider"></span>
       </label>
-      <span class="label">${this.onLabel}</span>
+      <span class="label">${this.rightLabel}</span>
     `;
   }
 }

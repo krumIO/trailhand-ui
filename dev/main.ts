@@ -194,8 +194,8 @@ class DevApp extends LitElement {
       <div class="header">
         <h1>Trailhand UI – Dev</h1>
         <trailhand-toggle-switch
-          on-label="🌙 Dark"
-          off-label="☀️ Light"
+          right-label="🌙 Dark"
+          left-label="☀️ Light"
           .checked=${this.getAttribute('data-theme') === 'dark'}
           @toggle-change=${this.handleThemeToggle}
         ></trailhand-toggle-switch>
