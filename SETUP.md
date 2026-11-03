@@ -23,7 +23,7 @@ import { ToggleSwitch } from '@krumio/trailhand-ui';
 
 ```html
 <!-- Use it -->
-<toggle-switch onLabel="Enabled" offLabel="Disabled"></toggle-switch>
+<toggle-switch rightLabel="Enabled" leftLabel="Disabled"></toggle-switch>
 ```
 
 ### When Done Testing:

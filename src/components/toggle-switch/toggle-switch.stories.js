@@ -10,8 +10,8 @@ export default {
   render: (args) => {
     const toggle = document.createElement('trailhand-toggle-switch');
 
-    if (args.onLabel) toggle.onLabel = args.onLabel;
-    if (args.offLabel) toggle.offLabel = args.offLabel;
+    if (args.rightLabel) toggle.rightLabel = args.rightLabel;
+    if (args.leftLabel) toggle.leftLabel = args.leftLabel;
     if (args.checked !== undefined) toggle.checked = args.checked;
     if (args.storageKey) toggle.storageKey = args.storageKey;
     if (args.name) toggle.name = args.name;
@@ -28,12 +28,12 @@ export default {
       description: 'Whether the toggle is checked (on)',
       defaultValue: false,
     },
-    onLabel: {
+    rightLabel: {
       control: 'text',
       description: 'Label shown when toggle is on',
       defaultValue: 'On',
     },
-    offLabel: {
+    leftLabel: {
       control: 'text',
       description: 'Label shown when toggle is off',
       defaultValue: 'Off',
@@ -71,8 +71,8 @@ export default {
 export const Default = {
   args: {
     checked: false,
-    onLabel: 'On',
-    offLabel: 'Off',
+    rightLabel: 'On',
+    leftLabel: 'Off',
   },
   parameters: {
     docs: {
@@ -89,8 +89,8 @@ export const Default = {
 export const CustomLabels = {
   args: {
     checked: false,
-    onLabel: 'Enabled',
-    offLabel: 'Disabled',
+    rightLabel: 'Enabled',
+    leftLabel: 'Disabled',
   },
   parameters: {
     docs: {
@@ -98,7 +98,7 @@ export const CustomLabels = {
         story: 'Customize labels to match your use case.',
       },
       source: {
-        code: '<trailhand-toggle-switch onLabel="Enabled" offLabel="Disabled"></trailhand-toggle-switch>',
+        code: '<trailhand-toggle-switch right-label="Enabled" left-label="Disabled"></trailhand-toggle-switch>',
       },
     },
   },
@@ -110,8 +110,8 @@ export const CustomLabels = {
 export const IconLabels = {
   args: {
     checked: false,
-    onLabel: '✓',
-    offLabel: '✗',
+    rightLabel: '✓',
+    leftLabel: '✗',
   },
   parameters: {
     docs: {
@@ -119,7 +119,7 @@ export const IconLabels = {
         story: 'Use icons or symbols for a minimal appearance.',
       },
       source: {
-        code: '<trailhand-toggle-switch onLabel="✓" offLabel="✗"></trailhand-toggle-switch>',
+        code: '<trailhand-toggle-switch right-label="✓" left-label="✗"></trailhand-toggle-switch>',
       },
     },
   },
@@ -131,8 +131,8 @@ export const IconLabels = {
 export const InitiallyChecked = {
   args: {
     checked: true,
-    onLabel: 'Active',
-    offLabel: 'Inactive',
+    rightLabel: 'Active',
+    leftLabel: 'Inactive',
   },
   parameters: {
     docs: {
@@ -140,7 +140,7 @@ export const InitiallyChecked = {
         story: 'Toggle can be initialized in the checked state.',
       },
       source: {
-        code: '<trailhand-toggle-switch checked onLabel="Active" offLabel="Inactive"></trailhand-toggle-switch>',
+        code: '<trailhand-toggle-switch checked right-label="Active" left-label="Inactive"></trailhand-toggle-switch>',
       },
     },
   },
@@ -152,8 +152,8 @@ export const InitiallyChecked = {
 export const WithPersistence = {
   args: {
     checked: false,
-    onLabel: 'On',
-    offLabel: 'Off',
+    rightLabel: 'On',
+    leftLabel: 'Off',
     storageKey: 'demo-toggle-state',
   },
   parameters: {
@@ -194,8 +194,8 @@ export const SyncedToggles = {
 
       const toggle = document.createElement('trailhand-toggle-switch');
       toggle.name = 'synced-demo';
-      toggle.onLabel = 'Yes';
-      toggle.offLabel = 'No';
+      toggle.rightLabel = 'Yes';
+      toggle.leftLabel = 'No';
 
       wrapper.appendChild(label);
       wrapper.appendChild(toggle);
@@ -211,9 +211,9 @@ export const SyncedToggles = {
           'Multiple toggle instances with the same `name` prop stay synchronized.',
       },
       source: {
-        code: `<trailhand-toggle-switch name="synced-demo" onLabel="Yes" offLabel="No"></trailhand-toggle-switch>
-<trailhand-toggle-switch name="synced-demo" onLabel="Yes" offLabel="No"></trailhand-toggle-switch>
-<trailhand-toggle-switch name="synced-demo" onLabel="Yes" offLabel="No"></trailhand-toggle-switch>`,
+        code: `<trailhand-toggle-switch name="synced-demo" right-label="Yes" left-label="No"></trailhand-toggle-switch>
+<trailhand-toggle-switch name="synced-demo" right-label="Yes" left-label="No"></trailhand-toggle-switch>
+<trailhand-toggle-switch name="synced-demo" right-label="Yes" left-label="No"></trailhand-toggle-switch>`,
       },
     },
   },
@@ -247,8 +247,8 @@ export const ThemeSwitching = {
 
     const toggle = document.createElement('trailhand-toggle-switch');
     toggle.checked = initializeTheme();
-    toggle.onLabel = '🌙 Dark';
-    toggle.offLabel = '☀️ Light';
+    toggle.rightLabel = '🌙 Dark';
+    toggle.leftLabel = '☀️ Light';
     toggle.name = 'theme-demo';
 
     toggle.addEventListener('toggle-change', (e) => {
@@ -364,9 +364,9 @@ export const ThemeSwitching = {
       },
       source: {
         code: `<trailhand-toggle-switch
-  onLabel="🌙 Dark"
-  offLabel="☀️ Light"
-  storageKey="user-theme-preference">
+  right-label="🌙 Dark"
+  left-label="☀️ Light"
+  storage-key="user-theme-preference">
 </trailhand-toggle-switch>
 
 <script>
@@ -398,14 +398,14 @@ export const UseCaseExamples = {
       'display: flex; flex-direction: column; gap: 16px;';
 
     const useCases = [
-      { label: 'Notifications:', onLabel: 'On', offLabel: 'Off' },
-      { label: 'Email alerts:', onLabel: 'Enabled', offLabel: 'Disabled' },
-      { label: 'Auto-save:', onLabel: 'Active', offLabel: 'Inactive' },
-      { label: 'Public profile:', onLabel: 'Visible', offLabel: 'Hidden' },
-      { label: 'Two-factor auth:', onLabel: '🔒 On', offLabel: '🔓 Off' },
+      { label: 'Notifications:', rightLabel: 'On', leftLabel: 'Off' },
+      { label: 'Email alerts:', rightLabel: 'Enabled', leftLabel: 'Disabled' },
+      { label: 'Auto-save:', rightLabel: 'Active', leftLabel: 'Inactive' },
+      { label: 'Public profile:', rightLabel: 'Visible', leftLabel: 'Hidden' },
+      { label: 'Two-factor auth:', rightLabel: '🔒 On', leftLabel: '🔓 Off' },
     ];
 
-    useCases.forEach(({ label, onLabel, offLabel }) => {
+    useCases.forEach(({ label, rightLabel, leftLabel }) => {
       const row = document.createElement('div');
       row.style.cssText = 'display: flex; align-items: center; padding: 8px;';
 
@@ -414,8 +414,8 @@ export const UseCaseExamples = {
       labelEl.style.cssText = 'min-width: 150px; font-weight: 500;';
 
       const toggle = document.createElement('trailhand-toggle-switch');
-      toggle.onLabel = onLabel;
-      toggle.offLabel = offLabel;
+      toggle.rightLabel = rightLabel;
+      toggle.leftLabel = leftLabel;
 
       row.appendChild(labelEl);
       row.appendChild(toggle);
@@ -431,11 +431,11 @@ export const UseCaseExamples = {
           'Examples of how toggle-switch can be used in different contexts.',
       },
       source: {
-        code: `<trailhand-toggle-switch onLabel="On" offLabel="Off"></trailhand-toggle-switch>
-<trailhand-toggle-switch onLabel="Enabled" offLabel="Disabled"></trailhand-toggle-switch>
-<trailhand-toggle-switch onLabel="Active" offLabel="Inactive"></trailhand-toggle-switch>
-<trailhand-toggle-switch onLabel="Visible" offLabel="Hidden"></trailhand-toggle-switch>
-<trailhand-toggle-switch onLabel="🔒 On" offLabel="🔓 Off"></trailhand-toggle-switch>`,
+        code: `<trailhand-toggle-switch right-label="On" left-label="Off"></trailhand-toggle-switch>
+<trailhand-toggle-switch right-label="Enabled" left-label="Disabled"></trailhand-toggle-switch>
+<trailhand-toggle-switch right-label="Active" left-label="Inactive"></trailhand-toggle-switch>
+<trailhand-toggle-switch right-label="Visible" left-label="Hidden"></trailhand-toggle-switch>
+<trailhand-toggle-switch right-label="🔒 On" left-label="🔓 Off"></trailhand-toggle-switch>`,
       },
     },
   },

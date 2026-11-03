@@ -22,7 +22,7 @@ import '@krumio/trailhand-ui/styles/colors.css';
 
 ```html
 <!-- Use in HTML -->
-<toggle-switch onLabel="On" offLabel="Off"></toggle-switch>
+<toggle-switch rightLabel="On" leftLabel="Off"></toggle-switch>
 ```
 
 ## Global Color Variables
@@ -119,8 +119,8 @@ A reusable toggle for boolean values with sync and persistence features.
 
 ```html
 <toggle-switch
-  onLabel="On"
-  offLabel="Off"
+  rightLabel="On"
+  leftLabel="Off"
   name="my-toggle"
   storage-key="my-setting"
 ></toggle-switch>
