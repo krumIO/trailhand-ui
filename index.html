@@ -117,8 +117,8 @@
       // Set labels after component is ready
       customElements.whenDefined('toggle-switch').then(() => {
         const headerToggle = document.querySelector('header toggle-switch');
-        headerToggle.onLabel = '🌙 Dark';
-        headerToggle.offLabel = '☀️ Light';
+        headerToggle.rightLabel = '🌙 Dark';
+        headerToggle.leftLabel = '☀️ Light';
       });
     </script>
 
@@ -170,15 +170,15 @@
         <toggle-switch name="theme" id="sync1"></toggle-switch>
         <toggle-switch
           name="theme"
-          onLabel="Dark"
-          offLabel="Light"
+          rightLabel="Dark"
+          leftLabel="Light"
         ></toggle-switch>
       </div>
       <script type="module">
         customElements.whenDefined('toggle-switch').then(() => {
           const sync1 = document.getElementById('sync1');
-          sync1.onLabel = '🌙';
-          sync1.offLabel = '☀️';
+          sync1.rightLabel = '🌙';
+          sync1.leftLabel = '☀️';
         });
       </script>
     </main>

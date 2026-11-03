@@ -98,7 +98,7 @@ export const CustomLabels = {
         story: 'Customize labels to match your use case.',
       },
       source: {
-        code: '<trailhand-toggle-switch rightLabel="Enabled" leftLabel="Disabled"></trailhand-toggle-switch>',
+        code: '<trailhand-toggle-switch right-label="Enabled" left-label="Disabled"></trailhand-toggle-switch>',
       },
     },
   },
@@ -119,7 +119,7 @@ export const IconLabels = {
         story: 'Use icons or symbols for a minimal appearance.',
       },
       source: {
-        code: '<trailhand-toggle-switch rightLabel="✓" leftLabel="✗"></trailhand-toggle-switch>',
+        code: '<trailhand-toggle-switch right-label="✓" left-label="✗"></trailhand-toggle-switch>',
       },
     },
   },
@@ -140,7 +140,7 @@ export const InitiallyChecked = {
         story: 'Toggle can be initialized in the checked state.',
       },
       source: {
-        code: '<trailhand-toggle-switch checked rightLabel="Active" leftLabel="Inactive"></trailhand-toggle-switch>',
+        code: '<trailhand-toggle-switch checked right-label="Active" left-label="Inactive"></trailhand-toggle-switch>',
       },
     },
   },
@@ -211,9 +211,9 @@ export const SyncedToggles = {
           'Multiple toggle instances with the same `name` prop stay synchronized.',
       },
       source: {
-        code: `<trailhand-toggle-switch name="synced-demo" rightLabel="Yes" leftLabel="No"></trailhand-toggle-switch>
-<trailhand-toggle-switch name="synced-demo" rightLabel="Yes" leftLabel="No"></trailhand-toggle-switch>
-<trailhand-toggle-switch name="synced-demo" rightLabel="Yes" leftLabel="No"></trailhand-toggle-switch>`,
+        code: `<trailhand-toggle-switch name="synced-demo" right-label="Yes" left-label="No"></trailhand-toggle-switch>
+<trailhand-toggle-switch name="synced-demo" right-label="Yes" left-label="No"></trailhand-toggle-switch>
+<trailhand-toggle-switch name="synced-demo" right-label="Yes" left-label="No"></trailhand-toggle-switch>`,
       },
     },
   },
@@ -364,9 +364,9 @@ export const ThemeSwitching = {
       },
       source: {
         code: `<trailhand-toggle-switch
-  rightLabel="🌙 Dark"
-  leftLabel="☀️ Light"
-  storageKey="user-theme-preference">
+  right-label="🌙 Dark"
+  left-label="☀️ Light"
+  storage-key="user-theme-preference">
 </trailhand-toggle-switch>
 
 <script>
@@ -431,11 +431,11 @@ export const UseCaseExamples = {
           'Examples of how toggle-switch can be used in different contexts.',
       },
       source: {
-        code: `<trailhand-toggle-switch rightLabel="On" leftLabel="Off"></trailhand-toggle-switch>
-<trailhand-toggle-switch rightLabel="Enabled" leftLabel="Disabled"></trailhand-toggle-switch>
-<trailhand-toggle-switch rightLabel="Active" leftLabel="Inactive"></trailhand-toggle-switch>
-<trailhand-toggle-switch rightLabel="Visible" leftLabel="Hidden"></trailhand-toggle-switch>
-<trailhand-toggle-switch rightLabel="🔒 On" leftLabel="🔓 Off"></trailhand-toggle-switch>`,
+        code: `<trailhand-toggle-switch right-label="On" left-label="Off"></trailhand-toggle-switch>
+<trailhand-toggle-switch right-label="Enabled" left-label="Disabled"></trailhand-toggle-switch>
+<trailhand-toggle-switch right-label="Active" left-label="Inactive"></trailhand-toggle-switch>
+<trailhand-toggle-switch right-label="Visible" left-label="Hidden"></trailhand-toggle-switch>
+<trailhand-toggle-switch right-label="🔒 On" left-label="🔓 Off"></trailhand-toggle-switch>`,
       },
     },
   },
