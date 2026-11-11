@@ -231,7 +231,7 @@ export class ActionMenu extends LitElement {
    * @private
    */
   private _isActionEnabled(action: ActionMenuItem): boolean {
-    if (!action.enabled) return true;
+    if (action.enabled === undefined) return true;
     if (typeof action.enabled === 'function') {
       return action.enabled(this.resource);
     }
