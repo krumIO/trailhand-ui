@@ -1,5 +1,5 @@
-import './data-table.js';
-import '../action-menu/action-menu.js';
+import './data-table';
+import '../action-menu/action-menu';
 import { html } from 'lit';
 import { expect, fn, waitFor, userEvent } from 'storybook/test';
 
