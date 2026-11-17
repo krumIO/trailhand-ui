@@ -472,7 +472,7 @@ export class DataTable extends LitElement {
    * @private
    */
   private get _sortedRows(): RowData[] {
-    if (!this._sortColumn || !this.sortable) {
+    if (!this._sortColumn || !this.sortable || this.serverSide) {
       return this._filteredRows;
     }
 
@@ -572,12 +572,32 @@ export class DataTable extends LitElement {
     if (this._sortColumn === columnField) {
       // Toggle direction
       this._sortDirection = this._sortDirection === 'asc' ? 'desc' : 'asc';
+      this.dispatchEvent(
+        new CustomEvent('column-sort', {
+          detail: {
+            sortDirection: this._sortDirection,
+            columnField: columnField,
+          },
+          bubbles: true,
+          composed: true,
+        }),
+      );
     } else {
       // New column, default to ascending
       this._sortColumn = columnField;
       this._sortDirection = 'asc';
+      this.dispatchEvent(
+        new CustomEvent('column-sort', {
+          detail: {
+            sortDirection: 'asc',
+            columnField: columnField,
+          },
+          bubbles: true,
+          composed: true,
+        }),
+      );
     }
-    this._currentPage = 1;
+    this.goToPage(1);
   }
 
   /**
@@ -709,6 +729,7 @@ export class DataTable extends LitElement {
    * @private
    */
   private _handlePaginationChange(e: CustomEvent<{ page: number }>): void {
+    e.stopPropagation();
     this.goToPage(e.detail.page);
   }
 
