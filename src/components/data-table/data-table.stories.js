@@ -1,6 +1,7 @@
-import './data-table.ts';
-import '../action-menu/action-menu';
+import './data-table.js';
+import '../action-menu/action-menu.js';
 import { html } from 'lit';
+import { expect, fn, waitFor, userEvent } from 'storybook/test';
 
 /**
  * The DataTable component is a feature-rich table with sorting, filtering, and pagination.
@@ -25,6 +26,9 @@ export default {
     if (args.renderActions) table.renderActions = args.renderActions;
     if (args.emptyMessage) table.emptyMessage = args.emptyMessage;
     if (args.noResultsMessage) table.noResultsMessage = args.noResultsMessage;
+    if (args.serverSide) table.serverSide = args.serverSide;
+    if (args.currentPage) table.currentPage = args.currentPage;
+    if (args.totalItems) table.totalItems = args.totalItems;
 
     return table;
   },
@@ -84,6 +88,12 @@ export default {
       description:
         'Callback function to render custom actions for each row. Receives the row data as an argument.',
     },
+    serverSide: {
+      control: 'boolean',
+      description:
+        'When server side is true, any logic within the component to handle pagination or sorting will be ignored, since data will be handled outside the component and then passed in.',
+      defaultValue: false,
+    }
   },
   parameters: {
     docs: {
@@ -728,5 +738,105 @@ export const Minimal = {
         story: 'A minimal table with all extra features disabled.',
       },
     },
+  },
+};
+
+/**
+ * Server side data table that emits events that are used to update data
+ */
+export const ServerSide = {
+  args: {
+    columns: userColumns,
+    rows: sampleUsers.slice(0, 5),
+    totalItems: 10,
+    rowsPerPage: 5,
+    serverSide: true,
+    paginated: true,
+    currentPage: 1,
+  },
+  parameters: {
+    chromatic: { disableSnapshot: true },
+    docs: {
+      source: {
+        code: `
+          <trailhand-table></trailhand-table>
+          <script>
+            const table = document.querySelector('trailhand-table');
+
+            table.columns = [
+              { field: 'name', label: 'Name', width: '200px' },
+              { field: 'email', label: 'Email', width: '220px' },
+              { field: 'role', label: 'Role', width: '120px' },
+              { field: 'status', label: 'Status', width: '100px' },
+              { field: 'createdAt', label: 'Created', width: '150px', formatter: 'dateTime' },
+            ];
+
+            table.rows = [
+              { id: 1, name: 'Alice Johnson', email: 'alice@example.com', role: 'Admin', status: 'Active', createdAt: '2024-01-15T10:30:00Z' },
+              // ... more rows
+            ];
+          </script>
+        `,
+      },
+    },
+  },
+  play: async ({ canvasElement }) => {
+    const table = canvasElement.querySelector('trailhand-table');
+    if (!table) throw new Error('Table not found');
+
+    const root = table.shadowRoot;
+    if (!root) throw new Error('Table shadow root not found');
+
+    // --- column-sort ---------------------------------------------------
+    const onSort = fn();
+    table.addEventListener('column-sort', onSort);
+
+    // Headers have no data-field attribute, so find the sortable <th> by its label
+    const nameHeader = Array.from(
+      root.querySelectorAll('th.data-table__th--sortable'),
+    ).find((th) => th.textContent?.trim().startsWith('Name'));
+    if (!nameHeader) throw new Error('Sortable "Name" column header not found');
+
+    await userEvent.click(nameHeader);
+
+    await waitFor(() => expect(onSort).toHaveBeenCalledTimes(1));
+
+    const firstSort = (onSort.mock.calls[0][0]).detail;
+    await expect(firstSort.columnField).toBe('name');
+    await expect(firstSort.sortDirection).toBe('asc');
+
+    // Second click should flip the direction
+    await userEvent.click(nameHeader);
+
+    await waitFor(() => expect(onSort).toHaveBeenCalledTimes(2));
+
+    const secondSort = (onSort.mock.calls[1][0] ).detail;
+    await expect(secondSort.columnField).toBe('name');
+    await expect(secondSort.sortDirection).toBe('desc');
+
+    table.removeEventListener('column-sort', onSort);
+
+    // --- page-change ---------------------------------------------------
+    const onPageChange = fn();
+    table.addEventListener('page-change', onPageChange);
+
+    // The pagination is likely its own component with its own shadow root,
+    // so look inside it first and fall back to the table's root
+    const paginationRoot =
+      root.querySelector('trailhand-pagination')?.shadowRoot ?? root;
+    const nextButton = paginationRoot.querySelector(
+      'button[aria-label="Next page"]',
+    );
+    if (!nextButton) throw new Error('Next page button not found');
+    await expect(nextButton).toBeEnabled();
+
+    await userEvent.click(nextButton);
+
+    await waitFor(() => expect(onPageChange).toHaveBeenCalledTimes(1));
+
+    const pageDetail = (onPageChange.mock.calls[0][0]).detail;
+    await expect(pageDetail.page).toBe(2);
+
+    table.removeEventListener('page-change', onPageChange);
   },
 };
