@@ -20,6 +20,7 @@ import '../src/components/code-editor';
 import '../src/components/text-area';
 import '../src/components/loading-spinner';
 import '../src/components/pagination';
+import '../src/components/banner';
 
 // Import global styles
 import '../src/styles/colors.css';
@@ -406,6 +407,42 @@ class DevApp extends LitElement {
         <trailhand-tag label="medium" size="md" variant="info"></trailhand-tag>
         <trailhand-tag label="large" size="lg" variant="info"></trailhand-tag>
       </div>
+
+      <!-------------------------- Banners -------------------------->
+      <h1>Banners</h1>
+      <div>
+        <trailhand-banner
+          variant="primary"
+          title="Default Banner"
+          description="This is a default banner."
+          dismissable
+        ></trailhand-banner>
+        <trailhand-banner
+          variant="error"
+          title="Error Banner"
+          description="This is a error banner."
+          dismissable
+        ></trailhand-banner>
+        <trailhand-banner
+          variant="warning"
+          title="Warning Banner"
+          description="This is a warning banner."
+          dismissable
+        ></trailhand-banner>
+        <trailhand-banner
+          variant="success"
+          title="Success Banner"
+          description="This is a success banner."
+          dismissable
+        ></trailhand-banner>
+        <trailhand-banner
+          variant="info"
+          title="Info Banner"
+          description="This is a info banner."
+          dismissable
+        ></trailhand-banner>
+      </div>
+
       <!-------------------------- CHECKBOXES -------------------------->
       <h1>Checkboxes</h1>
       <div class="content">

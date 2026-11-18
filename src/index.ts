@@ -19,6 +19,7 @@ export * from './components/text-area';
 export * from './components/loading-spinner';
 export * from './components/pagination';
 export * from './components/dock';
+export * from './components/banner';
 
 // Export utilities
 export * from './utils';

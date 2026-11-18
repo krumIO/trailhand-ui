@@ -61,11 +61,13 @@
   --th-color-border: var(--th-color-grey-300);
   --th-color-border-light: var(--th-color-grey-200);
 
+  --th-color-primary-outline: var(--th-color-blue);
   --th-color-error-outline: var(--th-color-red);
   --th-color-success-outline: var(--th-color-green);
   --th-color-warning-outline: var(--th-color-yellow);
   --th-color-info-outline: var(--th-color-blue);
 
+  --th-color-primary-fill: var(--th-color-light-blue);
   --th-color-error-fill: var(--th-color-light-red);
   --th-color-success-fill: var(--th-color-light-green);
   --th-color-warning-fill: var(--th-color-light-yellow);
@@ -202,6 +204,19 @@
 
   /* Borders */
   --th-color-border: var(--th-color-grey-700);
+  --th-color-border-light: var(--th-color-grey-200);
+
+  --th-color-primary-outline: var(--th-color-light-blue);
+  --th-color-error-outline: var(--th-color-light-red);
+  --th-color-success-outline: var(--th-color-light-green);
+  --th-color-warning-outline: var(--th-color-light-yellow);
+  --th-color-info-outline: var(--th-color-light-blue);
+
+  --th-color-primary-fill: var(--th-color-dark-blue);
+  --th-color-error-fill: var(--th-color-dark-red);
+  --th-color-success-fill: var(--th-color-dark-green);
+  --th-color-warning-fill: var(--th-color-dark-yellow);
+  --th-color-info-fill: var(--th-color-dark-blue);
 
   /* Buttons */
   --th-button-primary-bg: var(--th-color-dark-primary);
